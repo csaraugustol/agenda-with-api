@@ -26,6 +26,7 @@ class RepositoryServiceProvider extends ServiceProvider
         //Recebe todas as interfaces do diretório
         $interfaces = collect(scandir(app_path($path)));
 
+        //Recebe as interfaces e faz o mapeamento retirando caracteres
         $interfaces = $interfaces->reject(function ($interface) {
             return in_array($interface, ['.', '..']);
         })
@@ -33,6 +34,7 @@ class RepositoryServiceProvider extends ServiceProvider
                 return str_replace('.php', '', $interface);
             });
 
+        //Retorna o caminho da base RepositoryInterface e RepositoryEloquent
         $interfaces->each(function ($interface) {
             $this->app->bind(
                 $this->interfacePath  . $interface,
