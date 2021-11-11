@@ -6,8 +6,9 @@ use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
-    protected $implementsPath = 'App\\Repositories\\';
     protected $implementsName = 'Eloquent';
+    protected $implementsPath = 'App\\Repositories\\';
+    protected $path           = 'Repositories/Contacts';
     protected $interfacePath  = 'App\\Repositories\\Contacts';
 
     /**
@@ -17,25 +18,27 @@ class RepositoryServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        if (!file_exists(app_path('Repositories/Contacts'))) {
+        //Verifica se existe o path
+        if (!file_exists(app_path($path))) {
             return false;
         }
 
-        $interfaces = collect(scandir(app_path('Repositories/Contacts')));
+        //Recebe todas as interfaces do diretório
+        $interfaces = collect(scandir(app_path($path)));
 
         $interfaces = $interfaces->reject(function ($interface) {
             return in_array($interface, ['.', '..']);
-            })
-                ->map(function ($interface) {
-                    return str_replace('.php', '', $interface);
-                });
-
-            $interfaces->each(function ($interface) {
-                $this->app->bind(
-                    $this->interfacePath . $interface,
-                    $this->implementsPath . $interface . $this->implementsName
-                );
+        })
+            ->map(function ($interface) {
+                return str_replace('.php', '', $interface);
             });
+
+        $interfaces->each(function ($interface) {
+            $this->app->bind(
+                $this->interfacePath  . $interface,
+                $this->implementsPath . $interface . $this->implementsName
+            );
+        });    
     }
 
     /**
