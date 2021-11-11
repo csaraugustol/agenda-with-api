@@ -24,7 +24,7 @@ class ServiceServiceProvider extends ServiceProvider
      * @var array
      */
     protected $interfacePaths = [
-        'default' => 'App\\Services\\ContactsInterfaces\\'
+        'default' => 'App\\Services\\Contacts\\'
     ];
 
     /**
@@ -34,7 +34,7 @@ class ServiceServiceProvider extends ServiceProvider
      * @var array
      */
     protected $serviceDirectoriesPaths = [
-        'default' => 'Services/ContactsInterfaces'
+        'default' => 'Services/Contacts'
     ];
 
     /**
@@ -62,7 +62,7 @@ class ServiceServiceProvider extends ServiceProvider
                     return str_replace('.php', '', $interface);
                 });
 
-            // Ralizando o bind da classe que irá implementar a interface
+            //Realizando o bind da classe que irá implementar a interface
             $interfaces->each(function ($interfaceClassName) use ($implementsPath, $identifier) {
                 $serviceClassName = str_replace('Interface', '', $interfaceClassName);
 
