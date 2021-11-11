@@ -24,7 +24,7 @@ class ServiceServiceProvider extends ServiceProvider
      * @var array
      */
     protected $interfacePaths = [
-        'default' => 'App\\Services\\ContactsInterface\\'
+        'default' => 'App\\Services\\ContactsInterfaces\\'
     ];
 
     /**
@@ -34,7 +34,7 @@ class ServiceServiceProvider extends ServiceProvider
      * @var array
      */
     protected $serviceDirectoriesPaths = [
-        'default' => 'Services/ContactsInterface'
+        'default' => 'Services/ContactsInterfaces'
     ];
 
     /**
