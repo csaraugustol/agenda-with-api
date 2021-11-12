@@ -14,7 +14,8 @@
         "guzzlehttp/guzzle": "6.3.*|7.0.*",
         "laravel/framework": "7.*",
         "laravel/tinker": "2.*",
-        "prettus/l5-repository": "2.6.44"
+        "prettus/l5-repository": "2.6.44",
+        "waavi/sanitizer": "1.0"
     },
     "require-dev": {
         "facade/ignition": "2.*",
