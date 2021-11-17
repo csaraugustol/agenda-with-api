@@ -73,7 +73,7 @@ class ServiceServiceProvider extends ServiceProvider
                     $pathInterfaceClass,
                     $pathImplementationClass
                 );
-            });    
+            });
         });
     }
 
