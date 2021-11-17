@@ -22,11 +22,11 @@ trait SanitizesInput
 
         parent::validateResolved();
 
-        if($this->hasAfter()) {
+        if ($this->hasAfter()) {
             $this->sanitize($filters['after']);
         }
 
-        if(!$this->hasAfter() && !$this->hasBefore()) {
+        if (!$this->hasAfter() && !$this->hasBefore()) {
             $this->sanitize($filters);
         }
     }
@@ -68,7 +68,7 @@ trait SanitizesInput
         $filters = Arr::only($filters, array_keys($this->input()));
 
         // Filtra todos os campos de inputs recebidos do form
-        $this->sanitizer = Sanitizer::->make($this->input(), $filters);
+        $this->sanitizer = Sanitizer::make($this->input(), $filters);
 
         // Recebe os inputs que exitem no form para efetuar a sanitização
         $keysBefore = array_keys($this->all());

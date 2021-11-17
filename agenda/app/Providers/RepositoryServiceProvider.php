@@ -30,9 +30,9 @@ class RepositoryServiceProvider extends ServiceProvider
         $interfaces = $interfaces->reject(function ($interface) {
             return in_array($interface, ['.', '..']);
         })
-            ->map(function ($interface) {
-                return str_replace('.php', '', $interface);
-            });
+        ->map(function ($interface) {
+            return str_replace('.php', '', $interface);
+        });
 
         //Retorna o caminho da base RepositoryInterface e RepositoryEloquent
         $interfaces->each(function ($interface) {
@@ -40,7 +40,7 @@ class RepositoryServiceProvider extends ServiceProvider
                 $this->interfacePath  . $interface,
                 $this->implementsPath . $interface . $this->implementsName
             );
-        });    
+        });
     }
 
     /**
