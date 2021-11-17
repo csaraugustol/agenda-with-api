@@ -21,7 +21,6 @@ class BaseService
         Throwable $exception,
         $data = null
     ): ServiceResponse {
-
         // Tratando o caso de erro de validação usando as políticas
         if ($exception instanceof PolicyException) {
             return new ServiceResponse(
