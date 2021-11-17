@@ -4,6 +4,10 @@ namespace App\Repositories;
 
 use App\Repositories\Contracts\UserRepository;
 
+/**
+ * Class UserRepositoryEloquent
+ * @package namespace App\Repositories;
+ */
 class UserRepositoryEloquent extends BaseRepositoryEloquent implements UserRepository
 {
     /**
