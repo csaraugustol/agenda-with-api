@@ -4,7 +4,7 @@ use App\Models\User;
 use App\Models\Contact;
 use Illuminate\Database\Seeder;
 
-class CompleteContactSeeder extends Seeder
+class CompleteDiarySeeder extends Seeder
 {
     /**
      * Run the database seeds.
