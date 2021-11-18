@@ -29,4 +29,12 @@ class User extends Model
         'password',
         'remember_token',
     ];
+
+    /**
+     * Relacionamento do usuário com contatos
+     */
+    public function contacts()
+    {
+        return $this->hasMany(Contact::class);
+    }
 }
