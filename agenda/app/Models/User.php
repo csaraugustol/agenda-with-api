@@ -37,4 +37,12 @@ class User extends Model
     {
         return $this->hasMany(Contact::class);
     }
+
+    /**
+     * Relacionamento do usuário com tag
+     */
+    public function tags()
+    {
+        return $this->hasMany(Tag::class);
+    }
 }
