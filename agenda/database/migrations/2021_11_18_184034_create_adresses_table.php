@@ -24,12 +24,13 @@ class CreateAdressesTable extends Migration
             $table->string('postal_code');
             $table->string('country');
             $table->unsignedBigInteger('contact_id');
-            $table->foreign('contact_id')
-            ->references('id')
-            ->on('contacts')
-            ->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('contact_id')
+                ->references('id')
+                ->on('contacts')
+                ->onDelete('cascade');
         });
     }
 

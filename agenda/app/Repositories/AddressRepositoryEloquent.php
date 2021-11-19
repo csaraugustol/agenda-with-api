@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\Address;
 use App\Repositories\Contracts\AddressRepository;
 
 /**
