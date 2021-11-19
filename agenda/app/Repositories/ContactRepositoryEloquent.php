@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\Contact;
 use App\Repositories\Contracts\ContactRepository;
 
 /**
