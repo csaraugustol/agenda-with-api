@@ -18,4 +18,12 @@ class Tag extends Model
         'description',
         'user_id',
     ];
+
+    /**
+     * Relacionamento da tag com usuário
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
