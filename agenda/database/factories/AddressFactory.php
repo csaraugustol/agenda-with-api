@@ -10,7 +10,7 @@ $factory->define(Address::class, function (Faker $faker) {
     return [
         'street_name'  => $faker->streetName,
         'number'       => $faker->buildingNumber,
-        'complement'   => $faker->streetSuffix,
+        'complement'   => $faker->secondaryAddress,
         'neighborhood' => $faker->streetSuffix,
         'city'         => $faker->city,
         'state'        => $faker->state,
