@@ -34,4 +34,12 @@ class Contact extends Model
     {
         return $this->hasMany(Address::class);
     }
+
+    /**
+     * Relacionamento contato com telefone
+     */
+    public function phones()
+    {
+        return $this->hasMany(Phone::class);
+    }
 }

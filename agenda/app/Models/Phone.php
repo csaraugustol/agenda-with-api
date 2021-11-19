@@ -18,4 +18,12 @@ class Phone extends Model
         'phone_number',
         'contact_id',
     ];
+
+    /**
+     * Relacionamento telefone com contato
+     */
+    public function contact()
+    {
+        return $this->belongsTo(Contact::class);
+    }
 }
