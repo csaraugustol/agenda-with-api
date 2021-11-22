@@ -14,7 +14,8 @@ class CreateAdressesTable extends Migration
     public function up()
     {
         Schema::create('adresses', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
+            $table->uuid('contact_id');
             $table->string('street_name');
             $table->unsignedBigInteger('number');
             $table->string('complement');
@@ -23,7 +24,6 @@ class CreateAdressesTable extends Migration
             $table->string('state');
             $table->string('postal_code');
             $table->string('country');
-            $table->unsignedBigInteger('contact_id');
             $table->timestamps();
             $table->softDeletes();
 
