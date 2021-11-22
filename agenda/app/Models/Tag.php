@@ -34,5 +34,4 @@ class Tag extends Model
     {
         return $this->belongsTo(TagContact::class);
     }
-
 }
