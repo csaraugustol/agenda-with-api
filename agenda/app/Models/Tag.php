@@ -26,4 +26,13 @@ class Tag extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    /**
+     * Relacionamento da tag com TagContact
+     */
+    public function tagContact()
+    {
+        return $this->belongsTo(TagContact::class);
+    }
+
 }
