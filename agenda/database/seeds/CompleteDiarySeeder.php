@@ -17,10 +17,9 @@ class CompleteDiarySeeder extends Seeder
      */
     public function run()
     {
-        factory(User::class, 1)->create()->each(function ($user) {
+        factory(User::class)->create()->each(function ($user) {
             $tags = factory(Tag::class, 2)->create(['user_id' => $user->id]);
             factory(Contact::class, 2)->create(['user_id' => $user->id])->each(function ($contact) use ($tags) {
-
                 foreach ($tags as $tag) {
                     factory(TagContact::class)->create([
                         'tag_id' => $tag->id,
@@ -28,9 +27,8 @@ class CompleteDiarySeeder extends Seeder
                     ]);
                 }
 
-                $contact_id = ['contact_id' => $contact->id];
-                factory(Address::class, 2)->create($contact_id);
-                factory(Phone::class, 3)->create($contact_id);
+                factory(Address::class, 2)->create(['contact_id' => $contact->id]);
+                factory(Phone::class, 3)->create(['contact_id' => $contact->id]);
             });
         });
     }
