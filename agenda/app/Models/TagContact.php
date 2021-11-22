@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\Traits\UuidAsPrimaryKey;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class TagContact extends Model
 {
     use SoftDeletes;
+    use UuidAsPrimaryKey;
 
     /**
      * Nome da tabela

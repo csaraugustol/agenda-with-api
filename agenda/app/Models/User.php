@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\Traits\UuidAsPrimaryKey;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Model
 {
     use SoftDeletes;
+    use UuidAsPrimaryKey;
 
     /**
      * Atributos da model para serem atribuídos

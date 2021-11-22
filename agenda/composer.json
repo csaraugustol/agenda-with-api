@@ -11,16 +11,16 @@
         "php": "7.3.*",
         "fideloper/proxy": "4.*",
         "fruitcake/laravel-cors": "2.*",
-        "fzaninotto/faker": "1.9",
         "guzzlehttp/guzzle": "6.3.*|7.0.*",
         "laravel/framework": "7.*",
         "laravel/tinker": "2.*",
         "prettus/l5-repository": "2.7.9",
+        "ramsey/uuid": "^4.2",
         "waavi/sanitizer": "1.0.16"
     },
     "require-dev": {
         "facade/ignition": "2.*",
-        "fakerphp/faker": "1.9.*",
+        "fzaninotto/faker": "^1.9",
         "mockery/mockery": "1.3.*",
         "nunomaduro/collision": "4.*",
         "phpunit/phpunit": "8.5.*|9.3.*"

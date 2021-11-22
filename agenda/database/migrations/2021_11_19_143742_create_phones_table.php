@@ -14,9 +14,9 @@ class CreatePhonesTable extends Migration
     public function up()
     {
         Schema::create('phones', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
+            $table->uuid('contact_id');
             $table->string('phone_number');
-            $table->unsignedBigInteger('contact_id');
             $table->timestamps();
             $table->softDeletes();
 
