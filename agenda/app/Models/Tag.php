@@ -30,8 +30,8 @@ class Tag extends Model
     /**
      * Relacionamento da tag com TagContact
      */
-    public function tagContact()
+    public function tagContacts()
     {
-        return $this->belongsTo(TagContact::class);
+        return $this->hasMany(TagContact::class);
     }
 }
