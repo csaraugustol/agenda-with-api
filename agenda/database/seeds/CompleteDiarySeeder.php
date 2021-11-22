@@ -17,7 +17,7 @@ class CompleteDiarySeeder extends Seeder
      */
     public function run()
     {
-        factory(User::class)->create()->each(function ($user) {
+        factory(User::class, 3)->create()->each(function ($user) {
             $tags = factory(Tag::class, 2)->create(['user_id' => $user->id]);
             factory(Contact::class, 2)->create(['user_id' => $user->id])->each(function ($contact) use ($tags) {
                 foreach ($tags as $tag) {
