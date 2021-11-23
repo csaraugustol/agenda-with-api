@@ -2,8 +2,13 @@
 
 namespace App\Exceptions;
 
-use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
+use Illuminate\Http\JsonResponse;
+use App\Http\Responses\DefaultResponse;
+use App\Services\Responses\InternalError;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -50,6 +55,45 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
+        if ($exception instanceof NotFoundHttpException) {
+            $response = new DefaultResponse(
+                null,
+                false,
+                [],
+                404
+            );
+
+            return response()->json($response->toArray(), 404);
+        }
+
         return parent::render($request, $exception);
+    }
+
+    /**
+     * Convert a validation exception into a JSON response.
+     *
+     * @param  Request  $request
+     * @param  ValidationException  $exception
+     * @return JsonResponse
+     */
+    protected function invalidJson($request, ValidationException $exception): JsonResponse
+    {
+        $errors = [];
+        foreach ($exception->errors() as $fieldError) {
+            foreach ($fieldError as $error) {
+                $errors[] = new InternalError(
+                    $error
+                );
+            }
+        }
+
+        $response = new DefaultResponse(
+            null,
+            false,
+            $errors,
+            422
+        );
+
+        return response()->json($response->toArray(), 422);
     }
 }

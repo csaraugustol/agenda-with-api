@@ -14,6 +14,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/test', [
+    'as'   => 'test',
+    'uses' => 'TestController@test'
+]);
+
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
