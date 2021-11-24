@@ -8,8 +8,8 @@ class RepositoryServiceProvider extends ServiceProvider
 {
     protected $implementsName = 'Eloquent';
     protected $implementsPath = 'App\\Repositories\\';
-    protected $path           = 'Repositories/Contacts';
-    protected $interfacePath  = 'App\\Repositories\\Contacts';
+    protected $path           = 'Repositories/Contracts';
+    protected $interfacePath  = 'App\\Repositories\\Contracts';
 
     /**
      * Register services.
