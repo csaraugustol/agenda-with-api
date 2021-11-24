@@ -19,6 +19,26 @@ Route::get('/test', [
     'uses' => 'TestController@test'
 ]);
 
+// Usuário
+Route::group(['prefix' => '/users', 'as' => 'users.'], function () {
+    Route::post('/register', [
+        'as'   => 'register',
+        'uses' => 'UserController@register'
+    ]);
+    Route::patch('/{id}', [
+        'as' => 'update',
+        'uses' => 'UserController@update'
+    ]);
+    Route::get('/{id}', [
+        'as' => 'show',
+        'uses' => 'UserController@show'
+    ]);
+    Route::delete('/{id}', [
+        'as' => 'destroy',
+        'uses' => 'UserController@destroy'
+    ]);
+});
+
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
