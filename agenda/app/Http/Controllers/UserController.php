@@ -7,6 +7,7 @@ use App\Http\Responses\DefaultResponse;
 use App\Http\Requests\User\RegisterRequest;
 use App\Services\Contracts\UserServiceInterface;
 use App\Services\Params\User\RegisterUserServiceParams;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends ApiController
 {
@@ -31,10 +32,13 @@ class UserController extends ApiController
      */
     public function register(RegisterRequest $request): JsonResponse
     {
+        //Faz Criptografia da senha
+        $password = Hash::make($request->password);
+
         $params = new RegisterUserServiceParams(
             $request->name,
             $request->email,
-            $request->password
+            $password
         );
 
         $registerUserResponse = $this->userService->register($params);
