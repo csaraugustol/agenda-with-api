@@ -2,11 +2,11 @@
 
 namespace App\Services;
 
+use Throwable;
 use App\Services\Responses\ServiceResponse;
 use App\Repositories\Contracts\UserRepository;
 use App\Services\Contracts\UserServiceInterface;
 use App\Services\Params\User\RegisterUserServiceParams;
-use Throwable;
 
 class UserService extends BaseService implements UserServiceInterface
 {

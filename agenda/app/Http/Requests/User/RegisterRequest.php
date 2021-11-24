@@ -42,9 +42,31 @@ class RegisterRequest extends FormRequest
     {
         return [
             'name'             => 'required|string',
-            'email'            => 'required|string|email|unique',
+            'email'            => 'required|string|email|unique:users',
             'password'         => 'required|string',
             'confirm_password' => 'required|string|same:password',
+        ];
+    }
+
+     /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'name.required'             => 'O campo NOME é obrigatório',
+            'name.string'               => 'O campo NOME deve ser do tipo string',
+            'email.required'            => 'O campo EMAIL é obrigatório',
+            'email.string'              => 'O campo EMAIL deve ser do tipo string',
+            'email.email'               => 'O campo deve ser do tipo EMAIL',
+            'email.unique'              => 'Email já está sendo utilizado',
+            'password.required'         => 'O campo SENHA é obrigatório',
+            'password.string'           => 'O campo SENHA deve ser do tipo string',
+            'confirm_password.required' => 'O campo CONFIRMAÇÂO DE SENHA é obrigatório',
+            'confirm_password.string'   => 'O campo CONFIRMAÇÂO DE SENHA deve ser do tipo string',
+            'confirm_password.same'     => 'As senhas digitadas não são iguais',
         ];
     }
 }
