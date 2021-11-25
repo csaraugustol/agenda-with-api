@@ -14,12 +14,24 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Auth
+Route::group(['prefix' => '/auth', 'as' => 'auth.login.'], function () {
+    Route::post('/auth/login', [
+        'as'   => 'login',
+        'uses' => 'LoginController@login'
+    ]);
+});
+
 // Usuário
 Route::group(['prefix' => '/users', 'as' => 'users.'], function () {
     Route::post('/register', [
         'as'   => 'register',
         'uses' => 'UserController@register'
     ]);
+    Route::get('/', [
+        'as'   => '',
+        'uses' => 'UserController@index'
+    ])->middleware('auth');
 });
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
