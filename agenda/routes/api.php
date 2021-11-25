@@ -25,18 +25,6 @@ Route::group(['prefix' => '/users', 'as' => 'users.'], function () {
         'as'   => 'register',
         'uses' => 'UserController@register'
     ]);
-    Route::patch('/{id}', [
-        'as' => 'update',
-        'uses' => 'UserController@update'
-    ]);
-    Route::get('/{id}', [
-        'as' => 'show',
-        'uses' => 'UserController@show'
-    ]);
-    Route::delete('/{id}', [
-        'as' => 'destroy',
-        'uses' => 'UserController@destroy'
-    ]);
 });
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {

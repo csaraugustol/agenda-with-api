@@ -33,7 +33,14 @@ class UserService extends BaseService implements UserServiceInterface
     public function register(RegisterUserServiceParams $params): ServiceResponse
     {
         try {
-            $user = $this->userRepository->create($params->toArray());
+            //Realiza a criptografia da senha
+            $passwordEncrypted =  bcrypt($params->password);
+
+            $user = $this->userRepository->create([
+                'name'     => $params->name,
+                'email'    => $params->email,
+                'password' => $passwordEncrypted
+            ]);
         } catch (Throwable $throwable) {
             return $this->defaultErrorReturn($throwable, compact('params'));
         }
