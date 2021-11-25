@@ -8,8 +8,8 @@ class RepositoryServiceProvider extends ServiceProvider
 {
     protected $implementsName = 'Eloquent';
     protected $implementsPath = 'App\\Repositories\\';
-    protected $path           = 'Repositories/Contacts';
-    protected $interfacePath  = 'App\\Repositories\\Contacts';
+    protected $path           = 'Repositories/Contracts';
+    protected $interfacePath  = 'App\\Repositories\\Contracts\\';
 
     /**
      * Register services.
@@ -19,12 +19,12 @@ class RepositoryServiceProvider extends ServiceProvider
     public function register()
     {
         //Verifica se existe o path
-        if (!file_exists(app_path($path))) {
+        if (!file_exists(app_path($this->path))) {
             return false;
         }
 
         //Recebe todas as interfaces do diretório
-        $interfaces = collect(scandir(app_path($path)));
+        $interfaces = collect(scandir(app_path($this->path)));
 
         //Recebe as interfaces e faz o mapeamento retirando caracteres
         $interfaces = $interfaces->reject(function ($interface) {

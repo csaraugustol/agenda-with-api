@@ -14,10 +14,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/test', [
-    'as'   => 'test',
-    'uses' => 'TestController@test'
-]);
+// Usuário
+Route::group(['prefix' => '/users', 'as' => 'users.'], function () {
+    Route::post('/register', [
+        'as'   => 'register',
+        'uses' => 'UserController@register'
+    ]);
+});
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
