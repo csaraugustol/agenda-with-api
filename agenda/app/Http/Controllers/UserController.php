@@ -33,7 +33,7 @@ class UserController extends ApiController
     public function register(RegisterRequest $request): JsonResponse
     {
         //Faz Criptografia da senha
-        $password = Hash::make($request->password);
+        $password = bcrypt($request->password);
 
         $params = new RegisterUserServiceParams(
             $request->name,
@@ -43,10 +43,10 @@ class UserController extends ApiController
 
         $registerUserResponse = $this->userService->register($params);
 
-        if (!$registerUserResponse->success) {
+        if (!$registerUserResponse->success || is_null($registerUserResponse->data)) {
             return $this->errorResponseFromService($registerUserResponse);
         }
 
-        return $this->response(new DefaultResponse());
+        return $this->response(new DefaultResponse($registerUserResponse->data));
     }
 }
