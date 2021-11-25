@@ -14,11 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/test', [
-    'as'   => 'test',
-    'uses' => 'TestController@test'
-]);
-
 // Usuário
 Route::group(['prefix' => '/users', 'as' => 'users.'], function () {
     Route::post('/register', [
