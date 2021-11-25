@@ -7,7 +7,6 @@ use App\Models\Address;
 use App\Models\Contact;
 use App\Models\TagContact;
 use Illuminate\Database\Seeder;
-use App\Models\AuthenticateToken;
 
 class CompleteDiarySeeder extends Seeder
 {
