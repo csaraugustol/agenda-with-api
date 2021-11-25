@@ -47,4 +47,12 @@ class User extends Model
     {
         return $this->hasMany(Tag::class);
     }
+
+    /**
+     * Relacionamento do usuário com AuthenticateToken
+     */
+    public function authenticateTokens()
+    {
+        return $this->hasMany(AuthenticateToken::class);
+    }
 }
