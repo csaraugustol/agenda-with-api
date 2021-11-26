@@ -8,6 +8,8 @@ use App\Http\Requests\User\LoginRequest;
 use App\Http\Requests\User\RegisterRequest;
 use App\Services\Contracts\UserServiceInterface;
 use App\Services\Params\User\RegisterUserServiceParams;
+use App\Services\Responses\InternalError;
+use App\Services\Responses\ServiceResponse;
 
 class UserController extends ApiController
 {
@@ -58,6 +60,12 @@ class UserController extends ApiController
      */
     public function login(LoginRequest $request): JsonResponse
     {
-        return $this->response(new DefaultResponse($request));
+        $findUserByEmailResponse = $this->userService->findUserByEmail($request->email);
+
+        if (!$findUserByEmailResponse->success || is_null($findUserByEmailResponse->data)) {
+            return $this->errorResponseFromService($findUserByEmailResponse);
+        }
+
+        return $this->response(new DefaultResponse($findUserByEmailResponse));
     }
 }
