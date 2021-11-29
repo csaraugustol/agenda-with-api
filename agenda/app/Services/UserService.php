@@ -54,7 +54,7 @@ class UserService extends BaseService implements UserServiceInterface
     }
 
     /**
-     * Busca usuário pelo email
+     * Realiza a validação do usuário para efetuar login
      *
      * @param string $email
      *
@@ -63,9 +63,9 @@ class UserService extends BaseService implements UserServiceInterface
     public function login(string $email, string $password): ServiceResponse
     {
         try {
-            $user = $this->userRepository->findUserByEmail($email);
+            $findUserResponse = $this->findByEmail($email);
 
-            if (is_null($user)) {
+            if (!$findUserResponse->success || is_null($findUserResponse->data)) {
                 return new ServiceResponse(
                     false,
                     'Email ou senha não corresponde. Verifique as informações.',
@@ -79,6 +79,7 @@ class UserService extends BaseService implements UserServiceInterface
                 );
             }
 
+            $user = $findUserResponse->data;
             if (!password_verify($password, $user->password)) {
                 return new ServiceResponse(
                     false,
@@ -94,6 +95,38 @@ class UserService extends BaseService implements UserServiceInterface
             }
         } catch (Throwable $throwable) {
             return $this->defaultErrorReturn($throwable, compact('user'));
+        }
+
+        return new ServiceResponse(
+            true,
+            'O usuário foi encontrado com sucesso.',
+            $user
+        );
+    }
+
+    /**
+     * Busca usuário pelo email
+     *
+     * @param string $email
+     *
+     * @return ServiceResponse
+     */
+    public function findByEmail(string $email): ServiceResponse
+    {
+        $user = $this->userRepository->findUserByEmail($email);
+
+        if (is_null($user)) {
+            return new ServiceResponse(
+                true,
+                'Usuário não encontrado.',
+                null,
+                [
+                    new InternalError(
+                        'Usuário não encontrado.',
+                        1
+                    )
+                ]
+            );
         }
 
         return new ServiceResponse(
