@@ -14,6 +14,7 @@
         "guzzlehttp/guzzle": "6.3.*|7.0.*",
         "laravel/framework": "7.*",
         "laravel/tinker": "2.*",
+        "nesbot/carbon": "2.54",
         "prettus/l5-repository": "2.7.9",
         "ramsey/uuid": "4.2",
         "waavi/sanitizer": "1.0.16"

@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\AuthenticateToken;
 use App\Repositories\Contracts\AuthenticateTokenRepository;
+use Illuminate\Database\Eloquent\Collection;
 
 /**
  * Class AuthenticateTokenRepositoryEloquent
@@ -19,5 +20,17 @@ class AuthenticateTokenRepositoryEloquent extends BaseRepositoryEloquent impleme
     public function model()
     {
         return AuthenticateToken::class;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return Collection
+     */
+    public function verifyExistsToken(string $id): Collection
+    {
+        return $this->model
+            ->where('user_id', $id)
+            ->get();
     }
 }

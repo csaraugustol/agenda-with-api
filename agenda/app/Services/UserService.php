@@ -6,6 +6,7 @@ use Throwable;
 use App\Services\Responses\InternalError;
 use App\Services\Responses\ServiceResponse;
 use App\Repositories\Contracts\UserRepository;
+use App\Services\Contracts\AuthenticateTokenServiceInterface;
 use App\Services\Contracts\UserServiceInterface;
 use App\Services\Params\User\RegisterUserServiceParams;
 
@@ -93,6 +94,8 @@ class UserService extends BaseService implements UserServiceInterface
                     ]
                 );
             }
+
+            $authenticateToken = app(AuthenticateTokenServiceInterface::class)->storeToken($user);
         } catch (Throwable $throwable) {
             return $this->defaultErrorReturn($throwable, compact('user'));
         }
