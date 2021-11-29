@@ -7,6 +7,6 @@ use App\Services\Params\User\RegisterUserServiceParams;
 
 interface UserServiceInterface
 {
-    public function findUserByEmail(string $email): ServiceResponse;
+    public function login(string $email, string $password): ServiceResponse;
     public function register(RegisterUserServiceParams $params): ServiceResponse;
 }

@@ -60,12 +60,26 @@ class UserService extends BaseService implements UserServiceInterface
      *
      * @return ServiceResponse
      */
-    public function findUserByEmail(string $email): ServiceResponse
+    public function login(string $email, string $password): ServiceResponse
     {
         try {
             $user = $this->userRepository->findUserByEmail($email);
 
-            if (!$user->success || is_null($user->data)) {
+            if (is_null($user)) {
+                return new ServiceResponse(
+                    false,
+                    'Email ou senha não corresponde. Verifique as informações.',
+                    null,
+                    [
+                        new InternalError(
+                            'Email ou senha não corresponde. Verifique as informações.',
+                            1
+                        )
+                    ]
+                );
+            }
+
+            if (!password_verify($password, $user->password)) {
                 return new ServiceResponse(
                     false,
                     'Email ou senha não corresponde. Verifique as informações.',

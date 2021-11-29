@@ -3,7 +3,6 @@
 namespace App\Repositories;
 
 use App\Models\User;
-use Illuminate\Database\Eloquent\Collection;
 use App\Repositories\Contracts\UserRepository;
 
 /**
@@ -27,12 +26,12 @@ class UserRepositoryEloquent extends BaseRepositoryEloquent implements UserRepos
      *
      * @param string $email
      *
-     * @return Collection
+     * @return User|null
      */
-    public function findUserByEmail(string $email): Collection
+    public function findUserByEmail(string $email): ?User
     {
         return $this->model
             ->where('email', $email)
-            ->get();
+            ->first();
     }
 }
