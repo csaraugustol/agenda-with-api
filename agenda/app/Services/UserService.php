@@ -95,7 +95,21 @@ class UserService extends BaseService implements UserServiceInterface
                 );
             }
 
-            $authenticateToken = app(AuthenticateTokenServiceInterface::class)->storeToken($user);
+            $authenticateTokenResponse = app(AuthenticateTokenServiceInterface::class)->storeToken($user);
+
+            if (!$authenticateTokenResponse->success || is_null($authenticateTokenResponse->data)) {
+                return new ServiceResponse(
+                    false,
+                    'Ocorreu um erro ao criar o token para o acesso.',
+                    null,
+                    [
+                        new InternalError(
+                            'Ocorreu um erro ao criar o token para o acesso.',
+                            1
+                        )
+                    ]
+                );
+            }
         } catch (Throwable $throwable) {
             return $this->defaultErrorReturn($throwable, compact('user'));
         }

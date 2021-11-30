@@ -35,22 +35,19 @@ class AuthenticateTokenService extends BaseService implements AuthenticateTokenS
     {
         try {
             //Verifica se existe tokens do usuário
-            $token = $this->authenticateTokenRepository->verifyExistsToken($user->id);
+            $tokenResponse = $this->authenticateTokenRepository->verifyExistsToken($user->id);
 
-            if (!is_null($token)) {
+            if (!is_null($tokenResponse)) {
                 //Para cada token existe faz a deleção
-                foreach ($token->data as $token) {
-                    $token = $this->authenticateTokenRepository->update(
-                        [
-                            'deleted_at'     => Carbon::now()
-                        ],
-                        $user->id
-                    );
+                foreach ($tokenResponse->data as $token) {
+                    app(AuthenticateTokenRepository::class)->update([
+                        'deleted_at' => Carbon::now()
+                    ], $user->id);
                 }
             }
 
             //Cria novo token para o usuário
-            $token = $this->authenticateTokenRepository->create([
+            $newToken = $this->authenticateTokenRepository->create([
                 'token'     => 'teste',
                 'user_id' => $user->id
             ]);
@@ -61,7 +58,7 @@ class AuthenticateTokenService extends BaseService implements AuthenticateTokenS
         return new ServiceResponse(
             true,
             'Token criado com sucesso.',
-            $token
+            $newToken
         );
     }
 }
