@@ -63,6 +63,10 @@ class UserController extends ApiController
             $request->password
         );
 
+        if (!$findUserByEmailResponse->success || is_null($findUserByEmailResponse->data)) {
+            return $this->errorResponseFromService($findUserByEmailResponse);
+        }
+
         return $this->response(new DefaultResponse($findUserByEmailResponse->message));
     }
 }

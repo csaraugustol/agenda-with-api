@@ -35,30 +35,50 @@ class AuthenticateTokenService extends BaseService implements AuthenticateTokenS
     {
         try {
             //Verifica se existe tokens do usuário
-            $tokenResponse = $this->authenticateTokenRepository->verifyExistsToken($user->id);
-
-            if (!is_null($tokenResponse)) {
-                //Para cada token existe faz a deleção
-                foreach ($tokenResponse->data as $token) {
-                    app(AuthenticateTokenRepository::class)->update([
-                        'deleted_at' => Carbon::now()
-                    ], $user->id);
-                }
-            }
+            $findUserResponse = $this->clearToken($user->id);
 
             //Cria novo token para o usuário
             $newToken = $this->authenticateTokenRepository->create([
-                'token'     => 'teste',
+                'token'     => 'Teste',
+                'expires_at' => Carbon::tomorrow('America/Sao_Paulo'),
                 'user_id' => $user->id
             ]);
         } catch (Throwable $throwable) {
-            return $this->defaultErrorReturn($throwable, compact('token'));
+            return $this->defaultErrorReturn($throwable, compact('newToken'));
         }
 
         return new ServiceResponse(
             true,
             'Token criado com sucesso.',
             $newToken
+        );
+    }
+
+    /**
+     * Busca tokens ativos do usuário e deleta
+     *
+     * @param string $id
+     *
+     * @return ServiceResponse
+     */
+    public function clearToken(string $id): ServiceResponse
+    {
+        $authenticateTokens = $this->authenticateTokenRepository->verifyExistsToken($id);
+
+        if (count($authenticateTokens)) {
+            //Para cada token existe faz a deleção
+            foreach ($authenticateTokens->toArray() as $token) {
+                $teste = app(AuthenticateTokenRepository::class)->update([
+                    'deleted_at' => Carbon::now()
+                ], $id);
+                dd($teste->toArray());
+            }
+        }
+
+        return new ServiceResponse(
+            true,
+            'Tokens deletados com sucesso!',
+            $authenticateTokens
         );
     }
 }

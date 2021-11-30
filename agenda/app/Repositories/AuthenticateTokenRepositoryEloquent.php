@@ -3,8 +3,8 @@
 namespace App\Repositories;
 
 use App\Models\AuthenticateToken;
-use App\Repositories\Contracts\AuthenticateTokenRepository;
 use Illuminate\Database\Eloquent\Collection;
+use App\Repositories\Contracts\AuthenticateTokenRepository;
 
 /**
  * Class AuthenticateTokenRepositoryEloquent
