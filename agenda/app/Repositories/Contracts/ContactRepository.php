@@ -2,7 +2,6 @@
 
 namespace App\Repositories\Contracts;
 
-use App\Models\User;
 use Prettus\Repository\Contracts\RepositoryInterface;
 
 /**
@@ -12,5 +11,4 @@ use Prettus\Repository\Contracts\RepositoryInterface;
 interface ContactRepository extends RepositoryInterface
 {
     public function model();
-    public function findUserByEmail(string $email): ?User;
 }
