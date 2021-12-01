@@ -5,7 +5,6 @@ namespace App\Services;
 use Throwable;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
-use App\Services\Responses\InternalError;
 use App\Services\Responses\ServiceResponse;
 use App\Repositories\Contracts\AuthenticateTokenRepository;
 use App\Services\Contracts\AuthenticateTokenServiceInterface;
@@ -43,9 +42,9 @@ class AuthenticateTokenService extends BaseService implements AuthenticateTokenS
 
             //Cria novo token para o usuário
             $newToken = $this->authenticateTokenRepository->create([
-                'token'     => Hash::make(Carbon::now() . bin2hex(random_bytes(17))),
+                'token'      => Hash::make(Carbon::now() . bin2hex(random_bytes(17))),
                 'expires_at' => Carbon::now()->addMinutes(config('auth.time_to_expire_login')),
-                'user_id' => $userId
+                'user_id'    => $userId
             ]);
         } catch (Throwable $throwable) {
             return $this->defaultErrorReturn($throwable, compact('userId'));
@@ -68,21 +67,8 @@ class AuthenticateTokenService extends BaseService implements AuthenticateTokenS
     public function clearToken(string $userId): ServiceResponse
     {
         try {
-            $authenticateTokens = $this->authenticateTokenRepository->verifyExistsToken($userId);
-
-            if (is_null($authenticateTokens)) {
-                return new ServiceResponse(
-                    true,
-                    'Erro ao tentar limpar os tokens.',
-                    null,
-                    [
-                        new InternalError(
-                            'Erro ao tentar limpar os tokens.',
-                            4
-                        )
-                    ]
-                );
-            }
+            $authenticateTokens = $this->authenticateTokenRepository
+                ->returnAllUserTokens($userId);
 
             if (count($authenticateTokens)) {
                 //Para cada token existe faz a deleção

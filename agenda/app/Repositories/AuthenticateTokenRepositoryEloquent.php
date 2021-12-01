@@ -23,14 +23,16 @@ class AuthenticateTokenRepositoryEloquent extends BaseRepositoryEloquent impleme
     }
 
     /**
-     * Undocumented function
+     * Retorna todos os tokens relacionados ao usuário
+     *
+     * @param string $userId
      *
      * @return Collection
      */
-    public function verifyExistsToken(string $id): Collection
+    public function returnAllUserTokens(string $userId): Collection
     {
         return $this->model
-            ->where('user_id', $id)
+            ->where('user_id', $userId)
             ->get();
     }
 }

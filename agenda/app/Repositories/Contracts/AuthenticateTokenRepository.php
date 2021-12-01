@@ -12,5 +12,5 @@ use Prettus\Repository\Contracts\RepositoryInterface;
 interface AuthenticateTokenRepository extends RepositoryInterface
 {
     public function model();
-    public function verifyExistsToken(string $id): Collection;
+    public function returnAllUserTokens(string $userId): Collection;
 }
