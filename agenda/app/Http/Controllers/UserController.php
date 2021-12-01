@@ -8,6 +8,7 @@ use App\Http\Requests\User\LoginRequest;
 use App\Http\Requests\User\RegisterRequest;
 use App\Services\Contracts\UserServiceInterface;
 use App\Services\Params\User\RegisterUserServiceParams;
+use App\Http\Resources\AuthenticateToken\AuthenticateTokenResource;
 
 class UserController extends ApiController
 {
@@ -49,6 +50,7 @@ class UserController extends ApiController
 
     /**
      * Efetua login do usuário no sistema
+     * retornando o token de acesso
      *
      * POST /login
      *
@@ -58,15 +60,17 @@ class UserController extends ApiController
      */
     public function login(LoginRequest $request): JsonResponse
     {
-        $findUserByEmailResponse = $this->userService->login(
+        $findTokenResponse = $this->userService->login(
             $request->email,
             $request->password
         );
 
-        if (!$findUserByEmailResponse->success || is_null($findUserByEmailResponse->data)) {
-            return $this->errorResponseFromService($findUserByEmailResponse);
+        if (!$findTokenResponse->success || is_null($findTokenResponse->data)) {
+            return $this->errorResponseFromService($findTokenResponse);
         }
 
-        return $this->response(new DefaultResponse($findUserByEmailResponse->message));
+        return $this->response(new DefaultResponse(
+            new AuthenticateTokenResource($findTokenResponse->data)
+        ));
     }
 }

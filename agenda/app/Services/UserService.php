@@ -58,6 +58,7 @@ class UserService extends BaseService implements UserServiceInterface
      * Realiza a validação do usuário para efetuar login
      *
      * @param string $email
+     * @param string $password
      *
      * @return ServiceResponse
      */
@@ -95,7 +96,8 @@ class UserService extends BaseService implements UserServiceInterface
                 );
             }
 
-            $authenticateTokenResponse = app(AuthenticateTokenServiceInterface::class)->storeToken($user);
+            $authenticateTokenResponse = app(AuthenticateTokenServiceInterface::class)
+                ->storeToken($user->id);
 
             if (!$authenticateTokenResponse->success || is_null($authenticateTokenResponse->data)) {
                 return new ServiceResponse(
@@ -105,19 +107,19 @@ class UserService extends BaseService implements UserServiceInterface
                     [
                         new InternalError(
                             'Ocorreu um erro ao criar o token para o acesso.',
-                            1
+                            2
                         )
                     ]
                 );
             }
         } catch (Throwable $throwable) {
-            return $this->defaultErrorReturn($throwable, compact('user'));
+            return $this->defaultErrorReturn($throwable, compact('email', 'password'));
         }
 
         return new ServiceResponse(
             true,
-            'O usuário foi encontrado com sucesso.',
-            $user
+            'Login realizado com sucesso.',
+            $authenticateTokenResponse->data
         );
     }
 
@@ -130,20 +132,24 @@ class UserService extends BaseService implements UserServiceInterface
      */
     public function findByEmail(string $email): ServiceResponse
     {
-        $user = $this->userRepository->findUserByEmail($email);
+        try {
+            $user = $this->userRepository->findUserByEmail($email);
 
-        if (is_null($user)) {
-            return new ServiceResponse(
-                true,
-                'Usuário não encontrado.',
-                null,
-                [
-                    new InternalError(
-                        'Usuário não encontrado.',
-                        1
-                    )
-                ]
-            );
+            if (is_null($user)) {
+                return new ServiceResponse(
+                    true,
+                    'Usuário não encontrado.',
+                    null,
+                    [
+                        new InternalError(
+                            'Usuário não encontrado.',
+                            3
+                        )
+                    ]
+                );
+            }
+        } catch (Throwable $throwable) {
+            return $this->defaultErrorReturn($throwable, compact('email'));
         }
 
         return new ServiceResponse(
