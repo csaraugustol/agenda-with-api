@@ -6,9 +6,9 @@ use Throwable;
 use App\Services\Responses\InternalError;
 use App\Services\Responses\ServiceResponse;
 use App\Repositories\Contracts\UserRepository;
-use App\Services\Contracts\AuthenticateTokenServiceInterface;
 use App\Services\Contracts\UserServiceInterface;
 use App\Services\Params\User\RegisterUserServiceParams;
+use App\Services\Contracts\AuthenticateTokenServiceInterface;
 
 class UserService extends BaseService implements UserServiceInterface
 {
