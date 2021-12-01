@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\AuthenticateToken;
+use Illuminate\Database\Eloquent\Collection;
 use App\Repositories\Contracts\AuthenticateTokenRepository;
 
 /**
@@ -19,5 +20,19 @@ class AuthenticateTokenRepositoryEloquent extends BaseRepositoryEloquent impleme
     public function model()
     {
         return AuthenticateToken::class;
+    }
+
+    /**
+     * Retorna todos os tokens relacionados ao usuário
+     *
+     * @param string $userId
+     *
+     * @return Collection
+     */
+    public function returnAllUserTokens(string $userId): Collection
+    {
+        return $this->model
+            ->where('user_id', $userId)
+            ->get();
     }
 }

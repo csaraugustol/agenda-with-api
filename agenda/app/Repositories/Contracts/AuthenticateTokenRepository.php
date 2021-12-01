@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Contracts;
 
+use Illuminate\Database\Eloquent\Collection;
 use Prettus\Repository\Contracts\RepositoryInterface;
 
 /**
@@ -11,4 +12,5 @@ use Prettus\Repository\Contracts\RepositoryInterface;
 interface AuthenticateTokenRepository extends RepositoryInterface
 {
     public function model();
+    public function returnAllUserTokens(string $userId): Collection;
 }

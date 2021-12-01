@@ -20,4 +20,18 @@ class UserRepositoryEloquent extends BaseRepositoryEloquent implements UserRepos
     {
         return User::class;
     }
+
+    /**
+     * Realiza busca no banco e retorna um usuário buscando pelo email
+     *
+     * @param string $email
+     *
+     * @return User|null
+     */
+    public function findUserByEmail(string $email): ?User
+    {
+        return $this->model
+            ->where('email', $email)
+            ->first();
+    }
 }

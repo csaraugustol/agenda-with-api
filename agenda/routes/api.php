@@ -20,6 +20,10 @@ Route::group(['prefix' => '/users', 'as' => 'users.'], function () {
         'as'   => 'register',
         'uses' => 'UserController@register'
     ]);
+    Route::post('/login', [
+        'as'   => 'login',
+        'uses' => 'UserController@login'
+    ]);
 });
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
