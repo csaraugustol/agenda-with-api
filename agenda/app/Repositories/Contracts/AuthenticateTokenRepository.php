@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Contracts;
 
+use App\Models\AuthenticateToken;
 use Illuminate\Database\Eloquent\Collection;
 
 /**
@@ -11,5 +12,6 @@ use Illuminate\Database\Eloquent\Collection;
 interface AuthenticateTokenRepository extends BaseRepositoryInterface
 {
     public function model();
+    public function findByToken(string $token): AuthenticateToken;
     public function returnAllUserTokens(string $userId): Collection;
 }

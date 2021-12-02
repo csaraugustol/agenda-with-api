@@ -31,16 +31,34 @@ class ApiAutenticate
      */
     public function handle($request, Closure $next)
     {
-        $token = '$2y$10$lUtgopsy7dCL.7W7OqT2AetVi1/H/st.T.tE4xUUuLQ1ZpGwiAYrW';
+        $token = $request->bearerToken();
 
         $validationTokenResponse = $this->authenticateTokenService->validateToken($token);
+        if (
+            !$validationTokenResponse->success || is_null($validationTokenResponse->data)
+        ) {
+            $error = new InternalError(
+                $validationTokenResponse->message,
+                6
+            );
+
+            return $this->unauthenticatedErrorResponse([$error]);
+        }
 
         $authenticateToken = $validationTokenResponse->data;
-
-        if ($authenticateToken['token'] !== $token || $authenticateToken['expires_at'] > Carbon::now()) {
+        if ($authenticateToken['token'] !== $token) {
             $error = new InternalError(
                 'Token inválido!',
-                6
+                7
+            );
+
+            return $this->unauthenticatedErrorResponse([$error]);
+        }
+
+        if ($authenticateToken['expires_at'] < Carbon::now()) {
+            $error = new InternalError(
+                'Token expirado!',
+                8
             );
 
             return $this->unauthenticatedErrorResponse([$error]);

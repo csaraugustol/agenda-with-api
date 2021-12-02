@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use App\Http\Responses\DefaultResponse;
 use App\Http\Requests\User\LoginRequest;
@@ -32,9 +31,7 @@ class UserController extends ApiController
      */
     public function index(): JsonResponse
     {
-        $user = new User(['name' => 'Teste', 'email' => 'teste@teste', 'password' => '123456']);
-
-        return $this->response(new DefaultResponse($user));
+        return $this->response(new DefaultResponse());
     }
 
     /**
