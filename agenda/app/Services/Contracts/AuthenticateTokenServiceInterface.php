@@ -8,4 +8,5 @@ interface AuthenticateTokenServiceInterface
 {
     public function storeToken(string $userId): ServiceResponse;
     public function clearToken(string $userId): ServiceResponse;
+    public function validateToken(string $token): ServiceResponse;
 }
