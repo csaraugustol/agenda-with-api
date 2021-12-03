@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Usuário
+// Usuário sem autenticação
 Route::group(['prefix' => '/users', 'as' => 'users.'], function () {
     Route::post('/register', [
         'as'   => 'register',
@@ -26,6 +25,12 @@ Route::group(['prefix' => '/users', 'as' => 'users.'], function () {
     ]);
 });
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+// Usuário com autenticação
+Route::group(['middleware' => ['api.token.user']], function () {
+    Route::group(['prefix' => '/users', 'as' => 'users.'], function () {
+        Route::get('/', [
+            'as'   => 'users',
+            'uses' => 'UserController@index'
+        ]);
+    });
 });

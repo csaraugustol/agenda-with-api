@@ -23,6 +23,18 @@ class UserController extends ApiController
     }
 
     /**
+     * Página index com todos os usuários
+     *
+     * GET /users
+     *
+     * @return JsonResponse
+     */
+    public function index(): JsonResponse
+    {
+        return $this->response(new DefaultResponse());
+    }
+
+    /**
      * Registro de novo usuário
      *
      * PÒST /register

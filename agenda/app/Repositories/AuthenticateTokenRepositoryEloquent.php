@@ -35,4 +35,18 @@ class AuthenticateTokenRepositoryEloquent extends BaseRepositoryEloquent impleme
             ->where('user_id', $userId)
             ->get();
     }
+
+    /**
+     * Retorna o último token do usuário para validação de acesso
+     *
+     * @param string $token
+     *
+     * @return AuthenticateToken|null
+     */
+    public function findByToken(string $token): ?AuthenticateToken
+    {
+        return $this->model
+            ->where('token', $token)
+            ->first();
+    }
 }

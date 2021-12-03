@@ -5,6 +5,7 @@ namespace App\Services;
 use Throwable;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
+use App\Services\Responses\InternalError;
 use App\Services\Responses\ServiceResponse;
 use App\Repositories\Contracts\AuthenticateTokenRepository;
 use App\Services\Contracts\AuthenticateTokenServiceInterface;
@@ -84,6 +85,42 @@ class AuthenticateTokenService extends BaseService implements AuthenticateTokenS
             true,
             'Tokens deletados com sucesso!',
             null
+        );
+    }
+
+    /**
+     * Valida token do usuário
+     *
+     * @param string $token
+     *
+     * @return ServiceResponse
+     */
+    public function findToken(string $token): ServiceResponse
+    {
+        try {
+            $authenticateToken = $this->authenticateTokenRepository->findByToken($token);
+
+            if (is_null($authenticateToken)) {
+                return new ServiceResponse(
+                    true,
+                    'O token não foi localizado',
+                    null,
+                    [
+                        new InternalError(
+                            'O token não foi localizado',
+                            5
+                        )
+                    ]
+                );
+            }
+        } catch (Throwable $throwable) {
+            return $this->defaultErrorReturn($throwable, compact('token'));
+        }
+
+        return new ServiceResponse(
+            true,
+            'Token encontrado!',
+            $authenticateToken
         );
     }
 }
