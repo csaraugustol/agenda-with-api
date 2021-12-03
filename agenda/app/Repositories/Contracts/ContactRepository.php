@@ -2,13 +2,11 @@
 
 namespace App\Repositories\Contracts;
 
-use Prettus\Repository\Contracts\RepositoryInterface;
-
 /**
  * Interface ContactRepository
  * @package namespace App\Repositories\Contracts;
  */
-interface ContactRepository extends RepositoryInterface
+interface ContactRepository extends BaseRepositoryInterface
 {
     public function model();
 }

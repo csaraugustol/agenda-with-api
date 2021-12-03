@@ -2,13 +2,11 @@
 
 namespace App\Repositories\Contracts;
 
-use Prettus\Repository\Contracts\RepositoryInterface;
-
 /**
  * Interface TagContactRepository
  * @package namespace App\Repositories\Contracts;
  */
-interface TagContactRepository extends RepositoryInterface
+interface TagContactRepository extends BaseRepositoryInterface
 {
     public function model();
 }
