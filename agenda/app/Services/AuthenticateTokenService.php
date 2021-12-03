@@ -102,7 +102,7 @@ class AuthenticateTokenService extends BaseService implements AuthenticateTokenS
 
             if (is_null($authenticateToken)) {
                 return new ServiceResponse(
-                    false,
+                    true,
                     'O token não foi localizado',
                     null,
                     [

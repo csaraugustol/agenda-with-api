@@ -8,7 +8,7 @@ use App\Traits\ResponseHelpers;
 use App\Services\Responses\InternalError;
 use App\Services\Contracts\AuthenticateTokenServiceInterface;
 
-class ApiAutenticate
+class ApiAuthenticate
 {
     use ResponseHelpers;
 
