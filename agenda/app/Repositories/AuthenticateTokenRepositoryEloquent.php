@@ -41,9 +41,9 @@ class AuthenticateTokenRepositoryEloquent extends BaseRepositoryEloquent impleme
      *
      * @param string $token
      *
-     * @return AuthenticateToken
+     * @return AuthenticateToken|null
      */
-    public function findByToken(string $token): AuthenticateToken
+    public function findByToken(string $token): ?AuthenticateToken
     {
         return $this->model
             ->where('token', $token)

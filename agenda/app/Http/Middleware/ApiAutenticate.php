@@ -33,12 +33,12 @@ class ApiAutenticate
     {
         $token = $request->bearerToken();
 
-        $validationTokenResponse = $this->authenticateTokenService->validateToken($token);
+        $validationTokenResponse = $this->authenticateTokenService->findToken($token);
         if (
             !$validationTokenResponse->success || is_null($validationTokenResponse->data)
         ) {
             $error = new InternalError(
-                $validationTokenResponse->message,
+                'Token inválido!',
                 6
             );
 
@@ -46,19 +46,10 @@ class ApiAutenticate
         }
 
         $authenticateToken = $validationTokenResponse->data;
-        if ($authenticateToken['token'] !== $token) {
-            $error = new InternalError(
-                'Token inválido!',
-                7
-            );
-
-            return $this->unauthenticatedErrorResponse([$error]);
-        }
-
-        if ($authenticateToken['expires_at'] < Carbon::now()) {
+        if ($authenticateToken->expires_at < Carbon::now()) {
             $error = new InternalError(
                 'Token expirado!',
-                8
+                7
             );
 
             return $this->unauthenticatedErrorResponse([$error]);

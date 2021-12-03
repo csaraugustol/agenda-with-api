@@ -95,7 +95,7 @@ class AuthenticateTokenService extends BaseService implements AuthenticateTokenS
      *
      * @return ServiceResponse
      */
-    public function validateToken(string $token): ServiceResponse
+    public function findToken(string $token): ServiceResponse
     {
         try {
             $authenticateToken = $this->authenticateTokenRepository->findByToken($token);
@@ -103,11 +103,11 @@ class AuthenticateTokenService extends BaseService implements AuthenticateTokenS
             if (is_null($authenticateToken)) {
                 return new ServiceResponse(
                     false,
-                    'Erro ao localizar o token.',
+                    'O token não foi localizado',
                     null,
                     [
                         new InternalError(
-                            'Erro ao localizar o token.',
+                            'O token não foi localizado',
                             5
                         )
                     ]
