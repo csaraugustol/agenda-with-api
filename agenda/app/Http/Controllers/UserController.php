@@ -6,6 +6,7 @@ use Illuminate\Http\JsonResponse;
 use App\Http\Responses\DefaultResponse;
 use App\Http\Requests\User\LoginRequest;
 use App\Http\Requests\User\UpdateRequest;
+use App\Http\Resources\User\UserResource;
 use App\Http\Requests\User\RegisterRequest;
 use App\Services\Contracts\UserServiceInterface;
 use App\Services\Params\User\RegisterUserServiceParams;
@@ -94,24 +95,19 @@ class UserController extends ApiController
      *
      * @return JsonResponse
      */
-    public function update(string $id, UpdateRequest $request): JsonResponse
+    public function update(UpdateRequest $request): JsonResponse
     {
-        $findUserResponse = $this->userService->findById($id);
-
-        if (!$findUserResponse->success || is_null($findUserResponse->data)) {
-            return $this->errorResponseFromService($findUserResponse);
-        }
-
-        $userId = $findUserResponse->data->id;
         $updateUserResponse = $this->userService->update(
             $request->toArray(),
-            $userId
+            user('id')
         );
 
         if (!$updateUserResponse->success || is_null($updateUserResponse->data)) {
             return $this->errorResponseFromService($updateUserResponse);
         }
 
-        return $this->response(new DefaultResponse($updateUserResponse->data));
+        return $this->response(new DefaultResponse(
+            new UserResource($updateUserResponse->data)
+        ));
     }
 }

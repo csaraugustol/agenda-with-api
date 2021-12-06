@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Throwable;
+use Illuminate\Support\Arr;
 use App\Services\Responses\InternalError;
 use App\Services\Responses\ServiceResponse;
 use App\Repositories\Contracts\UserRepository;
@@ -170,8 +171,24 @@ class UserService extends BaseService implements UserServiceInterface
     public function update(array $params, string $userId): ServiceResponse
     {
         try {
-            $userUpdate = $this->userRepository->update(
+            $findUserResponse = $this->find($userId);
+            if (!$findUserResponse->data) {
+                return new ServiceResponse(
+                    false,
+                    $findUserResponse->message,
+                    null,
+                    $findUserResponse->internalErrors
+                );
+            }
+
+            //Retira do do $params, a senha caso exista
+            $data = Arr::except(
                 $params,
+                ['password']
+            );
+
+            $userUpdate = $this->userRepository->update(
+                $data,
                 $userId
             );
         } catch (Throwable $throwable) {
@@ -192,7 +209,7 @@ class UserService extends BaseService implements UserServiceInterface
      *
      * @return ServiceResponse
      */
-    public function findById(string $userId): ServiceResponse
+    public function find(string $userId): ServiceResponse
     {
         try {
             $user = $this->userRepository->findOrNull($userId);
