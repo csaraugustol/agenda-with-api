@@ -158,4 +158,66 @@ class UserService extends BaseService implements UserServiceInterface
             $user
         );
     }
+
+    /**
+     * Realiza alteração de dados do usuário
+     *
+     * @param array $params
+     * @param string $id
+     *
+     * @return ServiceResponse
+     */
+    public function update(array $params, string $userId): ServiceResponse
+    {
+        try {
+            $userUpdate = $this->userRepository->update(
+                $params,
+                $userId
+            );
+        } catch (Throwable $throwable) {
+            return $this->defaultErrorReturn($throwable, compact('params', 'userId'));
+        }
+
+        return new ServiceResponse(
+            true,
+            'O usuário foi atualizado com sucesso.',
+            $userUpdate
+        );
+    }
+
+    /**
+     * Busca o usuário pelo id
+     *
+     * @param string $userId
+     *
+     * @return ServiceResponse
+     */
+    public function findById(string $userId): ServiceResponse
+    {
+        try {
+            $user = $this->userRepository->findOrNull($userId);
+
+            if (is_null($user)) {
+                return new ServiceResponse(
+                    true,
+                    'Usuário não encontrado.',
+                    null,
+                    [
+                        new InternalError(
+                            'Usuário não encontrado.',
+                            3
+                        )
+                    ]
+                );
+            }
+        } catch (Throwable $throwable) {
+            return $this->defaultErrorReturn($throwable, compact('userId'));
+        }
+
+        return new ServiceResponse(
+            true,
+            'O usuário foi encontrado com sucesso.',
+            $user
+        );
+    }
 }
