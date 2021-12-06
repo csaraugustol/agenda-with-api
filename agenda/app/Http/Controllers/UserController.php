@@ -25,18 +25,6 @@ class UserController extends ApiController
     }
 
     /**
-     * Página index com todos os usuários
-     *
-     * GET /users
-     *
-     * @return JsonResponse
-     */
-    public function index(): JsonResponse
-    {
-        return $this->response(new DefaultResponse());
-    }
-
-    /**
      * Registro de novo usuário
      *
      * PÒST /register
@@ -108,6 +96,24 @@ class UserController extends ApiController
 
         return $this->response(new DefaultResponse(
             new UserResource($updateUserResponse->data)
+        ));
+    }
+
+    /**
+     * Mostra detalhes do usuário
+     *
+     * GET /users
+     * @return JsonResponse
+     */
+    public function show(): JsonResponse
+    {
+        $showUserResponse = $this->userService->find(user('id'));
+        if (!$showUserResponse->success || is_null($showUserResponse->data)) {
+            return $this->errorResponseFromService($showUserResponse);
+        }
+
+        return $this->response(new DefaultResponse(
+            new UserResource($showUserResponse->data)
         ));
     }
 }
