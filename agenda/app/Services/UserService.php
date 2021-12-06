@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Throwable;
+use Illuminate\Support\Arr;
 use App\Services\Responses\InternalError;
 use App\Services\Responses\ServiceResponse;
 use App\Repositories\Contracts\UserRepository;
@@ -150,6 +151,84 @@ class UserService extends BaseService implements UserServiceInterface
             }
         } catch (Throwable $throwable) {
             return $this->defaultErrorReturn($throwable, compact('email'));
+        }
+
+        return new ServiceResponse(
+            true,
+            'O usuário foi encontrado com sucesso.',
+            $user
+        );
+    }
+
+    /**
+     * Realiza alteração de dados do usuário
+     *
+     * @param array $params
+     * @param string $id
+     *
+     * @return ServiceResponse
+     */
+    public function update(array $params, string $userId): ServiceResponse
+    {
+        try {
+            $findUserResponse = $this->find($userId);
+            if (!$findUserResponse->success || is_null($findUserResponse->data)) {
+                return new ServiceResponse(
+                    false,
+                    $findUserResponse->message,
+                    null,
+                    $findUserResponse->internalErrors
+                );
+            }
+
+            //Retira do $params, a senha caso exista
+            $data = Arr::except(
+                $params,
+                ['password']
+            );
+
+            $userUpdate = $this->userRepository->update(
+                $data,
+                $userId
+            );
+        } catch (Throwable $throwable) {
+            return $this->defaultErrorReturn($throwable, compact('params', 'userId'));
+        }
+
+        return new ServiceResponse(
+            true,
+            'O usuário foi atualizado com sucesso.',
+            $userUpdate
+        );
+    }
+
+    /**
+     * Busca o usuário pelo id
+     *
+     * @param string $userId
+     *
+     * @return ServiceResponse
+     */
+    public function find(string $userId): ServiceResponse
+    {
+        try {
+            $user = $this->userRepository->findOrNull($userId);
+
+            if (is_null($user)) {
+                return new ServiceResponse(
+                    true,
+                    'Usuário não encontrado.',
+                    null,
+                    [
+                        new InternalError(
+                            'Usuário não encontrado.',
+                            3
+                        )
+                    ]
+                );
+            }
+        } catch (Throwable $throwable) {
+            return $this->defaultErrorReturn($throwable, compact('userId'));
         }
 
         return new ServiceResponse(

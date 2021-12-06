@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\JsonResponse;
 use App\Http\Responses\DefaultResponse;
 use App\Http\Requests\User\LoginRequest;
+use App\Http\Requests\User\UpdateRequest;
+use App\Http\Resources\User\UserResource;
 use App\Http\Requests\User\RegisterRequest;
 use App\Services\Contracts\UserServiceInterface;
 use App\Services\Params\User\RegisterUserServiceParams;
@@ -83,6 +85,29 @@ class UserController extends ApiController
 
         return $this->response(new DefaultResponse(
             new AuthenticateTokenResource($findTokenResponse->data)
+        ));
+    }
+
+    /**
+     * Realiza a atualização de dados do usuário
+     *
+     * PATCH /users
+     *
+     * @return JsonResponse
+     */
+    public function update(UpdateRequest $request): JsonResponse
+    {
+        $updateUserResponse = $this->userService->update(
+            $request->toArray(),
+            user('id')
+        );
+
+        if (!$updateUserResponse->success || is_null($updateUserResponse->data)) {
+            return $this->errorResponseFromService($updateUserResponse);
+        }
+
+        return $this->response(new DefaultResponse(
+            new UserResource($updateUserResponse->data)
         ));
     }
 }

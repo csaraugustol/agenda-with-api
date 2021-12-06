@@ -32,5 +32,9 @@ Route::group(['middleware' => ['api.token.user']], function () {
             'as'   => 'users',
             'uses' => 'UserController@index'
         ]);
+        Route::patch('/', [
+            'as'   => 'update',
+            'uses' => 'UserController@update'
+        ]);
     });
 });
