@@ -172,7 +172,7 @@ class UserService extends BaseService implements UserServiceInterface
     {
         try {
             $findUserResponse = $this->find($userId);
-            if (!$findUserResponse->data) {
+            if (!$findUserResponse->success || is_null($findUserResponse->data)) {
                 return new ServiceResponse(
                     false,
                     $findUserResponse->message,
@@ -181,7 +181,7 @@ class UserService extends BaseService implements UserServiceInterface
                 );
             }
 
-            //Retira do do $params, a senha caso exista
+            //Retira do $params, a senha caso exista
             $data = Arr::except(
                 $params,
                 ['password']

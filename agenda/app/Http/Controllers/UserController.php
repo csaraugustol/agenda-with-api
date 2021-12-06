@@ -91,7 +91,7 @@ class UserController extends ApiController
     /**
      * Realiza a atualização de dados do usuário
      *
-     * PATCH /users/{id}
+     * PATCH /users
      *
      * @return JsonResponse
      */
