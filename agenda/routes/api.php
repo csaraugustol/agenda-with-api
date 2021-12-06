@@ -28,15 +28,11 @@ Route::group(['prefix' => '/users', 'as' => 'users.'], function () {
 // Usuário com autenticação
 Route::group(['middleware' => ['api.token.user']], function () {
     Route::group(['prefix' => '/users', 'as' => 'users.'], function () {
-        Route::get('/', [
-            'as'   => 'users',
-            'uses' => 'UserController@index'
-        ]);
         Route::patch('/', [
             'as'   => 'update',
             'uses' => 'UserController@update'
         ]);
-        Route::get('/show', [
+        Route::get('/', [
             'as'   => 'show',
             'uses' => 'UserController@show'
         ]);
