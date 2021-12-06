@@ -110,4 +110,23 @@ class UserController extends ApiController
             new UserResource($updateUserResponse->data)
         ));
     }
+
+    /**
+     * Mostra detalhes do usuário
+     *
+     * get /users/show
+     *
+     * @return JsonResponse
+     */
+    public function show(): JsonResponse
+    {
+        $showUserResponse = $this->userService->find(user('id'));
+        if (!$showUserResponse->success || is_null($showUserResponse->data)) {
+            return $this->errorResponseFromService($showUserResponse);
+        }
+
+        return $this->response(new DefaultResponse(
+            new UserResource($showUserResponse->data)
+        ));
+    }
 }

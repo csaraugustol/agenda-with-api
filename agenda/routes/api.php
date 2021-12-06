@@ -36,5 +36,9 @@ Route::group(['middleware' => ['api.token.user']], function () {
             'as'   => 'update',
             'uses' => 'UserController@update'
         ]);
+        Route::get('/show', [
+            'as'   => 'show',
+            'uses' => 'UserController@show'
+        ]);
     });
 });
