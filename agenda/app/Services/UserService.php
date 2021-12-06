@@ -125,6 +125,34 @@ class UserService extends BaseService implements UserServiceInterface
     }
 
     /**
+     * Realiza o logout do usuário no sistema
+     * limpando o token
+     *
+     * @param string $userId
+     *
+     * @return ServiceResponse
+     */
+    public function logout(string $userId): ServiceResponse
+    {
+        try {
+            $clearTokenResponse = app(AuthenticateTokenServiceInterface::class)
+                ->clearToken($userId);
+
+            if (!$clearTokenResponse->success) {
+                return $clearTokenResponse;
+            }
+        } catch (Throwable $throwable) {
+            return $this->defaultErrorReturn($throwable, compact('userId'));
+        }
+
+        return new ServiceResponse(
+            true,
+            'Logout realizado com sucesso.',
+            null
+        );
+    }
+
+    /**
      * Busca usuário pelo email
      *
      * @param string $email
