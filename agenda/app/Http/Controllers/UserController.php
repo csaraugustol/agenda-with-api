@@ -114,7 +114,7 @@ class UserController extends ApiController
     /**
      * Mostra detalhes do usuário
      *
-     * get /users/show
+     * GET /users/show
      *
      * @return JsonResponse
      */
