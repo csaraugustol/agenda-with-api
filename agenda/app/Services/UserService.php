@@ -135,6 +135,16 @@ class UserService extends BaseService implements UserServiceInterface
     public function logout(string $userId): ServiceResponse
     {
         try {
+            $findUserResponse = $this->find($userId);
+            if (!$findUserResponse->success || is_null($findUserResponse->data)) {
+                return new ServiceResponse(
+                    false,
+                    $findUserResponse->message,
+                    null,
+                    $findUserResponse->internalErrors
+                );
+            }
+
             $clearTokenResponse = app(AuthenticateTokenServiceInterface::class)
                 ->clearToken($userId);
 
