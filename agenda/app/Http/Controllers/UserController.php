@@ -77,6 +77,42 @@ class UserController extends ApiController
     }
 
     /**
+     * Efetua logout do sistema
+     *
+     * GET /logout
+     *
+     * @return JsonResponse
+     */
+    public function logout(): JsonResponse
+    {
+        $logoutUserResponse = $this->userService->logout(user('id'));
+
+        if (!$logoutUserResponse->success) {
+            return $this->errorResponseFromService($logoutUserResponse);
+        }
+
+        return $this->response(new DefaultResponse());
+    }
+
+    /**
+     * Mostra detalhes do usuário
+     *
+     * GET /users
+     * @return JsonResponse
+     */
+    public function show(): JsonResponse
+    {
+        $showUserResponse = $this->userService->find(user('id'));
+        if (!$showUserResponse->success || is_null($showUserResponse->data)) {
+            return $this->errorResponseFromService($showUserResponse);
+        }
+
+        return $this->response(new DefaultResponse(
+            new UserResource($showUserResponse->data)
+        ));
+    }
+
+    /**
      * Realiza a atualização de dados do usuário
      *
      * PATCH /users
@@ -96,24 +132,6 @@ class UserController extends ApiController
 
         return $this->response(new DefaultResponse(
             new UserResource($updateUserResponse->data)
-        ));
-    }
-
-    /**
-     * Mostra detalhes do usuário
-     *
-     * GET /users
-     * @return JsonResponse
-     */
-    public function show(): JsonResponse
-    {
-        $showUserResponse = $this->userService->find(user('id'));
-        if (!$showUserResponse->success || is_null($showUserResponse->data)) {
-            return $this->errorResponseFromService($showUserResponse);
-        }
-
-        return $this->response(new DefaultResponse(
-            new UserResource($showUserResponse->data)
         ));
     }
 }
