@@ -23,7 +23,7 @@ abstract class BaseRepositoryEloquent extends BaseRepository implements BaseRepo
      * Metodo que busca um registro no banco pelo id,
      * ou retorna null caso não encontrado
      *
-     * @param int $id
+     * @param string $id
      * @param array $columns
      *
      * @return Model|null
@@ -43,7 +43,7 @@ abstract class BaseRepositoryEloquent extends BaseRepository implements BaseRepo
     /**
      * Deletar a model
      *
-     * @param int $id
+     * @param string $id
      *
      * @return Model|null
      */
