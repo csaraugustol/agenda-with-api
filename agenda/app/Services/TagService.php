@@ -2,12 +2,12 @@
 
 namespace App\Services;
 
+use Throwable;
+use App\Services\Responses\InternalError;
+use App\Services\Responses\ServiceResponse;
 use App\Repositories\Contracts\TagRepository;
 use App\Services\Contracts\TagServiceInterface;
 use App\Services\Params\Tag\CreateTagServiceParams;
-use App\Services\Responses\InternalError;
-use App\Services\Responses\ServiceResponse;
-use Throwable;
 
 class TagService extends BaseService implements TagServiceInterface
 {
