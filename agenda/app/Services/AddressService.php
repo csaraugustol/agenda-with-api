@@ -137,7 +137,7 @@ class AddressService extends BaseService implements AddressServiceInterface
                 );
             }
 
-            $addressDelete = $this->addressRepository->delete($addressId);
+            $this->addressRepository->delete($addressId);
         } catch (Throwable $throwable) {
             return $this->defaultErrorReturn($throwable, compact('addressId'));
         }
