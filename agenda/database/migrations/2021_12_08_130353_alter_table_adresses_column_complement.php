@@ -25,6 +25,8 @@ class AlterTableAdressesColumnComplement extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('adresses', function (Blueprint $table) {
+            $table->string('complement')->nullable(false)->change();
+        });
     }
 }
