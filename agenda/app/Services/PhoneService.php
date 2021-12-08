@@ -141,6 +141,7 @@ class PhoneService extends BaseService implements PhoneServiceInterface
         } catch (Throwable $throwable) {
             return $this->defaultErrorReturn($throwable, compact('phoneId'));
         }
+
         return new ServiceResponse(
             true,
             'Telefone removido com sucesso.',
