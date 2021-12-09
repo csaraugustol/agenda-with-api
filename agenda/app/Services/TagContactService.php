@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\TagContact;
 use Throwable;
 use App\Services\Responses\InternalError;
 use App\Services\Responses\ServiceResponse;
@@ -35,15 +36,16 @@ class TagContactService extends BaseService implements TagContactServiceInterfac
     public function attach(CreateTagContactServiceParams $params): ServiceResponse
     {
         try {
-            $tagService = app(TagServiceInterface::class);
-            $contactService = app(ContactServiceInterface::class);
-
-            $findTagResponse = $tagService->find($params->tag_id);
+            $findTagResponse = app(TagServiceInterface::class)->find(
+                $params->tag_id
+            );
             if (!$findTagResponse->success) {
                 return $findTagResponse;
             }
 
-            $findContactResponse = $contactService->find($params->contact_id);
+            $findContactResponse = app(ContactServiceInterface::class)->find(
+                $params->contact_id
+            );
             if (!$findContactResponse->success) {
                 return $findContactResponse;
             }
@@ -66,8 +68,8 @@ class TagContactService extends BaseService implements TagContactServiceInterfac
             }
 
             $tagContact = $this->tagContactRepository->verifyExistsDeletedAttach(
-                $tag->user_id,
-                $contact->user_id
+                $params->tag_id,
+                $params->contact_id
             );
 
             if ($tagContact) {
@@ -97,15 +99,12 @@ class TagContactService extends BaseService implements TagContactServiceInterfac
     public function dettach(string $tagId, string $contactId): ServiceResponse
     {
         try {
-            $tagService = app(TagServiceInterface::class);
-            $contactService = app(ContactServiceInterface::class);
-
-            $findTagResponse = $tagService->find($tagId);
+            $findTagResponse = app(TagServiceInterface::class)->find($tagId);
             if (!$findTagResponse->success) {
                 return $findTagResponse;
             }
 
-            $findContactResponse = $contactService->find($contactId);
+            $findContactResponse = app(ContactServiceInterface::class)->find($contactId);
             if (!$findContactResponse->success) {
                 return $findContactResponse;
             }

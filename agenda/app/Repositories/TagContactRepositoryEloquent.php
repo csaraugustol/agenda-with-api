@@ -35,7 +35,7 @@ class TagContactRepositoryEloquent extends BaseRepositoryEloquent implements Tag
             ->where('tag_id', $tagId)
             ->where('contact_id', $contactId)
             ->withTrashed()
-            ->get();
+            ->first();
     }
 
      /**
@@ -51,6 +51,6 @@ class TagContactRepositoryEloquent extends BaseRepositoryEloquent implements Tag
         return $this->model
             ->where('tag_id', $tagId)
             ->where('contact_id', $contactId)
-            ->get();
+            ->first();
     }
 }
