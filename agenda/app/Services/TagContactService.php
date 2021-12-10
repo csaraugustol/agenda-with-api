@@ -2,14 +2,13 @@
 
 namespace App\Services;
 
-use App\Models\TagContact;
 use Throwable;
 use App\Services\Responses\InternalError;
 use App\Services\Responses\ServiceResponse;
 use App\Services\Contracts\TagServiceInterface;
+use App\Services\Contracts\ContactServiceInterface;
 use App\Repositories\Contracts\TagContactRepository;
 use App\Services\Contracts\TagContactServiceInterface;
-use App\Services\Params\TagContact\CreateTagContactServiceParams;
 
 class TagContactService extends BaseService implements TagContactServiceInterface
 {
@@ -29,62 +28,98 @@ class TagContactService extends BaseService implements TagContactServiceInterfac
     /**
      * Cria uma vinculação entre a tag e o contato
      *
-     * @param CreateTagContactServiceParams $params
+     * @param string $tagId
+     * @param string $contactId
      *
      * @return ServiceResponse
      */
-    public function attach(CreateTagContactServiceParams $params): ServiceResponse
+    public function attach(string $tagId, string $contactId): ServiceResponse
     {
         try {
             $findTagResponse = app(TagServiceInterface::class)->find(
-                $params->tag_id
+                $tagId
             );
-            if (!$findTagResponse->success) {
-                return $findTagResponse;
+            if (!$findTagResponse->success || is_null($findTagResponse->data)) {
+                return new ServiceResponse(
+                    false,
+                    $findTagResponse->message,
+                    null,
+                    $findTagResponse->internalErrors
+                );
             }
 
             $findContactResponse = app(ContactServiceInterface::class)->find(
-                $params->contact_id
+                $contactId
             );
-            if (!$findContactResponse->success) {
-                return $findContactResponse;
+            if (!$findContactResponse->success || is_null($findContactResponse->data)) {
+                return new ServiceResponse(
+                    false,
+                    $findContactResponse->message,
+                    null,
+                    $findContactResponse->internalErrors
+                );
             }
 
             $tag = $findTagResponse->data;
             $contact = $findContactResponse->data;
 
-            if ($tag->user_id === user('id') && $contact->user_id === user('id')) {
+            if ($tag->user_id !== $contact->user_id) {
                 return new ServiceResponse(
-                    true,
-                    'Já existe a vinculação ativa.',
+                    false,
+                    'Não é possível realizar a vinculação.',
                     null,
                     [
                         new InternalError(
-                            'Já existe a vinculação ativa.',
+                            'Não é possível realizar a vinculação.',
                             12
                         )
                     ]
                 );
             }
 
-            $tagContact = $this->tagContactRepository->verifyExistsDeletedAttach(
-                $params->tag_id,
-                $params->contact_id
+            //Verifica se existe vinculo
+            $tagContact = $this->tagContactRepository->findTagContact(
+                $tagId,
+                $contactId
+            );
+
+            if ($tagContact) {
+                return new ServiceResponse(
+                    true,
+                    'Vinculação realizada com sucesso.',
+                    $tagContact
+                );
+            }
+
+            //Verifica se existe vinculo deletado para restaurar
+            $tagContact = $this->tagContactRepository->findTagContact(
+                $tagId,
+                $contactId,
+                true
             );
 
             if ($tagContact) {
                 $tagContact->restore();
+                return new ServiceResponse(
+                    true,
+                    'Vinculação realizada com sucesso.',
+                    $tagContact
+                );
             }
 
-            $newTagContact = $this->tagContactRepository->create($params->toArray());
+            //Cria um novo vínculo caso não encontre as condições
+            $tagContact = $this->tagContactRepository->create([
+                'tag_id'     => $tagId,
+                'contact_id' => $contactId
+            ]);
         } catch (Throwable $throwable) {
-            return $this->defaultErrorReturn($throwable, compact('params'));
+            return $this->defaultErrorReturn($throwable, compact('tagId', 'contactId'));
         }
 
         return new ServiceResponse(
             true,
             'Vinculação realizada com sucesso.',
-            $newTagContact
+            $tagContact
         );
     }
 
@@ -99,22 +134,15 @@ class TagContactService extends BaseService implements TagContactServiceInterfac
     public function dettach(string $tagId, string $contactId): ServiceResponse
     {
         try {
-            $findTagResponse = app(TagServiceInterface::class)->find($tagId);
-            if (!$findTagResponse->success) {
-                return $findTagResponse;
-            }
-
-            $findContactResponse = app(ContactServiceInterface::class)->find($contactId);
-            if (!$findContactResponse->success) {
-                return $findContactResponse;
-            }
-
             $tagContact = $this->tagContactRepository->findTagContact(
                 $tagId,
-                $contactId
+                $contactId,
+                true
             );
 
-            $tagContact->delete();
+            if (is_null($tagContact->deleted_at)) {
+                $tagContact->delete();
+            }
         } catch (Throwable $throwable) {
             return $this->defaultErrorReturn($throwable, compact('tagId', 'contactId'));
         }

@@ -11,6 +11,5 @@ use App\Models\TagContact;
 interface TagContactRepository extends BaseRepositoryInterface
 {
     public function model();
-    public function findTagContact(string $tagId, string $contactId): ?TagContact;
-    public function verifyExistsDeletedAttach(string $tagId, string $contactId): ?TagContact;
+    public function findTagContact(string $tagId, string $contactId, bool $withTrashed = false): ?TagContact;
 }

@@ -22,23 +22,6 @@ class TagContactRepositoryEloquent extends BaseRepositoryEloquent implements Tag
     }
 
     /**
-     * Verifica se existe o vinculo deletado entre a tag e o contato
-     *
-     * @param string $tagId
-     * @param string $contactId
-     *
-     * @return TagContact|null
-     */
-    public function verifyExistsDeletedAttach(string $tagId, string $contactId): ?TagContact
-    {
-        return $this->model
-            ->where('tag_id', $tagId)
-            ->where('contact_id', $contactId)
-            ->withTrashed()
-            ->first();
-    }
-
-     /**
      * Busca e retorna uma TagContact
      *
      * @param string $tagId
@@ -46,11 +29,18 @@ class TagContactRepositoryEloquent extends BaseRepositoryEloquent implements Tag
      *
      * @return TagContact|null
      */
-    public function findTagContact(string $tagId, string $contactId): ?TagContact
-    {
-        return $this->model
+    public function findTagContact(
+        string $tagId,
+        string $contactId,
+        bool $withTrashed = false
+    ): ?TagContact {
+        $query =  $this->model
             ->where('tag_id', $tagId)
-            ->where('contact_id', $contactId)
-            ->first();
+            ->where('contact_id', $contactId);
+        if ($withTrashed) {
+            $query->withTrashed();
+        }
+
+        return $query->first();
     }
 }
