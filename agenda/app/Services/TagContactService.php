@@ -98,7 +98,7 @@ class TagContactService extends BaseService implements TagContactServiceInterfac
                 true
             );
 
-            if (!is_null($tagContact->deleted_at)) {
+            if ($tagContact) {
                 $tagContact->restore();
                 return new ServiceResponse(
                     true,
