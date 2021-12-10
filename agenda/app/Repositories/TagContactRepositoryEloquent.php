@@ -26,6 +26,7 @@ class TagContactRepositoryEloquent extends BaseRepositoryEloquent implements Tag
      *
      * @param string $tagId
      * @param string $contactId
+     * @param boolean $withTrashed
      *
      * @return TagContact|null
      */

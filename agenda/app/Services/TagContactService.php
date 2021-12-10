@@ -149,7 +149,7 @@ class TagContactService extends BaseService implements TagContactServiceInterfac
 
         return new ServiceResponse(
             true,
-            'Vicunlação desfeita com sucesso.',
+            'Vincunlação desfeita com sucesso.',
             null
         );
     }
