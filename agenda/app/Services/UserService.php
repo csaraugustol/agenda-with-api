@@ -10,6 +10,7 @@ use App\Repositories\Contracts\UserRepository;
 use App\Services\Contracts\UserServiceInterface;
 use App\Services\Params\User\RegisterUserServiceParams;
 use App\Services\Contracts\AuthenticateTokenServiceInterface;
+use App\Services\Contracts\TagContactServiceInterface;
 
 class UserService extends BaseService implements UserServiceInterface
 {
@@ -250,6 +251,12 @@ class UserService extends BaseService implements UserServiceInterface
     public function find(string $userId): ServiceResponse
     {
         try {
+            $contactService = app(TagContactServiceInterface::class)
+            ->dettach('8404300b-5fd6-4c95-b6cb-87cde97c5669', 'd8e95823-0ba7-40b9-ac77-5e3be1a8dd2b');
+
+            dd($contactService->message);
+
+            dd($contactService);
             $user = $this->userRepository->findOrNull($userId);
 
             if (is_null($user)) {

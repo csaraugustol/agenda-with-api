@@ -98,7 +98,7 @@ class TagContactService extends BaseService implements TagContactServiceInterfac
                 true
             );
 
-            if ($tagContact) {
+            if (!is_null($tagContact->deleted_at)) {
                 $tagContact->restore();
                 return new ServiceResponse(
                     true,
@@ -136,11 +136,10 @@ class TagContactService extends BaseService implements TagContactServiceInterfac
         try {
             $tagContact = $this->tagContactRepository->findTagContact(
                 $tagId,
-                $contactId,
-                true
+                $contactId
             );
 
-            if (is_null($tagContact->deleted_at)) {
+            if (!is_null($tagContact)) {
                 $tagContact->delete();
             }
         } catch (Throwable $throwable) {
