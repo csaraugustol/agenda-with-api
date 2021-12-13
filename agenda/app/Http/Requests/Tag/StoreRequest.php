@@ -2,11 +2,14 @@
 
 namespace App\Http\Requests\Tag;
 
-use Illuminate\Validation\Rule;
+use App\Rules\UniqueUserTag;
 use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\Traits\SanitizesInput;
 
 class StoreRequest extends FormRequest
 {
+    use SanitizesInput;
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -41,7 +44,7 @@ class StoreRequest extends FormRequest
         return [
             'description' => [
                 'required',
-                Rule::unique('tags')->where('user_id', user('id'))
+                new UniqueUserTag()
             ],
         ];
     }
@@ -55,7 +58,6 @@ class StoreRequest extends FormRequest
     {
         return [
             'description.required' => 'O campo DESCRIÇÃO é obrigatório',
-            'description.unique'   => 'Já existe uma tag com este nome.',
         ];
     }
 }
