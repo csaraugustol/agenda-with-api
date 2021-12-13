@@ -41,4 +41,10 @@ Route::group(['middleware' => ['api.token.user']], function () {
             'uses' => 'UserController@logout'
         ]);
     });
+    Route::group(['prefix' => '/tags', 'as' => 'tags.'], function () {
+        Route::post('/store', [
+            'as'   => 'store',
+            'uses' => 'TagController@store'
+        ]);
+    });
 });
