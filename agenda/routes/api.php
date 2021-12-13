@@ -27,6 +27,7 @@ Route::group(['prefix' => '/users', 'as' => 'users.'], function () {
 
 // Usuário com autenticação
 Route::group(['middleware' => ['api.token.user']], function () {
+    //Usuário
     Route::group(['prefix' => '/users', 'as' => 'users.'], function () {
         Route::get('/', [
             'as'   => 'show',
@@ -41,10 +42,16 @@ Route::group(['middleware' => ['api.token.user']], function () {
             'uses' => 'UserController@logout'
         ]);
     });
+
+    //Tag
     Route::group(['prefix' => '/tags', 'as' => 'tags.'], function () {
-        Route::post('/store', [
+        Route::post('/', [
             'as'   => 'store',
             'uses' => 'TagController@store'
+        ]);
+        Route::patch('/{id}', [
+            'as'   => 'update',
+            'uses' => 'TagController@update'
         ]);
     });
 });

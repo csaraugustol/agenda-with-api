@@ -6,6 +6,7 @@ use Illuminate\Http\JsonResponse;
 use App\Http\Responses\DefaultResponse;
 use App\Http\Requests\Tag\StoreRequest;
 use App\Http\Resources\Tag\TagResource;
+use App\Http\Requests\Tag\UpdateRequest;
 use App\Services\Contracts\TagServiceInterface;
 use App\Services\Params\Tag\CreateTagServiceParams;
 
@@ -24,7 +25,8 @@ class TagController extends ApiController
         $this->tagService = $tagService;
     }
 
-    /** Registra uma nova tag para o usuário logado
+    /**
+     * Registra uma nova tag para o usuário logado
      *
      * POST /store
      *
@@ -47,6 +49,31 @@ class TagController extends ApiController
 
         return $this->response(new DefaultResponse(
             new TagResource($storeTagResponse->data)
+        ));
+    }
+
+    /**
+     * Edita a tag de um usuário
+     *
+     * PATCH /tags/{id}
+     *
+     * @param UpdateRequest $request
+     *
+     * @return JsonResponse
+     */
+    public function update(UpdateRequest $request): JsonResponse
+    {
+        $updateTagResponse = $this->tagService->update(
+            $request->toArray(),
+            $request->id
+        );
+
+        if (!$updateTagResponse->success || is_null($updateTagResponse->data)) {
+            return $this->errorResponseFromService($updateTagResponse);
+        }
+
+        return $this->response(new DefaultResponse(
+            new TagResource($updateTagResponse->data)
         ));
     }
 }
