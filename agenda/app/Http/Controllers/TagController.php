@@ -76,4 +76,22 @@ class TagController extends ApiController
             new TagResource($updateTagResponse->data)
         ));
     }
+
+    /**
+     * Deleta uma tag do usuário
+     *
+     * @param string $idTag
+     *
+     * @return JsonResponse
+     */
+    public function delete(string $idTag): JsonResponse
+    {
+        $deleteTagResponse = $this->tagService->delete($idTag);
+
+        if (!$deleteTagResponse->success) {
+            return $this->errorResponseFromService($deleteTagResponse);
+        }
+
+        return $this->response(new DefaultResponse());
+    }
 }
