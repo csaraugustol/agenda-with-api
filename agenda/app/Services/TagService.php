@@ -146,4 +146,27 @@ class TagService extends BaseService implements TagServiceInterface
             null
         );
     }
+
+    /**
+     * Retorna todas as tags do usuário
+     *
+     * @param string $userId
+     * @param string|null $description
+     *
+     * @return ServiceResponse
+     */
+    public function findAll(string $userId, string $description = null): ServiceResponse
+    {
+        try {
+            $tags = $this->tagRepository->findAll($userId, $description);
+        } catch (Throwable $throwable) {
+            return new $this->defaultErrorReturn($throwable, compact('userId'));
+        }
+
+        return new ServiceResponse(
+            true,
+            'Tags encontradas com sucesso!',
+            $tags
+        );
+    }
 }

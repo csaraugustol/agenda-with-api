@@ -11,4 +11,5 @@ interface TagServiceInterface
     public function store(CreateTagServiceParams $params): ServiceResponse;
     public function update(array $params, string $tagId): ServiceResponse;
     public function delete(string $tagId): ServiceResponse;
+    public function findAll(string $userId, string $description = null): ServiceResponse;
 }

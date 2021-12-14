@@ -45,6 +45,10 @@ Route::group(['middleware' => ['api.token.user']], function () {
 
     //Tag
     Route::group(['prefix' => '/tags', 'as' => 'tags.'], function () {
+        Route::get('/', [
+            'as'   => 'index',
+            'uses' => 'TagController@index'
+        ]);
         Route::post('/', [
             'as'   => 'store',
             'uses' => 'TagController@store'
