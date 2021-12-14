@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Tag\IndexRequest;
 use Illuminate\Http\JsonResponse;
+use App\Http\Requests\Tag\IndexRequest;
 use App\Http\Responses\DefaultResponse;
 use App\Http\Requests\Tag\StoreRequest;
 use App\Http\Resources\Tag\TagResource;
 use App\Http\Requests\Tag\UpdateRequest;
-use App\Http\Resources\Tag\TagCollectionResource;
 use App\Services\Contracts\TagServiceInterface;
+use App\Http\Resources\Tag\TagCollectionResource;
 use App\Services\Params\Tag\CreateTagServiceParams;
 
 class TagController extends ApiController
@@ -29,11 +29,11 @@ class TagController extends ApiController
 
     /**
      * Lista todas as tags do usuário
-     *
-     * GET /tags
-     *
-     * @return JsonResponse
-     */
+    *
+    * @param IndexRequest $request
+
+    * @return JsonResponse
+    */
     public function index(IndexRequest $request): JsonResponse
     {
         $findAllTagResponse = $this->tagService->findAll(
