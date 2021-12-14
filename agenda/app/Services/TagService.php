@@ -159,20 +159,6 @@ class TagService extends BaseService implements TagServiceInterface
     {
         try {
             $tags = $this->tagRepository->findAll($userId, $description);
-
-            if (!count($tags)) {
-                return new ServiceResponse(
-                    true,
-                    'Não foi vinculada nenhuma tag para este usuário.',
-                    null,
-                    [
-                        new InternalError(
-                            'Não foi vinculada nenhuma tag para este usuário.',
-                            12
-                        )
-                    ]
-                );
-            }
         } catch (Throwable $throwable) {
             return new $this->defaultErrorReturn($throwable, compact('userId'));
         }
