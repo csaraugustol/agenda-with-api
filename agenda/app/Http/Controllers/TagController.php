@@ -7,10 +7,13 @@ use App\Http\Requests\Tag\IndexRequest;
 use App\Http\Responses\DefaultResponse;
 use App\Http\Requests\Tag\StoreRequest;
 use App\Http\Resources\Tag\TagResource;
+use App\Http\Requests\Tag\AttachRequest;
 use App\Http\Requests\Tag\UpdateRequest;
 use App\Services\Contracts\TagServiceInterface;
 use App\Http\Resources\Tag\TagCollectionResource;
 use App\Services\Params\Tag\CreateTagServiceParams;
+use App\Http\Resources\TagContact\TagContactResource;
+use App\Services\Contracts\TagContactServiceInterface;
 
 class TagController extends ApiController
 {
@@ -105,6 +108,8 @@ class TagController extends ApiController
     /**
      * Deleta uma tag do usuário
      *
+     * DELETE /tags/{id}
+     *
      * @param string $idTag
      *
      * @return JsonResponse
@@ -118,5 +123,31 @@ class TagController extends ApiController
         }
 
         return $this->response(new DefaultResponse());
+    }
+
+    /**
+     * Vincula uma tag a um contato
+     *
+     * POST /tags/{id}/attach
+     *
+     * @param string $idTag
+     * @param AttachRequest $request
+     *
+     * @return JsonResponse
+     */
+    public function attach(string $idTag, AttachRequest $request): JsonResponse
+    {
+        $attachTagContactResponse = app(TagContactServiceInterface::class)->attach(
+            $idTag,
+            $request->contact_id
+        );
+
+        if (!$attachTagContactResponse->success || is_null($attachTagContactResponse->data)) {
+            return $this->errorResponseFromService($attachTagContactResponse);
+        }
+
+        return $this->response(new DefaultResponse(
+            new TagContactResource($attachTagContactResponse->data)
+        ));
     }
 }

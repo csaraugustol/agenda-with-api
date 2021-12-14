@@ -61,5 +61,9 @@ Route::group(['middleware' => ['api.token.user']], function () {
             'as'   => 'delete',
             'uses' => 'TagController@delete'
         ]);
+        Route::post('/{id}/attach', [
+            'as'   => 'attach',
+            'uses' => 'TagController@attach'
+        ]);
     });
 });
