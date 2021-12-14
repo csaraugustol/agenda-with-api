@@ -8,6 +8,7 @@ use App\Http\Responses\DefaultResponse;
 use App\Http\Requests\Tag\StoreRequest;
 use App\Http\Resources\Tag\TagResource;
 use App\Http\Requests\Tag\AttachRequest;
+use App\Http\Requests\Tag\DettachRequest;
 use App\Http\Requests\Tag\UpdateRequest;
 use App\Services\Contracts\TagServiceInterface;
 use App\Http\Resources\Tag\TagCollectionResource;
@@ -149,5 +150,28 @@ class TagController extends ApiController
         return $this->response(new DefaultResponse(
             new TagContactResource($attachTagContactResponse->data)
         ));
+    }
+
+    /**
+     * Desvincula uma tag de um contato
+     *
+     * POST /tags/{id}/dettach
+     *
+     * @param DettachRequest $request
+     *
+     * @return JsonResponse
+     */
+    public function dettach(string $tagId, DettachRequest $request): JsonResponse
+    {
+        $attachTagContactResponse = app(TagContactServiceInterface::class)->dettach(
+            $tagId,
+            $request->contact_id
+        );
+
+        if (!$attachTagContactResponse->success) {
+            return $this->errorResponseFromService($attachTagContactResponse);
+        }
+
+        return $this->response(new DefaultResponse());
     }
 }
