@@ -33,11 +33,11 @@ class TagController extends ApiController
 
     /**
      * Lista todas as tags do usuário
-    *
-    * @param IndexRequest $request
+     *
+     * @param IndexRequest $request
 
-    * @return JsonResponse
-    */
+     * @return JsonResponse
+     */
     public function index(IndexRequest $request): JsonResponse
     {
         $findAllTagResponse = $this->tagService->findAll(
