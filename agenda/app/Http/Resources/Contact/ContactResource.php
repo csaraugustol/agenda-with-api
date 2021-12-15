@@ -17,8 +17,8 @@ class ContactResource extends JsonResource
         $phone = $this->firstPhoneContact();
 
         return [
-            'id'           => $this->resource->id,
-            'name'         => $this->resource->name,
+            'id'    => $this->resource->id,
+            'name'  => $this->resource->name,
             'phone' => [
                 'phone_number' => $this->resource->phone_number,
             ],

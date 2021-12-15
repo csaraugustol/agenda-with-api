@@ -3,8 +3,8 @@
 namespace App\Repositories;
 
 use App\Models\Contact;
-use App\Repositories\Contracts\ContactRepository;
 use Illuminate\Database\Eloquent\Collection;
+use App\Repositories\Contracts\ContactRepository;
 
 /**
  * Class ContactRepositoryEloquent
