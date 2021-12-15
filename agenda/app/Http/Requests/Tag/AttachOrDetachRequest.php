@@ -5,7 +5,7 @@ namespace App\Http\Requests\Tag;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Http\Requests\Traits\SanitizesInput;
 
-class AttachRequest extends FormRequest
+class AttachOrDetachRequest extends FormRequest
 {
     use SanitizesInput;
 
@@ -41,7 +41,7 @@ class AttachRequest extends FormRequest
     public function rules()
     {
         return [
-            'contact_id' => 'required|uuid'
+            'contact_id' => 'required|uuid',
         ];
     }
 

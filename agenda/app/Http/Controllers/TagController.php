@@ -7,9 +7,9 @@ use App\Http\Requests\Tag\IndexRequest;
 use App\Http\Responses\DefaultResponse;
 use App\Http\Requests\Tag\StoreRequest;
 use App\Http\Resources\Tag\TagResource;
-use App\Http\Requests\Tag\AttachRequest;
 use App\Http\Requests\Tag\UpdateRequest;
 use App\Services\Contracts\TagServiceInterface;
+use App\Http\Requests\Tag\AttachOrDetachRequest;
 use App\Http\Resources\Tag\TagCollectionResource;
 use App\Services\Params\Tag\CreateTagServiceParams;
 use App\Http\Resources\TagContact\TagContactResource;
@@ -32,11 +32,11 @@ class TagController extends ApiController
 
     /**
      * Lista todas as tags do usuário
-    *
-    * @param IndexRequest $request
+     *
+     * @param IndexRequest $request
 
-    * @return JsonResponse
-    */
+     * @return JsonResponse
+     */
     public function index(IndexRequest $request): JsonResponse
     {
         $findAllTagResponse = $this->tagService->findAll(
@@ -131,11 +131,11 @@ class TagController extends ApiController
      * POST /tags/{id}/attach
      *
      * @param string $idTag
-     * @param AttachRequest $request
+     * @param AttachOrDetachRequest $request
      *
      * @return JsonResponse
      */
-    public function attach(string $idTag, AttachRequest $request): JsonResponse
+    public function attach(string $idTag, AttachOrDetachRequest $request): JsonResponse
     {
         $attachTagContactResponse = app(TagContactServiceInterface::class)->attach(
             $idTag,
@@ -149,5 +149,28 @@ class TagController extends ApiController
         return $this->response(new DefaultResponse(
             new TagContactResource($attachTagContactResponse->data)
         ));
+    }
+
+    /**
+     * Desvincula uma tag de um contato
+     *
+     * POST /tags/{id}/detach
+     *
+     * @param AttachOrDetachRequest $request
+     *
+     * @return JsonResponse
+     */
+    public function detach(string $tagId, AttachOrDetachRequest $request): JsonResponse
+    {
+        $attachTagContactResponse = app(TagContactServiceInterface::class)->detach(
+            $tagId,
+            $request->contact_id
+        );
+
+        if (!$attachTagContactResponse->success) {
+            return $this->errorResponseFromService($attachTagContactResponse);
+        }
+
+        return $this->response(new DefaultResponse());
     }
 }
