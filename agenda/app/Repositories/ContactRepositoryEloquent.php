@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Contact;
 use App\Repositories\Contracts\ContactRepository;
+use Illuminate\Database\Eloquent\Collection;
 
 /**
  * Class ContactRepositoryEloquent
@@ -19,5 +20,31 @@ class ContactRepositoryEloquent extends BaseRepositoryEloquent implements Contac
     public function model()
     {
         return Contact::class;
+    }
+
+    /**
+     * Retorna todos os contatos do usuário podendo
+     * haver filtragem por nome e telefone
+     *
+     * @param string $userId
+     * @param array $filters
+     *
+     * @return Collection
+     */
+    public function findAllWithFilter(string $userId, array $filters = []): Collection
+    {
+        $query = $this->model
+            ->join('phones', 'phones.contact_id', '=', 'contacts.id')
+            ->where('user_id', $userId);
+
+        if ($filters['phone_number']) {
+            $query->where('phone_number', 'like', '%' . $filters['phone_number'] . '%');
+        }
+
+        if ($filters['name']) {
+            $query->where('name', 'like', '%' . $filters['name'] . '%');
+        }
+
+        return $query->get();
     }
 }
