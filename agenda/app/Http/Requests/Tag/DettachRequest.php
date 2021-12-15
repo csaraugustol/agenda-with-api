@@ -41,7 +41,7 @@ class DettachRequest extends FormRequest
     public function rules()
     {
         return [
-            'contact_id' => 'uuid',
+            'contact_id' => 'required|uuid',
         ];
     }
 
@@ -53,6 +53,7 @@ class DettachRequest extends FormRequest
     public function messages()
     {
         return [
+            'contact_id.required' => 'O campo ID DO CONTATO é obrigatório',
             'contact_id.uuid' => 'O campo ID DO CONTATO deve ser do tipo UUID',
         ];
     }
