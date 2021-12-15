@@ -7,10 +7,9 @@ use App\Http\Requests\Tag\IndexRequest;
 use App\Http\Responses\DefaultResponse;
 use App\Http\Requests\Tag\StoreRequest;
 use App\Http\Resources\Tag\TagResource;
-use App\Http\Requests\Tag\AttachRequest;
 use App\Http\Requests\Tag\UpdateRequest;
-use App\Http\Requests\Tag\DettachRequest;
 use App\Services\Contracts\TagServiceInterface;
+use App\Http\Requests\Tag\AttachOrDetachRequest;
 use App\Http\Resources\Tag\TagCollectionResource;
 use App\Services\Params\Tag\CreateTagServiceParams;
 use App\Http\Resources\TagContact\TagContactResource;
@@ -132,11 +131,11 @@ class TagController extends ApiController
      * POST /tags/{id}/attach
      *
      * @param string $idTag
-     * @param AttachRequest $request
+     * @param AttachOrDetachRequest $request
      *
      * @return JsonResponse
      */
-    public function attach(string $idTag, AttachRequest $request): JsonResponse
+    public function attach(string $idTag, AttachOrDetachRequest $request): JsonResponse
     {
         $attachTagContactResponse = app(TagContactServiceInterface::class)->attach(
             $idTag,
@@ -155,15 +154,15 @@ class TagController extends ApiController
     /**
      * Desvincula uma tag de um contato
      *
-     * POST /tags/{id}/dettach
+     * POST /tags/{id}/detach
      *
-     * @param DettachRequest $request
+     * @param AttachOrDetachRequest $request
      *
      * @return JsonResponse
      */
-    public function dettach(string $tagId, DettachRequest $request): JsonResponse
+    public function detach(string $tagId, AttachOrDetachRequest $request): JsonResponse
     {
-        $attachTagContactResponse = app(TagContactServiceInterface::class)->dettach(
+        $attachTagContactResponse = app(TagContactServiceInterface::class)->detach(
             $tagId,
             $request->contact_id
         );

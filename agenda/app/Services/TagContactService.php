@@ -131,7 +131,7 @@ class TagContactService extends BaseService implements TagContactServiceInterfac
      *
      * @return ServiceResponse
      */
-    public function dettach(string $tagId, string $contactId): ServiceResponse
+    public function detach(string $tagId, string $contactId): ServiceResponse
     {
         try {
             $tagContact = $this->tagContactRepository->findTagContact(

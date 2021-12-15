@@ -5,7 +5,7 @@ namespace App\Http\Requests\Tag;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Http\Requests\Traits\SanitizesInput;
 
-class DettachRequest extends FormRequest
+class AttachOrDetachRequest extends FormRequest
 {
     use SanitizesInput;
 
