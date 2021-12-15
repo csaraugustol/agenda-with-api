@@ -31,7 +31,7 @@ class ContactResource extends JsonResource
     private function firstPhoneContact()
     {
         $phone = $this
-            ->phone()
+            ->phones()
             ->first();
 
         return $phone;
