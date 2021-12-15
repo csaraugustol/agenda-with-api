@@ -34,6 +34,7 @@ class ContactRepositoryEloquent extends BaseRepositoryEloquent implements Contac
     public function findAllWithFilter(string $userId, array $filters = []): Collection
     {
         $query = $this->model
+            ->select('contacts.*')
             ->join('phones', 'phones.contact_id', '=', 'contacts.id')
             ->where('user_id', $userId);
 
