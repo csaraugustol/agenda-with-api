@@ -30,7 +30,7 @@ class ContactIndexResource extends JsonResource
     {
         return $this
             ->phones()
-            ->orderBy('created_at', 'DESC')
+            ->orderBy('created_at')
             ->first();
     }
 }

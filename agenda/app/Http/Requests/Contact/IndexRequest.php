@@ -25,7 +25,7 @@ class IndexRequest extends FormRequest
     {
         return [
             'after' => [
-                'filter'         => 'cast:string',
+                'filter' => 'cast:string',
             ]
         ];
     }
@@ -38,7 +38,7 @@ class IndexRequest extends FormRequest
     public function rules()
     {
         return [
-            'filter'         => 'sometimes',
+            'filter' => 'sometimes',
         ];
     }
 }
