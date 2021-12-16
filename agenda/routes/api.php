@@ -33,6 +33,10 @@ Route::group(['middleware' => ['api.token.user']], function () {
             'as'   => 'index',
             'uses' => 'ContactController@index'
         ]);
+        Route::get('/{id}', [
+            'as'   => 'show',
+            'uses' => 'ContactController@show'
+        ]);
     });
 
     //Tag

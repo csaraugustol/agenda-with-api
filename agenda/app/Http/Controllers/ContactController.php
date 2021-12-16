@@ -6,6 +6,7 @@ use Illuminate\Http\JsonResponse;
 use App\Http\Responses\DefaultResponse;
 use App\Http\Requests\Contact\IndexRequest;
 use App\Services\Contracts\ContactServiceInterface;
+use App\Http\Resources\Contact\ContactShowResource;
 use App\Http\Resources\Contact\ContactCollectionResource;
 
 class ContactController extends ApiController
@@ -44,6 +45,31 @@ class ContactController extends ApiController
 
         return $this->response(new DefaultResponse(
             new ContactCollectionResource($findContactsResponse->data)
+        ));
+    }
+
+    /**
+     * Mostra detalhes de um contato
+     *
+     * GET /contacts/{id}
+     *
+     * @param string $idContact
+     *
+     * @return JsonResponse
+     */
+    public function show(string $contactId): JsonResponse
+    {
+        $showContactResponse = $this->contactService->findByUserContact(
+            user('id'),
+            $contactId
+        );
+
+        if (!$showContactResponse->success || is_null($showContactResponse->data)) {
+            return $this->errorResponseFromService($showContactResponse);
+        }
+
+        return $this->response(new DefaultResponse(
+            new ContactShowResource($showContactResponse->data)
         ));
     }
 }
