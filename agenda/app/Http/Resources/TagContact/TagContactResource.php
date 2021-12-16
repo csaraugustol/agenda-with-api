@@ -4,7 +4,7 @@ namespace App\Http\Resources\TagContact;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class TagContactResource extends JsonResource
+class TagContactIndexResource extends JsonResource
 {
     /**
      * Transform the resource into an array.

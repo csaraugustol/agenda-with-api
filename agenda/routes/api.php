@@ -27,19 +27,11 @@ Route::group(['prefix' => '/users', 'as' => 'users.'], function () {
 
 // Usuário com autenticação
 Route::group(['middleware' => ['api.token.user']], function () {
-    //Usuário
-    Route::group(['prefix' => '/users', 'as' => 'users.'], function () {
+    //Contato
+    Route::group(['prefix' => '/contacts', 'as' => 'contacts.'], function () {
         Route::get('/', [
-            'as'   => 'show',
-            'uses' => 'UserController@show'
-        ]);
-        Route::patch('/', [
-            'as'   => 'update',
-            'uses' => 'UserController@update'
-        ]);
-        Route::get('/logout', [
-            'as'   => 'logout',
-            'uses' => 'UserController@logout'
+            'as'   => 'index',
+            'uses' => 'ContactController@index'
         ]);
     });
 
@@ -68,6 +60,22 @@ Route::group(['middleware' => ['api.token.user']], function () {
         Route::post('/{id}/detach', [
             'as'   => 'detach',
             'uses' => 'TagController@detach'
+        ]);
+    });
+
+    //Usuário
+    Route::group(['prefix' => '/users', 'as' => 'users.'], function () {
+        Route::get('/', [
+            'as'   => 'show',
+            'uses' => 'UserController@show'
+        ]);
+        Route::patch('/', [
+            'as'   => 'update',
+            'uses' => 'UserController@update'
+        ]);
+        Route::get('/logout', [
+            'as'   => 'logout',
+            'uses' => 'UserController@logout'
         ]);
     });
 });
