@@ -11,5 +11,5 @@ use Illuminate\Database\Eloquent\Collection;
 interface ContactRepository extends BaseRepositoryInterface
 {
     public function model();
-    public function findAllWithFilter(string $userId, array $filters = []): Collection;
+    public function findAllWithFilter(string $userId, string $filter = null): Collection;
 }

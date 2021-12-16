@@ -4,7 +4,7 @@ namespace App\Http\Resources\Contact;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ContactResource extends JsonResource
+class ContactIndexResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -19,9 +19,7 @@ class ContactResource extends JsonResource
         return [
             'id'    => $this->id,
             'name'  => $this->name,
-            'phone' => [
-                'phone_number' => $phone->phone_number,
-            ],
+            'phone_number' => $phone->phone_number,
         ];
     }
 
@@ -30,10 +28,9 @@ class ContactResource extends JsonResource
      */
     private function firstPhoneContact()
     {
-        $phone = $this
+        return $this
             ->phones()
+            ->orderBy('created_at', 'DESC')
             ->first();
-
-        return $phone;
     }
 }

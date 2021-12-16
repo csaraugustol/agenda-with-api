@@ -26,24 +26,23 @@ class ContactRepositoryEloquent extends BaseRepositoryEloquent implements Contac
      * Retorna todos os contatos do usuário podendo
      * haver filtragem por nome e telefone
      *
-     * @param string $userId
-     * @param array $filters
+     * @param string      $userId
+     * @param string|null $filters
      *
      * @return Collection
      */
-    public function findAllWithFilter(string $userId, array $filters = []): Collection
+    public function findAllWithFilter(string $userId, string $filter = null): Collection
     {
         $query = $this->model
             ->select('contacts.*')
             ->join('phones', 'phones.contact_id', '=', 'contacts.id')
             ->where('user_id', $userId);
 
-        if ($filters['phone_number']) {
-            $query->where('phone_number', 'like', '%' . $filters['phone_number'] . '%');
-        }
-
-        if ($filters['name']) {
-            $query->where('name', 'like', '%' . $filters['name'] . '%');
+        if ($filter) {
+            $query->where(function ($q) use ($filter) {
+                $q->where('phone_number', 'like', '%' . $filter . '%');
+                $q->orWhere('name', 'like', '%' . $filter . '%');
+            });
         }
 
         return $query->get();

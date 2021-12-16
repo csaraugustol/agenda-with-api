@@ -12,7 +12,7 @@ use App\Services\Contracts\TagServiceInterface;
 use App\Http\Requests\Tag\AttachOrDetachRequest;
 use App\Http\Resources\Tag\TagCollectionResource;
 use App\Services\Params\Tag\CreateTagServiceParams;
-use App\Http\Resources\TagContact\TagContactResource;
+use App\Http\Resources\TagContact\TagContactIndexResource;
 use App\Services\Contracts\TagContactServiceInterface;
 
 class TagController extends ApiController
@@ -147,7 +147,7 @@ class TagController extends ApiController
         }
 
         return $this->response(new DefaultResponse(
-            new TagContactResource($attachTagContactResponse->data)
+            new TagContactIndexResource($attachTagContactResponse->data)
         ));
     }
 

@@ -35,10 +35,10 @@ class ContactController extends ApiController
     {
         $findContactsResponse = $this->contactService->findAllWithFilter(
             user('id'),
-            $request->all()
+            $request->filter
         );
 
-        if (!$findContactsResponse->success || is_null($findContactsResponse->data)) {
+        if (!$findContactsResponse->success) {
             return $this->errorResponseFromService($findContactsResponse);
         }
 

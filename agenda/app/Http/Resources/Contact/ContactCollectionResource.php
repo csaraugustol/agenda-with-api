@@ -6,5 +6,5 @@ use App\Http\Resources\BaseCollectionResource;
 
 class ContactCollectionResource extends BaseCollectionResource
 {
-    public $collects = ContactResource::class;
+    public $collects = ContactIndexResource::class;
 }
