@@ -17,8 +17,8 @@ class ContactIndexResource extends JsonResource
         $phone = $this->firstPhoneContact();
 
         return [
-            'id'    => $this->id,
-            'name'  => $this->name,
+            'id'           => $this->id,
+            'name'         => $this->name,
             'phone_number' => $phone->phone_number,
         ];
     }
