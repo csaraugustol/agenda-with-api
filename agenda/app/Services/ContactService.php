@@ -74,8 +74,14 @@ class ContactService extends BaseService implements ContactServiceInterface
             if ($contact->user_id !== $userId) {
                 return new ServiceResponse(
                     false,
-                    "Contato não foi localizado!",
-                    null
+                    "Contato não foi localizado na sua listagem!",
+                    null,
+                    [
+                        new InternalError(
+                            'Contato não foi localizado na sua listagem!',
+                            15
+                        )
+                    ]
                 );
             }
         } catch (Throwable $throwable) {
