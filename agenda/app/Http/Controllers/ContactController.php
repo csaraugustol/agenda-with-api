@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\JsonResponse;
 use App\Http\Responses\DefaultResponse;
 use App\Http\Requests\Contact\IndexRequest;
+use App\Http\Requests\Contact\StoreRequest;
 use App\Services\Contracts\ContactServiceInterface;
 use App\Http\Resources\Contact\ContactShowResource;
 use App\Http\Resources\Contact\ContactCollectionResource;
@@ -71,5 +72,19 @@ class ContactController extends ApiController
         return $this->response(new DefaultResponse(
             new ContactShowResource($showContactResponse->data)
         ));
+    }
+
+    /**
+     * Cria um contato
+     *
+     * POST /contacts/store
+     *
+     * @param StoreRequest $request
+     *
+     * @return JsonResponse
+     */
+    public function store(StoreRequest $request): JsonResponse
+    {
+        return $this->response(new DefaultResponse());
     }
 }
