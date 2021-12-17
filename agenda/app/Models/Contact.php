@@ -46,10 +46,18 @@ class Contact extends Model
     }
 
     /**
-     * Relacionamento da contato com TagContact
+     * Relacionamento contato com TagContact
      */
     public function tagContacts()
     {
         return $this->hasMany(TagContact::class);
+    }
+
+    /**
+     * Relacionamento contato com a Tag
+     */
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class, 'tags_contacts', 'contact_id', 'tag_id');
     }
 }

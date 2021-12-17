@@ -2,10 +2,10 @@
 
 namespace App\Http\Resources\Contact;
 
+use App\Http\Resources\Tag\TagResource;
 use App\Http\Resources\Phone\PhoneResource;
 use App\Http\Resources\Address\AddressResource;
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Http\Resources\TagContact\TagContactIndexResource;
 
 class ContactShowResource extends JsonResource
 {
@@ -25,8 +25,8 @@ class ContactShowResource extends JsonResource
                 PhoneResource::collection($this->phones) : null,
             'adresses' => count($this->adresses) ?
                 AddressResource::collection($this->adresses) : null,
-            'tags'     => count($this->tagcontacts) ?
-                TagContactIndexResource::collection($this->tagcontacts) : null,
+            'tags'     => count($this->tags) ?
+                TagResource::collection($this->tags) : null,
         ];
     }
 }
