@@ -55,7 +55,7 @@ class ContactRepositoryEloquent extends BaseRepositoryEloquent implements Contac
      * @param string $userId
      * @param string $contactName
      *
-     * @return integer
+     * @return int
      */
     public function verifyExistsContactNameRegisteredUser(string $contactName, string $userId): int
     {

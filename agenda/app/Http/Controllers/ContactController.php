@@ -10,7 +10,6 @@ use App\Services\Contracts\ContactServiceInterface;
 use App\Http\Resources\Contact\ContactShowResource;
 use App\Http\Resources\Contact\ContactCollectionResource;
 use App\Services\Params\Contact\CreateCompleteContactsServiceParams;
-use App\Services\Params\Contact\CreateContactServiceParams;
 
 class ContactController extends ApiController
 {
