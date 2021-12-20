@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\JsonResponse;
 use App\Http\Responses\DefaultResponse;
 use App\Http\Requests\Contact\IndexRequest;
+use App\Http\Requests\Contact\StoreRequest;
 use App\Services\Contracts\ContactServiceInterface;
-use App\Http\Resources\Contact\ContactShowResource;
+use App\Http\Resources\Contact\ContactDetailsResource;
 use App\Http\Resources\Contact\ContactCollectionResource;
+use App\Services\Params\Contact\CreateCompleteContactsServiceParams;
 
 class ContactController extends ApiController
 {
@@ -69,7 +71,39 @@ class ContactController extends ApiController
         }
 
         return $this->response(new DefaultResponse(
-            new ContactShowResource($showContactResponse->data)
+            new ContactDetailsResource($showContactResponse->data)
+        ));
+    }
+
+    /**
+     * Cria um contato
+     *
+     * POST /contacts/store
+     *
+     * @param StoreRequest $request
+     *
+     * @return JsonResponse
+     */
+    public function store(StoreRequest $request): JsonResponse
+    {
+        $completeContactParams = new CreateCompleteContactsServiceParams(
+            $request->name,
+            user('id'),
+            $request->phones,
+            $request->adresses,
+            $request->tags
+        );
+
+        $createCompleteContactResponse = $this->contactService->store(
+            $completeContactParams
+        );
+
+        if (!$createCompleteContactResponse->success || is_null($createCompleteContactResponse->data)) {
+            return $this->errorResponseFromService($createCompleteContactResponse);
+        }
+
+        return $this->response(new DefaultResponse(
+            new ContactDetailsResource($createCompleteContactResponse->data)
         ));
     }
 }

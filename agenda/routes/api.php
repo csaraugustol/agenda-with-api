@@ -37,6 +37,10 @@ Route::group(['middleware' => ['api.token.user']], function () {
             'as'   => 'show',
             'uses' => 'ContactController@show'
         ]);
+        Route::post('/', [
+            'as'   => 'store',
+            'uses' => 'ContactController@store'
+        ]);
     });
 
     //Tag
