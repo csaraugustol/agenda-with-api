@@ -9,6 +9,8 @@ use App\Http\Requests\Contact\StoreRequest;
 use App\Services\Contracts\ContactServiceInterface;
 use App\Http\Resources\Contact\ContactShowResource;
 use App\Http\Resources\Contact\ContactCollectionResource;
+use App\Services\Params\Contact\CreateCompleteContactsServiceParams;
+use App\Services\Params\Contact\CreateContactServiceParams;
 
 class ContactController extends ApiController
 {
@@ -85,6 +87,22 @@ class ContactController extends ApiController
      */
     public function store(StoreRequest $request): JsonResponse
     {
-        return $this->response(new DefaultResponse());
+        $completeContact = new CreateCompleteContactsServiceParams(
+            $request->name,
+            user('id'),
+            $request->phones,
+            $request->adresses,
+            $request->tags
+        );
+
+        $createCompleteContactResponse = $this->contactService->storeCompleteContacts(
+            $completeContact
+        );
+
+        if (!$createCompleteContactResponse->success || is_null($createCompleteContactResponse->data)) {
+            return $this->errorResponseFromService($createCompleteContactResponse);
+        }
+
+        return $this->response(new DefaultResponse($createCompleteContactResponse));
     }
 }

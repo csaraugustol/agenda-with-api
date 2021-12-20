@@ -28,7 +28,7 @@ class StoreRequest extends FormRequest
     {
         return [
             'after' => [
-                'name'     => 'cast:string|trim_null',
+                'name'     => 'cast:string',
                 'tags'     => 'cast:array',
                 'phones'   => 'cast:array',
                 'adresses' => 'cast:array',
@@ -45,14 +45,14 @@ class StoreRequest extends FormRequest
     {
         return [
             'name'                    => 'required|string',
-            'tags'                    => 'array',
-            'tags.*.description'      => 'string',
+            'tags'                    => 'sometimes|array',
+            'tags.*.id'               => 'sometimes|uuid',
             'phones'                  => 'required|array|min:1',
             'phones.*.phone_number'   => 'required|string',
             'adresses'                => 'required|array|min:1',
             'adresses.*.street_name'  => 'required|string',
             'adresses.*.number'       => 'required|numeric',
-            'adresses.*.complement'   => 'string',
+            'adresses.*.complement'   => 'sometimes|string',
             'adresses.*.neighborhood' => 'required|string',
             'adresses.*.city'         => 'required|string',
             'adresses.*.state'        => 'required|string|max:2',
@@ -70,6 +70,7 @@ class StoreRequest extends FormRequest
     {
         return [
             'name.required'                    => 'O campo NOME é obrigatório',
+            'tags.*.id.uuid'                   => 'O campo ID da tag deve ser do tipo uuid',
             'phones.required'                  => 'É necessário informar o TELEFONE DO CONTATO',
             'phones.min'                       => 'É necessário informar pelo menos um telefone',
             'phones.*.phone_number.required'   => 'O campo NÚMERO DO TELEFONE é obrigatório',

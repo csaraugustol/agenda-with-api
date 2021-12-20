@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests\Traits;
 
-use Arr;
-use Sanitizer;
+use Illuminate\Support\Arr;
+use App\Http\Requests\Traits\Sanitizer;
 
 trait SanitizesInput
 {
@@ -67,9 +67,11 @@ trait SanitizesInput
     {
         $filters = Arr::only($filters, array_keys($this->input()));
 
+
         // Filtra todos os campos de inputs recebidos do form
         $this->sanitizer = Sanitizer::make($this->input(), $filters);
 
+        dd('chega aqui');
         // Recebe os inputs que exitem no form para efetuar a sanitização
         $keysBefore = array_keys($this->all());
 
@@ -87,7 +89,7 @@ trait SanitizesInput
     /**
      * Filters to be applied to the input.
      *
-     *  @return array
+     *  @return void
      */
     public function filters()
     {

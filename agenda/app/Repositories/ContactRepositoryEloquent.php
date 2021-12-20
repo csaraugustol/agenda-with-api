@@ -47,4 +47,21 @@ class ContactRepositoryEloquent extends BaseRepositoryEloquent implements Contac
 
         return $query->get();
     }
+
+    /**
+     * Verifica e conta se existe um nome de contato
+     * já registrado para o usuário
+     *
+     * @param string $userId
+     * @param string $contactName
+     *
+     * @return integer
+     */
+    public function verifyExistsContactNameRegisteredUser(string $contactName, string $userId): int
+    {
+        return $this->model
+            ->where('name', $contactName)
+            ->where('user_id', $userId)
+            ->count();
+    }
 }
