@@ -154,11 +154,6 @@ class ContactService extends BaseService implements ContactServiceInterface
                 'user_id' => $params->user_id
             ]);
 
-            if (is_null($contact)) {
-                DB::rollback();
-                return $contact;
-            }
-
             //Cria o telefone relacionado ao contato
             foreach ($params->phones as $phone) {
                 $createPhoneParams = new CreatePhoneServiceParams(

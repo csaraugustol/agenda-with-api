@@ -17,12 +17,12 @@ class UniqueContactName implements Rule
      */
     public function passes($attribute, $value)
     {
-        $tag = Contact::where([
+        $contact = Contact::where([
             ['name', $value],
             ['user_id', user('id')],
         ])->get();
 
-        return $tag->isEmpty();
+        return $contact->isEmpty();
     }
 
     /**
