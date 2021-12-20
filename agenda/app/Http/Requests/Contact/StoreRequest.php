@@ -8,7 +8,7 @@ use App\Http\Requests\Traits\SanitizesInput;
 
 class StoreRequest extends FormRequest
 {
-    //use SanitizesInput;
+    use SanitizesInput;
 
     /**
      * Determine if the user is authorized to make this request.

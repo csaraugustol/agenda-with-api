@@ -220,7 +220,7 @@ class ContactService extends BaseService implements ContactServiceInterface
      * Atualiza nome do contato do usuário
      *
      * @param string $contactName
-     * @param string $userId
+     * @param string $contactId
      *
      * @return ServiceResponse
      */
