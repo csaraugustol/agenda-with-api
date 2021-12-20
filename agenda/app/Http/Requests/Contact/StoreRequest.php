@@ -45,7 +45,7 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => [
+            'name'                    => [
                 'required',
                 new UniqueContactName()
             ],
