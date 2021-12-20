@@ -139,33 +139,6 @@ class ContactService extends BaseService implements ContactServiceInterface
     }
 
     /**
-     * Verifica se já existe cadastrado para o usuário
-     * um contato com o nome fornecido
-     *
-     * @param string $contactName
-     * @param string $userId
-     *
-     * @return ServiceResponse
-     */
-    public function verifyExistsContactNameRegisteredUser(string $contactName, string $userId): ServiceResponse
-    {
-        try {
-            $countContactName = $this->contactRepository->verifyExistsContactNameRegisteredUser(
-                $contactName,
-                $userId
-            );
-        } catch (Throwable $throwable) {
-            return $this->defaultErrorReturn($throwable, compact('contactName', 'userId'));
-        }
-
-        return new ServiceResponse(
-            true,
-            "Contagem do contato realizada com sucesso.",
-            $countContactName
-        );
-    }
-
-    /**
      * Cria um contato completo
      *
      * @param CreateCompleteContactsServiceParams $params

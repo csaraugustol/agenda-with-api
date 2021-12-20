@@ -11,5 +11,4 @@ interface ContactServiceInterface
     public function findByUserContact(string $userId, string $contactId): ServiceResponse;
     public function findAllWithFilter(string $userId, string $filter = null): ServiceResponse;
     public function store(CreateCompleteContactsServiceParams $params): ServiceResponse;
-    public function verifyExistsContactNameRegisteredUser(string $contactName, string $userId): ServiceResponse;
 }
