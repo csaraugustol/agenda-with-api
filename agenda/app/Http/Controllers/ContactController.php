@@ -94,7 +94,7 @@ class ContactController extends ApiController
             $request->tags
         );
 
-        $createCompleteContactResponse = $this->contactService->storeCompleteContacts(
+        $createCompleteContactResponse = $this->contactService->store(
             $completeContactParams
         );
 

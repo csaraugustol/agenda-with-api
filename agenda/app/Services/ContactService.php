@@ -11,9 +11,8 @@ use App\Services\Contracts\PhoneServiceInterface;
 use App\Services\Contracts\AddressServiceInterface;
 use App\Services\Contracts\ContactServiceInterface;
 use App\Services\Contracts\TagContactServiceInterface;
-use App\Services\Params\Address\CreateAddressServiceParams;
 use App\Services\Params\Phone\CreatePhoneServiceParams;
-use App\Services\Params\Contact\CreateContactServiceParams;
+use App\Services\Params\Address\CreateAddressServiceParams;
 use App\Services\Params\Contact\CreateCompleteContactsServiceParams;
 
 class ContactService extends BaseService implements ContactServiceInterface
@@ -167,62 +166,25 @@ class ContactService extends BaseService implements ContactServiceInterface
     }
 
     /**
-     * Cria um contato
-     *
-     * @param CreateContactServiceParams $params
-     *
-     * @return ServiceResponse
-     */
-    public function store(CreateContactServiceParams $params): ServiceResponse
-    {
-        try {
-            $countContactNameResponse = $this->verifyExistsContactNameRegisteredUser(
-                $params->name,
-                $params->user_id
-            );
-
-            if (!$countContactNameResponse->success || $countContactNameResponse->data > 0) {
-                return new ServiceResponse(
-                    false,
-                    'Já existe um contato com esse nome.',
-                    null
-                );
-            }
-
-            $contact = $this->contactRepository->create($params->toArray());
-        } catch (Throwable $throwable) {
-            return $this->defaultErrorReturn($throwable, compact('params'));
-        }
-
-        return new ServiceResponse(
-            true,
-            "Contato criado com sucesso.",
-            $contact
-        );
-    }
-
-    /**
      * Cria um contato completo
      *
      * @param CreateCompleteContactsServiceParams $params
      *
      * @return ServiceResponse
      */
-    public function storeCompleteContacts(CreateCompleteContactsServiceParams $params): ServiceResponse
+    public function store(CreateCompleteContactsServiceParams $params): ServiceResponse
     {
         DB::beginTransaction();
         try {
-            $createContactResponse = $this->store(new CreateContactServiceParams(
-                $params->name,
-                $params->user_id
-            ));
+            $contact = $this->contactRepository->create([
+                'name'    => $params->name,
+                'user_id' => $params->user_id
+            ]);
 
-            if (!$createContactResponse->success) {
+            if (is_null($contact)) {
                 DB::rollback();
-                return $createContactResponse;
+                return $contact;
             }
-
-            $contact = $createContactResponse->data;
 
             //Cria o telefone relacionado ao contato
             foreach ($params->phones as $phone) {

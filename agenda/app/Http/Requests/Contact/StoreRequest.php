@@ -2,12 +2,13 @@
 
 namespace App\Http\Requests\Contact;
 
+use App\Rules\UniqueContactName;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Http\Requests\Traits\SanitizesInput;
 
 class StoreRequest extends FormRequest
 {
-    //use SanitizesInput;
+    use SanitizesInput;
 
     /**
      * Determine if the user is authorized to make this request.
@@ -44,7 +45,10 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'                    => 'required|string',
+            'name' => [
+                'required',
+                new UniqueContactName()
+            ],
             'tags'                    => 'sometimes|array',
             'tags.*.id'               => 'sometimes|uuid',
             'phones'                  => 'required|array|min:1',

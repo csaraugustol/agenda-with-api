@@ -12,5 +12,4 @@ interface ContactRepository extends BaseRepositoryInterface
 {
     public function model();
     public function findAllWithFilter(string $userId, string $filter = null): Collection;
-    public function verifyExistsContactNameRegisteredUser(string $contactName, string $userId): int;
 }
