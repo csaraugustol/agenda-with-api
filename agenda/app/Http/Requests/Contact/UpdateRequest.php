@@ -43,9 +43,21 @@ class UpdateRequest extends FormRequest
     {
         return [
             'name' => [
-                'sometimes',
+                'required',
                 new UniqueContactName()
             ],
+        ];
+    }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'name.required' => 'O campo NOME é obrigatório',
         ];
     }
 }

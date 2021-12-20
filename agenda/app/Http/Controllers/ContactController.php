@@ -7,7 +7,6 @@ use App\Http\Responses\DefaultResponse;
 use App\Http\Requests\Contact\IndexRequest;
 use App\Http\Requests\Contact\StoreRequest;
 use App\Http\Requests\Contact\UpdateRequest;
-use App\Http\Resources\Contact\ContactResource;
 use App\Services\Contracts\ContactServiceInterface;
 use App\Http\Resources\Contact\ContactDetailsResource;
 use App\Http\Resources\Contact\ContactCollectionResource;
@@ -118,11 +117,11 @@ class ContactController extends ApiController
      *
      * @return JsonResponse
      */
-    public function update(UpdateRequest $request): JsonResponse
+    public function update(UpdateRequest $request, string $contactId): JsonResponse
     {
         $updateContactResponse = $this->contactService->update(
             $request->name,
-            $request->id
+            $contactId
         );
 
         if (!$updateContactResponse->success || is_null($updateContactResponse->data)) {
@@ -130,7 +129,7 @@ class ContactController extends ApiController
         }
 
         return $this->response(new DefaultResponse(
-            new ContactResource($updateContactResponse->data)
+            new ContactDetailsResource($updateContactResponse->data)
         ));
     }
 }
