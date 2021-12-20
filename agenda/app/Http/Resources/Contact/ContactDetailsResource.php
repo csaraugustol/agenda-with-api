@@ -7,7 +7,7 @@ use App\Http\Resources\Phone\PhoneResource;
 use App\Http\Resources\Address\AddressResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ContactShowResource extends JsonResource
+class ContactDetailsResource extends JsonResource
 {
     /**
      * Transform the resource into an array.

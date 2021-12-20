@@ -7,7 +7,12 @@ use Illuminate\Support\Facades\DB;
 use App\Services\Responses\InternalError;
 use App\Services\Responses\ServiceResponse;
 use App\Repositories\Contracts\ContactRepository;
+use App\Services\Contracts\PhoneServiceInterface;
+use App\Services\Contracts\AddressServiceInterface;
 use App\Services\Contracts\ContactServiceInterface;
+use App\Services\Contracts\TagContactServiceInterface;
+use App\Services\Params\Address\CreateAddressServiceParams;
+use App\Services\Params\Phone\CreatePhoneServiceParams;
 use App\Services\Params\Contact\CreateContactServiceParams;
 use App\Services\Params\Contact\CreateCompleteContactsServiceParams;
 
@@ -216,6 +221,58 @@ class ContactService extends BaseService implements ContactServiceInterface
                 DB::rollback();
                 return $createContactResponse;
             }
+
+            $contact = $createContactResponse->data;
+
+            //Cria o telefone relacionado ao contato
+            foreach ($params->phones as $phone) {
+                $createPhoneParams = new CreatePhoneServiceParams(
+                    $phone['phone_number'],
+                    $contact->id
+                );
+
+                $createPhoneResponse = app(PhoneServiceInterface::class)
+                    ->store($createPhoneParams);
+
+                if (!$createPhoneResponse->success) {
+                    DB::rollback();
+                    return $createPhoneResponse;
+                }
+            }
+
+            //Cria o endereço relacionado ao contato
+            foreach ($params->adresses as $address) {
+                $createAddressParams = new CreateAddressServiceParams(
+                    $address['street_name'],
+                    $address['number'],
+                    $address['complement'],
+                    $address['neighborhood'],
+                    $address['city'],
+                    $address['state'],
+                    $address['postal_code'],
+                    $address['country'],
+                    $contact->id
+                );
+
+                $createAddressResponse = app(AddressServiceInterface::class)
+                    ->store($createAddressParams);
+
+                if (!$createAddressResponse->success) {
+                    DB::rollBack();
+                    return $createAddressResponse;
+                }
+            }
+
+            //Cria o relacionamento da tag com o contato
+            foreach ($params->tags as $tag) {
+                $createTagContactResponse = app(TagContactServiceInterface::class)
+                    ->attach($tag['id'], $contact->id);
+
+                if (!$createTagContactResponse->success) {
+                    DB::rollBack();
+                    return $createTagContactResponse;
+                }
+            }
         } catch (Throwable $throwable) {
             return $this->defaultErrorReturn($throwable, compact('params'));
         }
@@ -225,7 +282,7 @@ class ContactService extends BaseService implements ContactServiceInterface
         return new ServiceResponse(
             true,
             "Contato criado com sucesso.",
-            $createContactResponse->data
+            $contact
         );
     }
 }
