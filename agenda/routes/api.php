@@ -41,6 +41,10 @@ Route::group(['middleware' => ['api.token.user']], function () {
             'as'   => 'store',
             'uses' => 'ContactController@store'
         ]);
+        Route::patch('/{id}', [
+            'as'   => 'update',
+            'uses' => 'ContactController@update'
+        ]);
     });
 
     //Tag

@@ -215,4 +215,39 @@ class ContactService extends BaseService implements ContactServiceInterface
             $contact
         );
     }
+
+    /**
+     * Atualiza nome do contato do usuário
+     *
+     * @param string $contactName
+     * @param string $userId
+     *
+     * @return ServiceResponse
+     */
+    public function update(string $contactName, string $contactId): ServiceResponse
+    {
+        try {
+            $findContactResponse = $this->find($contactId);
+            if (!$findContactResponse->success || is_null($findContactResponse->data)) {
+                return new ServiceResponse(
+                    false,
+                    $findContactResponse->message,
+                    null,
+                    $findContactResponse->internalErrors
+                );
+            }
+
+            $contactUpdate = $this->contactRepository->update([
+                'name' => $contactName
+            ], $contactId);
+        } catch (Throwable $throwable) {
+            return $this->defaultErrorReturn($throwable, compact('contactName', 'contactId'));
+        }
+
+        return new ServiceResponse(
+            true,
+            'Contato atualizado com sucesso.',
+            $contactUpdate
+        );
+    }
 }
