@@ -63,23 +63,6 @@ class TagContactService extends BaseService implements TagContactServiceInterfac
                 );
             }
 
-            $tag = $findTagResponse->data;
-            $contact = $findContactResponse->data;
-
-            if ($tag->user_id !== $contact->user_id) {
-                return new ServiceResponse(
-                    false,
-                    'Não é possível realizar a vinculação.',
-                    null,
-                    [
-                        new InternalError(
-                            'Não é possível realizar a vinculação.',
-                            12
-                        )
-                    ]
-                );
-            }
-
             //Verifica se existe vinculo
             $tagContact = $this->tagContactRepository->findTagContact(
                 $tagId,
