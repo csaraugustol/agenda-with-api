@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use Throwable;
-use App\Services\Responses\InternalError;
 use App\Services\Responses\ServiceResponse;
 use App\Services\Contracts\TagServiceInterface;
 use App\Services\Contracts\ContactServiceInterface;
@@ -30,14 +29,16 @@ class TagContactService extends BaseService implements TagContactServiceInterfac
      *
      * @param string $tagId
      * @param string $contactId
+     * @param string $userId
      *
      * @return ServiceResponse
      */
-    public function attach(string $tagId, string $contactId): ServiceResponse
+    public function attach(string $tagId, string $contactId, string $userId): ServiceResponse
     {
         try {
             $findTagResponse = app(TagServiceInterface::class)->find(
-                $tagId
+                $tagId,
+                $userId
             );
             if (!$findTagResponse->success || is_null($findTagResponse->data)) {
                 return new ServiceResponse(
@@ -49,7 +50,8 @@ class TagContactService extends BaseService implements TagContactServiceInterfac
             }
 
             $findContactResponse = app(ContactServiceInterface::class)->find(
-                $contactId
+                $contactId,
+                $userId
             );
             if (!$findContactResponse->success || is_null($findContactResponse->data)) {
                 return new ServiceResponse(
@@ -57,23 +59,6 @@ class TagContactService extends BaseService implements TagContactServiceInterfac
                     $findContactResponse->message,
                     null,
                     $findContactResponse->internalErrors
-                );
-            }
-
-            $tag = $findTagResponse->data;
-            $contact = $findContactResponse->data;
-
-            if ($tag->user_id !== $contact->user_id) {
-                return new ServiceResponse(
-                    false,
-                    'Não é possível realizar a vinculação.',
-                    null,
-                    [
-                        new InternalError(
-                            'Não é possível realizar a vinculação.',
-                            12
-                        )
-                    ]
                 );
             }
 
@@ -113,7 +98,7 @@ class TagContactService extends BaseService implements TagContactServiceInterfac
                 'contact_id' => $contactId
             ]);
         } catch (Throwable $throwable) {
-            return $this->defaultErrorReturn($throwable, compact('tagId', 'contactId'));
+            return $this->defaultErrorReturn($throwable, compact('tagId', 'contactId', 'userId'));
         }
 
         return new ServiceResponse(
