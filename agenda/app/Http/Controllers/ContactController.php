@@ -6,6 +6,7 @@ use Illuminate\Http\JsonResponse;
 use App\Http\Responses\DefaultResponse;
 use App\Http\Requests\Contact\IndexRequest;
 use App\Http\Requests\Contact\StoreRequest;
+use App\Http\Requests\Contact\UpdateRequest;
 use App\Services\Contracts\ContactServiceInterface;
 use App\Http\Resources\Contact\ContactDetailsResource;
 use App\Http\Resources\Contact\ContactCollectionResource;
@@ -61,9 +62,9 @@ class ContactController extends ApiController
      */
     public function show(string $contactId): JsonResponse
     {
-        $showContactResponse = $this->contactService->findByUserContact(
-            user('id'),
-            $contactId
+        $showContactResponse = $this->contactService->find(
+            $contactId,
+            user('id')
         );
 
         if (!$showContactResponse->success || is_null($showContactResponse->data)) {
@@ -104,6 +105,32 @@ class ContactController extends ApiController
 
         return $this->response(new DefaultResponse(
             new ContactDetailsResource($createCompleteContactResponse->data)
+        ));
+    }
+
+    /**
+     * Atualiza nome de um contato
+     *
+     * PATCH /contacts/update/{id}
+     *
+     * @param UpdateRequest $request
+     *
+     * @return JsonResponse
+     */
+    public function update(UpdateRequest $request, string $contactId): JsonResponse
+    {
+        $updateContactResponse = $this->contactService->update(
+            $request->name,
+            $contactId,
+            user('id')
+        );
+
+        if (!$updateContactResponse->success || is_null($updateContactResponse->data)) {
+            return $this->errorResponseFromService($updateContactResponse);
+        }
+
+        return $this->response(new DefaultResponse(
+            new ContactDetailsResource($updateContactResponse->data)
         ));
     }
 }

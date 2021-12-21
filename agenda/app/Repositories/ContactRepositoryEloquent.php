@@ -47,4 +47,21 @@ class ContactRepositoryEloquent extends BaseRepositoryEloquent implements Contac
 
         return $query->get();
     }
+
+    /**
+     * Busca um contato pelo id do contato
+     * e do usuário logado
+     *
+     * @param string $contactId
+     * @param string $userId
+     *
+     * @return Contact|null
+     */
+    public function findContactByUserId(string $contactId, string $userId): ?Contact
+    {
+        return $this->model
+            ->where('id', $contactId)
+            ->where('user_id', $userId)
+            ->first();
+    }
 }

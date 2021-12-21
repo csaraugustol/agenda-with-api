@@ -55,64 +55,20 @@ class ContactService extends BaseService implements ContactServiceInterface
     }
 
     /**
-     * Retorna um contato do usuário pelo id
-     * para mostrar seus detalhes
-     *
-     * @param string $userId
-     * @param string $contactId
-     *
-     * @return ServiceResponse
-     */
-    public function findByUserContact(string $userId, string $contactId): ServiceResponse
-    {
-        try {
-            $findContactResponse = $this->find($contactId);
-
-            if (!$findContactResponse->success || is_null($findContactResponse->data)) {
-                return new ServiceResponse(
-                    false,
-                    $findContactResponse->message,
-                    null,
-                    $findContactResponse->internalErrors
-                );
-            }
-
-            $contact = $findContactResponse->data;
-            if ($contact->user_id !== $userId) {
-                return new ServiceResponse(
-                    false,
-                    "Contato não foi localizado na sua listagem!",
-                    null,
-                    [
-                        new InternalError(
-                            'Contato não foi localizado na sua listagem!',
-                            15
-                        )
-                    ]
-                );
-            }
-        } catch (Throwable $throwable) {
-            return $this->defaultErrorReturn($throwable, compact('userId', 'contactId'));
-        }
-
-        return new ServiceResponse(
-            true,
-            "Busca realizada com sucesso!",
-            $contact
-        );
-    }
-
-    /**
      * Retorna um contato pelo id
      *
      * @param string $contactId
+     * @param string $userId
      *
      * @return ServiceResponse
      */
-    public function find(string $contactId): ServiceResponse
+    public function find(string $contactId, string $userId): ServiceResponse
     {
         try {
-            $contact = $this->contactRepository->findOrNull($contactId);
+            $contact = $this->contactRepository->findContactByUserId(
+                $contactId,
+                $userId
+            );
 
             if (is_null($contact)) {
                 return new ServiceResponse(
@@ -213,6 +169,43 @@ class ContactService extends BaseService implements ContactServiceInterface
             true,
             "Contato criado com sucesso.",
             $contact
+        );
+    }
+
+    /**
+     * Atualiza nome do contato do usuário
+     *
+     * @param string $contactName
+     * @param string $contactId
+     * @param string $userId
+     *
+     * @return ServiceResponse
+     */
+    public function update(string $contactName, string $contactId, string $userId): ServiceResponse
+    {
+        try {
+            $findContactResponse = $this->find($contactId, $userId);
+
+            if (!$findContactResponse->success || is_null($findContactResponse->data)) {
+                return new ServiceResponse(
+                    false,
+                    $findContactResponse->message,
+                    null,
+                    $findContactResponse->internalErrors
+                );
+            }
+
+            $contactUpdate = $this->contactRepository->update([
+                'name' => $contactName
+            ], $contactId);
+        } catch (Throwable $throwable) {
+            return $this->defaultErrorReturn($throwable, compact('contactName', 'contactId'));
+        }
+
+        return new ServiceResponse(
+            true,
+            'Contato atualizado com sucesso.',
+            $contactUpdate
         );
     }
 }
