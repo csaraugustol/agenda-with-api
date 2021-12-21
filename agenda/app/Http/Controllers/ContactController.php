@@ -121,7 +121,8 @@ class ContactController extends ApiController
     {
         $updateContactResponse = $this->contactService->update(
             $request->name,
-            $contactId
+            $contactId,
+            user('id')
         );
 
         if (!$updateContactResponse->success || is_null($updateContactResponse->data)) {

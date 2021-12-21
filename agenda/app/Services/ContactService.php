@@ -66,7 +66,7 @@ class ContactService extends BaseService implements ContactServiceInterface
     public function findByUserContact(string $userId, string $contactId): ServiceResponse
     {
         try {
-            $findContactResponse = $this->find($contactId);
+            $findContactResponse = $this->find($contactId, $userId);
 
             if (!$findContactResponse->success || is_null($findContactResponse->data)) {
                 return new ServiceResponse(
@@ -78,19 +78,6 @@ class ContactService extends BaseService implements ContactServiceInterface
             }
 
             $contact = $findContactResponse->data;
-            if ($contact->user_id !== $userId) {
-                return new ServiceResponse(
-                    false,
-                    "Contato não foi localizado na sua listagem!",
-                    null,
-                    [
-                        new InternalError(
-                            'Contato não foi localizado na sua listagem!',
-                            15
-                        )
-                    ]
-                );
-            }
         } catch (Throwable $throwable) {
             return $this->defaultErrorReturn($throwable, compact('userId', 'contactId'));
         }
@@ -106,13 +93,17 @@ class ContactService extends BaseService implements ContactServiceInterface
      * Retorna um contato pelo id
      *
      * @param string $contactId
+     * @param string $userId
      *
      * @return ServiceResponse
      */
-    public function find(string $contactId): ServiceResponse
+    public function find(string $contactId, string $userId): ServiceResponse
     {
         try {
-            $contact = $this->contactRepository->findOrNull($contactId);
+            $contact = $this->contactRepository->findContactByUserId(
+                $contactId,
+                $userId
+            );
 
             if (is_null($contact)) {
                 return new ServiceResponse(
@@ -224,10 +215,11 @@ class ContactService extends BaseService implements ContactServiceInterface
      *
      * @return ServiceResponse
      */
-    public function update(string $contactName, string $contactId): ServiceResponse
+    public function update(string $contactName, string $contactId, string $userId): ServiceResponse
     {
         try {
-            $findContactResponse = $this->find($contactId);
+            $findContactResponse = $this->find($contactId, $userId);
+
             if (!$findContactResponse->success || is_null($findContactResponse->data)) {
                 return new ServiceResponse(
                     false,
