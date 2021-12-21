@@ -177,6 +177,7 @@ class ContactService extends BaseService implements ContactServiceInterface
      *
      * @param string $contactName
      * @param string $contactId
+     * @param string $userId
      *
      * @return ServiceResponse
      */
