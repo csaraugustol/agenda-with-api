@@ -152,7 +152,7 @@ class ContactService extends BaseService implements ContactServiceInterface
             //Cria o relacionamento da tag com o contato
             foreach ($params->tags as $tag) {
                 $createTagContactResponse = app(TagContactServiceInterface::class)
-                    ->attach($tag['id'], $contact->id);
+                    ->attach($tag['id'], $contact->id, $params->user_id);
 
                 if (!$createTagContactResponse->success) {
                     DB::rollBack();
@@ -206,6 +206,45 @@ class ContactService extends BaseService implements ContactServiceInterface
             true,
             'Contato atualizado com sucesso.',
             $contactUpdate
+        );
+    }
+
+    /**
+     * Deleta um contato
+     *
+     * @param string $contactId
+     * @param string $userId
+     *
+     * @return ServiceResponse
+     */
+    public function delete(string $contactId, string $userId): ServiceResponse
+    {
+        try {
+            $findContactResponse = $this->find($contactId, $userId);
+
+            if (!$findContactResponse->success || is_null($findContactResponse->data)) {
+                return new ServiceResponse(
+                    false,
+                    $findContactResponse->message,
+                    null,
+                    $findContactResponse->internalErrors
+                );
+            }
+
+            $contact = $findContactResponse->data;
+
+            $contact->tagcontacts()->delete();
+            $contact->adresses()->delete();
+            $contact->phones()->delete();
+            $contact->delete();
+        } catch (Throwable $throwable) {
+            return $this->defaultErrorReturn($throwable, compact('contactId', 'userId'));
+        }
+
+        return new ServiceResponse(
+            true,
+            'Contato removido com sucesso.',
+            null
         );
     }
 }

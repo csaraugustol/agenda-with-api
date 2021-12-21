@@ -22,8 +22,7 @@ class CreateTagsTable extends Migration
 
             $table->foreign('user_id')
                 ->references('id')
-                ->on('users')
-                ->onDelete('cascade');
+                ->on('users');
         });
     }
 
