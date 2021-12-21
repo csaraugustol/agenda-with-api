@@ -139,7 +139,8 @@ class TagController extends ApiController
     {
         $attachTagContactResponse = app(TagContactServiceInterface::class)->attach(
             $idTag,
-            $request->contact_id
+            $request->contact_id,
+            user('id')
         );
 
         if (!$attachTagContactResponse->success || is_null($attachTagContactResponse->data)) {

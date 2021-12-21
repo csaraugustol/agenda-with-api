@@ -30,10 +30,11 @@ class TagContactService extends BaseService implements TagContactServiceInterfac
      *
      * @param string $tagId
      * @param string $contactId
+     * @param string $userId
      *
      * @return ServiceResponse
      */
-    public function attach(string $tagId, string $contactId): ServiceResponse
+    public function attach(string $tagId, string $contactId, string $userId): ServiceResponse
     {
         try {
             $findTagResponse = app(TagServiceInterface::class)->find(
@@ -49,7 +50,8 @@ class TagContactService extends BaseService implements TagContactServiceInterfac
             }
 
             $findContactResponse = app(ContactServiceInterface::class)->find(
-                $contactId
+                $contactId,
+                $userId
             );
             if (!$findContactResponse->success || is_null($findContactResponse->data)) {
                 return new ServiceResponse(
@@ -113,7 +115,7 @@ class TagContactService extends BaseService implements TagContactServiceInterfac
                 'contact_id' => $contactId
             ]);
         } catch (Throwable $throwable) {
-            return $this->defaultErrorReturn($throwable, compact('tagId', 'contactId'));
+            return $this->defaultErrorReturn($throwable, compact('tagId', 'contactId', 'userId'));
         }
 
         return new ServiceResponse(
