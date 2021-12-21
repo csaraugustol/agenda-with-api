@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use Throwable;
-use App\Services\Responses\InternalError;
 use App\Services\Responses\ServiceResponse;
 use App\Services\Contracts\TagServiceInterface;
 use App\Services\Contracts\ContactServiceInterface;
