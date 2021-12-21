@@ -55,41 +55,6 @@ class ContactService extends BaseService implements ContactServiceInterface
     }
 
     /**
-     * Retorna um contato do usuário pelo id
-     * para mostrar seus detalhes
-     *
-     * @param string $userId
-     * @param string $contactId
-     *
-     * @return ServiceResponse
-     */
-    public function findByUserContact(string $userId, string $contactId): ServiceResponse
-    {
-        try {
-            $findContactResponse = $this->find($contactId, $userId);
-
-            if (!$findContactResponse->success || is_null($findContactResponse->data)) {
-                return new ServiceResponse(
-                    false,
-                    $findContactResponse->message,
-                    null,
-                    $findContactResponse->internalErrors
-                );
-            }
-
-            $contact = $findContactResponse->data;
-        } catch (Throwable $throwable) {
-            return $this->defaultErrorReturn($throwable, compact('userId', 'contactId'));
-        }
-
-        return new ServiceResponse(
-            true,
-            "Busca realizada com sucesso!",
-            $contact
-        );
-    }
-
-    /**
      * Retorna um contato pelo id
      *
      * @param string $contactId

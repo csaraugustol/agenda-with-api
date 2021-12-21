@@ -62,9 +62,9 @@ class ContactController extends ApiController
      */
     public function show(string $contactId): JsonResponse
     {
-        $showContactResponse = $this->contactService->findByUserContact(
-            user('id'),
-            $contactId
+        $showContactResponse = $this->contactService->find(
+            $contactId,
+            user('id')
         );
 
         if (!$showContactResponse->success || is_null($showContactResponse->data)) {
