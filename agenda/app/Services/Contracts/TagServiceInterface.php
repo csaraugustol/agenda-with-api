@@ -7,9 +7,9 @@ use App\Services\Params\Tag\CreateTagServiceParams;
 
 interface TagServiceInterface
 {
-    public function find(string $tagId): ServiceResponse;
+    public function find(string $tagId, string $userId): ServiceResponse;
     public function store(CreateTagServiceParams $params): ServiceResponse;
-    public function update(array $params, string $tagId): ServiceResponse;
-    public function delete(string $tagId): ServiceResponse;
+    public function update(array $params, string $tagId, string $userId): ServiceResponse;
+    public function delete(string $tagId, string $userId): ServiceResponse;
     public function findAll(string $userId, string $description = null): ServiceResponse;
 }

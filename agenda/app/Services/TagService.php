@@ -28,13 +28,14 @@ class TagService extends BaseService implements TagServiceInterface
      * Busca uma tag pelo id
      *
      * @param string $tagId
+     * @param string $userId
      *
      * @return ServiceResponse
      */
-    public function find(string $tagId): ServiceResponse
+    public function find(string $tagId, string $userId): ServiceResponse
     {
         try {
-            $tag = $this->tagRepository->findOrNull($tagId);
+            $tag = $this->tagRepository->findTagByUserId($tagId, $userId);
             if (is_null($tag)) {
                 return new ServiceResponse(
                     true,
@@ -49,7 +50,7 @@ class TagService extends BaseService implements TagServiceInterface
                 );
             }
         } catch (Throwable $throwable) {
-            return $this->defaultErrorReturn($throwable, compact('tagId'));
+            return $this->defaultErrorReturn($throwable, compact('tagId', 'userId'));
         }
 
         return new ServiceResponse(
@@ -85,13 +86,14 @@ class TagService extends BaseService implements TagServiceInterface
      *
      * @param array $params
      * @param string $tagId
+     * @param string $userId
      *
      * @return ServiceResponse
      */
-    public function update(array $params, string $tagId): ServiceResponse
+    public function update(array $params, string $tagId, string $userId): ServiceResponse
     {
         try {
-            $findTagResponse = $this->find($tagId);
+            $findTagResponse = $this->find($tagId, $userId);
             if (!$findTagResponse->success || is_null($findTagResponse->data)) {
                 return new ServiceResponse(
                     false,
@@ -106,7 +108,7 @@ class TagService extends BaseService implements TagServiceInterface
                 $tagId
             );
         } catch (Throwable $throwable) {
-            return $this->defaultErrorReturn($throwable, compact('params', 'tagId'));
+            return $this->defaultErrorReturn($throwable, compact('params', 'tagId', 'userId'));
         }
 
         return new ServiceResponse(
@@ -120,13 +122,14 @@ class TagService extends BaseService implements TagServiceInterface
      * Deleta uma tag pelo id
      *
      * @param string $tagId
+     * @param string $userId
      *
      * @return ServiceResponse
      */
-    public function delete(string $tagId): ServiceResponse
+    public function delete(string $tagId, string $userId): ServiceResponse
     {
         try {
-            $findTagResponse = $this->find($tagId);
+            $findTagResponse = $this->find($tagId, $userId);
             if (!$findTagResponse->success || is_null($findTagResponse->data)) {
                 return new ServiceResponse(
                     false,
@@ -138,7 +141,7 @@ class TagService extends BaseService implements TagServiceInterface
 
             $this->tagRepository->delete($tagId);
         } catch (Throwable $throwable) {
-            return $this->defaultErrorReturn($throwable, compact('tagId'));
+            return $this->defaultErrorReturn($throwable, compact('tagId', 'userId'));
         }
         return new ServiceResponse(
             true,
@@ -160,7 +163,7 @@ class TagService extends BaseService implements TagServiceInterface
         try {
             $tags = $this->tagRepository->findAll($userId, $description);
         } catch (Throwable $throwable) {
-            return new $this->defaultErrorReturn($throwable, compact('userId'));
+            return new $this->defaultErrorReturn($throwable, compact('userId', 'description'));
         }
 
         return new ServiceResponse(

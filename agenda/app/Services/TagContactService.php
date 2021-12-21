@@ -38,7 +38,8 @@ class TagContactService extends BaseService implements TagContactServiceInterfac
     {
         try {
             $findTagResponse = app(TagServiceInterface::class)->find(
-                $tagId
+                $tagId,
+                $userId
             );
             if (!$findTagResponse->success || is_null($findTagResponse->data)) {
                 return new ServiceResponse(

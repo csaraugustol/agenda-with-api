@@ -93,7 +93,8 @@ class TagController extends ApiController
     {
         $updateTagResponse = $this->tagService->update(
             $request->toArray(),
-            $request->id
+            $request->id,
+            user('id')
         );
 
         if (!$updateTagResponse->success || is_null($updateTagResponse->data)) {
@@ -116,7 +117,7 @@ class TagController extends ApiController
      */
     public function delete(string $idTag): JsonResponse
     {
-        $deleteTagResponse = $this->tagService->delete($idTag);
+        $deleteTagResponse = $this->tagService->delete($idTag, user('id'));
 
         if (!$deleteTagResponse->success) {
             return $this->errorResponseFromService($deleteTagResponse);

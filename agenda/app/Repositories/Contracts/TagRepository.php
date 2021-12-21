@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Contracts;
 
+use App\Models\Tag;
 use Illuminate\Database\Eloquent\Collection;
 
 /**
@@ -11,5 +12,6 @@ use Illuminate\Database\Eloquent\Collection;
 interface TagRepository extends BaseRepositoryInterface
 {
     public function model();
+    public function findTagByUserId(string $tagId, string $userId): ?Tag;
     public function findAll(string $userId, string $description = null): Collection;
 }

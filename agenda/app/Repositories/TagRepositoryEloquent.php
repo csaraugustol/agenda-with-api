@@ -40,4 +40,21 @@ class TagRepositoryEloquent extends BaseRepositoryEloquent implements TagReposit
 
         return $query->get();
     }
+
+    /**
+     * Busca uma tag pelo id
+     * e usuário logado
+     *
+     * @param string $tagId
+     * @param string $userId
+     *
+     * @return Tag|null
+     */
+    public function findTagByUserId(string $tagId, string $userId): ?Tag
+    {
+        return $this->model
+            ->where('id', $tagId)
+            ->where('user_id', $userId)
+            ->first();
+    }
 }
