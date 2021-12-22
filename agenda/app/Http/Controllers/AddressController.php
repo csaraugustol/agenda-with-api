@@ -49,4 +49,27 @@ class AddressController extends ApiController
             new AddressResource($updateAddressResponse->data)
         ));
     }
+
+    /**
+     * Deleta um endereço do contato
+     *
+     * DELETE /address/{id}
+     *
+     * @param string $addressId
+     *
+     * @return JsonResponse
+     */
+    public function delete(string $addressId): JsonResponse
+    {
+        $deleteAddressResponse = $this->addressService->delete(
+            $addressId,
+            user('id')
+        );
+
+        if (!$deleteAddressResponse->success) {
+            return $this->errorResponseFromService($deleteAddressResponse);
+        }
+
+        return $this->response(new DefaultResponse());
+    }
 }

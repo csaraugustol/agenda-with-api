@@ -141,10 +141,11 @@ class AddressService extends BaseService implements AddressServiceInterface
      * Deleta um endereço pelo id
      *
      * @param string $addressId
+     * @param string $userId
      *
      * @return ServiceResponse
      */
-    public function delete(string $addressId): ServiceResponse
+    public function delete(string $addressId, string $userId): ServiceResponse
     {
         try {
             $findAddressResponse = $this->find($addressId);
@@ -157,9 +158,27 @@ class AddressService extends BaseService implements AddressServiceInterface
                 );
             }
 
+            $address = $findAddressResponse->data;
+            $findContactResponse = app(ContactServiceInterface::class)
+                ->find($address->contact_id, $userId);
+
+            if (is_null($findContactResponse->data)) {
+                return new ServiceResponse(
+                    false,
+                    'O endereço não foi encontrado.',
+                    null,
+                    [
+                        new InternalError(
+                            'O endereço não foi encontrado.',
+                            15
+                        )
+                    ]
+                );
+            }
+
             $this->addressRepository->delete($addressId);
         } catch (Throwable $throwable) {
-            return $this->defaultErrorReturn($throwable, compact('addressId'));
+            return $this->defaultErrorReturn($throwable, compact('addressId', 'userId'));
         }
 
         return new ServiceResponse(
