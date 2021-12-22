@@ -26,7 +26,7 @@ class AddressController extends ApiController
     /**
      * Atualiza um endereço do contato
      *
-     * PATCH address/{id}
+     * PATCH /address/{id}
      *
      * @param UpdateRequest $request
      * @param string $contactId
@@ -37,7 +37,8 @@ class AddressController extends ApiController
     {
         $updateAddressResponse = $this->addressService->update(
             $request->toArray(),
-            $addressId
+            $addressId,
+            user('id')
         );
 
         if (!$updateAddressResponse->success || is_null($updateAddressResponse->data)) {

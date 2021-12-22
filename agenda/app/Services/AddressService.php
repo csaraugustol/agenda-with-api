@@ -7,6 +7,7 @@ use App\Services\Responses\InternalError;
 use App\Services\Responses\ServiceResponse;
 use App\Repositories\Contracts\AddressRepository;
 use App\Services\Contracts\AddressServiceInterface;
+use App\Services\Contracts\ContactServiceInterface;
 use App\Services\Params\Address\CreateAddressServiceParams;
 
 class AddressService extends BaseService implements AddressServiceInterface
@@ -86,14 +87,15 @@ class AddressService extends BaseService implements AddressServiceInterface
      *
      * @param array $params
      * @param string $addressId
+     * @param string $userId
      *
      * @return ServiceResponse
      */
-    public function update(array $params, string $addressId): ServiceResponse
+    public function update(array $params, string $addressId, string $userId): ServiceResponse
     {
         try {
             $findAddressResponse = $this->find($addressId);
-            if (!$findAddressResponse->success || is_null($findAddressResponse)) {
+            if (!$findAddressResponse->success || is_null($findAddressResponse->data)) {
                 return new ServiceResponse(
                     false,
                     $findAddressResponse->message,
@@ -102,12 +104,30 @@ class AddressService extends BaseService implements AddressServiceInterface
                 );
             }
 
+            $address = $findAddressResponse->data;
+            $findContactResponse = app(ContactServiceInterface::class)
+                ->find($address->contact_id, $userId);
+
+            if (is_null($findContactResponse->data)) {
+                return new ServiceResponse(
+                    false,
+                    'Não é possível realizar a atualização do endereço.',
+                    null,
+                    [
+                        new InternalError(
+                            'Não é possível realizar a atualização do endereço.',
+                            15
+                        )
+                    ]
+                );
+            }
+
             $addressUpdate = $this->addressRepository->update(
                 $params,
                 $addressId
             );
         } catch (Throwable $throwable) {
-            return $this->defaultErrorReturn($throwable, compact('params', 'addressId'));
+            return $this->defaultErrorReturn($throwable, compact('params', 'addressId', 'userId'));
         }
 
         return new ServiceResponse(
