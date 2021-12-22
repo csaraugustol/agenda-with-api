@@ -51,6 +51,14 @@ Route::group(['middleware' => ['api.token.user']], function () {
         ]);
     });
 
+    //Endereço
+    Route::group(['prefix' => '/address', 'as' => 'address.'], function () {
+        Route::patch('/{id}', [
+            'as'   => 'update',
+            'uses' => 'AddressController@update'
+        ]);
+    });
+
     //Tag
     Route::group(['prefix' => '/tags', 'as' => 'tags.'], function () {
         Route::get('/', [

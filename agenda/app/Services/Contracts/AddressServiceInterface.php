@@ -9,6 +9,6 @@ interface AddressServiceInterface
 {
     public function find(string $addressId): ServiceResponse;
     public function store(CreateAddressServiceParams $params): ServiceResponse;
-    public function update(array $params, string $addressId): ServiceResponse;
+    public function update(array $params, string $addressId, string $userId): ServiceResponse;
     public function delete(string $addressId): ServiceResponse;
 }
