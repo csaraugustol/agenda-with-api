@@ -26,6 +26,8 @@ class AddressController extends ApiController
     /**
      * Atualiza um endereço do contato
      *
+     * PATCH address/{id}
+     *
      * @param UpdateRequest $request
      * @param string $contactId
      *
