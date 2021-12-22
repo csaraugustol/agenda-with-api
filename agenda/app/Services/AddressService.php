@@ -111,11 +111,11 @@ class AddressService extends BaseService implements AddressServiceInterface
             if (is_null($findContactResponse->data)) {
                 return new ServiceResponse(
                     false,
-                    'O contato não foi encontrado.',
+                    'O endereço não foi encontrado.',
                     null,
                     [
                         new InternalError(
-                            'O contato não foi encontrado.',
+                            'O endereço não foi encontrado.',
                             15
                         )
                     ]
