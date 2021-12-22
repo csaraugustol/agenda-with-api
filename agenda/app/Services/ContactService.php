@@ -231,12 +231,7 @@ class ContactService extends BaseService implements ContactServiceInterface
                 );
             }
 
-            $contact = $findContactResponse->data;
-
-            $contact->tagcontacts()->delete();
-            $contact->adresses()->delete();
-            $contact->phones()->delete();
-            $contact->delete();
+            $this->contactRepository->delete($contactId);
         } catch (Throwable $throwable) {
             return $this->defaultErrorReturn($throwable, compact('contactId', 'userId'));
         }
