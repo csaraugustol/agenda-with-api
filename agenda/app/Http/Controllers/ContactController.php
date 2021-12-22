@@ -133,4 +133,24 @@ class ContactController extends ApiController
             new ContactDetailsResource($updateContactResponse->data)
         ));
     }
+
+    /**
+     * Deleta um contato pelo id
+     *
+     * DELETE /contacts/{id}
+     *
+     * @param string $contactId
+     *
+     * @return JsonResponse
+     */
+    public function delete(string $contactId): JsonResponse
+    {
+        $deleteContactResponse = $this->contactService->delete($contactId, user('id'));
+
+        if (!$deleteContactResponse->success) {
+            return $this->errorResponseFromService($deleteContactResponse);
+        }
+
+        return $this->response(new DefaultResponse());
+    }
 }
