@@ -85,7 +85,7 @@ class AddressService extends BaseService implements AddressServiceInterface
     /**
      * Realiza atualização do endereço
      *
-     * @param array $params
+     * @param array  $params
      * @param string $addressId
      * @param string $userId
      *
