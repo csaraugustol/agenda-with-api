@@ -57,6 +57,10 @@ Route::group(['middleware' => ['api.token.user']], function () {
             'as'   => 'update',
             'uses' => 'AddressController@update'
         ]);
+        Route::delete('/{id}', [
+            'as'   => 'delete',
+            'uses' => 'AddressController@delete'
+        ]);
     });
 
     //Tag
