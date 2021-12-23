@@ -77,6 +77,9 @@ class AddressController extends ApiController
 
     /**
      * Busca os dados do CEP informado
+     * pela API ViaCep
+     *
+     * GET /address/postalcode
      *
      * @param IndexRequest $request
      *
