@@ -225,16 +225,28 @@ class AddressService extends BaseService implements AddressServiceInterface
             if ($requestError->getCode() === 400) {
                 return new ServiceResponse(
                     false,
-                    'Requisição inválida.',
+                    'O cep informado é inválido.',
                     null,
                     [
                         new InternalError(
-                            'Requisição inválida.',
-                            17
+                            'O cep informado é inválido.',
+                            16
                         )
                     ]
                 );
             }
+
+            return new ServiceResponse(
+                false,
+                'Requisição inválida.',
+                null,
+                [
+                    new InternalError(
+                        'Requisição inválida.',
+                        17
+                    )
+                ]
+            );
         }
 
         return new ServiceResponse(
