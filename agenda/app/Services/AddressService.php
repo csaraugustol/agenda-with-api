@@ -3,7 +3,9 @@
 namespace App\Services;
 
 use Throwable;
+use GuzzleHttp\Client;
 use App\Services\Responses\InternalError;
+use GuzzleHttp\Exception\RequestException;
 use App\Services\Responses\ServiceResponse;
 use App\Repositories\Contracts\AddressRepository;
 use App\Services\Contracts\AddressServiceInterface;
@@ -185,6 +187,60 @@ class AddressService extends BaseService implements AddressServiceInterface
             true,
             'Endereço removido com sucesso.',
             null
+        );
+    }
+
+    /**
+     * Busca os dados de um cep
+     * via API ViaCep
+     *
+     * @param string $postalCode
+     *
+     * @return ServiceResponse
+     */
+    public function findPostalCode(string $postalCode): ServiceResponse
+    {
+        try {
+            $client = new Client();
+
+            $urlResponse = $client->get('viacep.com.br/ws/' . $postalCode . '/json');
+
+            $data = [];
+            $data = json_decode($urlResponse->getBody(), true);
+
+            if (array_key_exists("erro", $data)) {
+                return new ServiceResponse(
+                    false,
+                    'O cep informado é inválido.',
+                    null,
+                    [
+                        new InternalError(
+                            'O cep informado é inválido.',
+                            16
+                        )
+                    ]
+                );
+            }
+        } catch (RequestException $requestError) {
+            if ($requestError->getCode() === 400) {
+                return new ServiceResponse(
+                    false,
+                    'Requisição inválida.',
+                    null,
+                    [
+                        new InternalError(
+                            'Requisição inválida.',
+                            17
+                        )
+                    ]
+                );
+            }
+        }
+
+        return new ServiceResponse(
+            true,
+            'Cep encontrado com sucesso.',
+            $data
         );
     }
 }

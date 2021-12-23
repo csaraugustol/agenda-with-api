@@ -11,4 +11,5 @@ interface AddressServiceInterface
     public function store(CreateAddressServiceParams $params): ServiceResponse;
     public function update(array $params, string $addressId, string $userId): ServiceResponse;
     public function delete(string $addressId, string $userId): ServiceResponse;
+    public function findPostalCode(string $postalCode): ServiceResponse;
 }
