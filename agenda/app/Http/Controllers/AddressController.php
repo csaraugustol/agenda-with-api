@@ -79,15 +79,15 @@ class AddressController extends ApiController
      * Busca os dados do CEP informado
      * pela API ViaCep
      *
-     * GET /address/postalcode
+     * GET /address/find-by-postal-code/{postalCode}
      *
-     * @param IndexRequest $request
+     * @param string $postalCode
      *
      * @return JsonResponse
      */
-    public function postalcode(IndexRequest $request): JsonResponse
+    public function findByPostalCode(string $postalCode): JsonResponse
     {
-        $postalCodeResponse = $this->addressService->findPostalCode($request->postal_code);
+        $postalCodeResponse = $this->addressService->findByPostalCode($postalCode);
 
         if (!$postalCodeResponse->success || is_null($postalCodeResponse->data)) {
             return $this->errorResponseFromService($postalCodeResponse);

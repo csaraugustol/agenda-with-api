@@ -191,22 +191,52 @@ class AddressService extends BaseService implements AddressServiceInterface
     }
 
     /**
-     * Busca os dados de um cep
-     * via API ViaCep
+     * Busca os dados de um cep na
+     * API ViaCep e retorna o endereço
      *
      * @param string $postalCode
      *
      * @return ServiceResponse
      */
-    public function findPostalCode(string $postalCode): ServiceResponse
+    public function findByPostalCode(string $postalCode): ServiceResponse
+    {
+        try {
+            $findByPostalCodeResponse = $this->sendRequest($postalCode);
+
+            if (!$findByPostalCodeResponse->success || is_null($findByPostalCodeResponse->data)) {
+                return new ServiceResponse(
+                    false,
+                    $findByPostalCodeResponse->message,
+                    null,
+                    $findByPostalCodeResponse->internalErrors
+                );
+            }
+        } catch (Throwable $throwable) {
+            return $this->defaultErrorReturn($throwable, compact('postalCode'));
+        }
+
+        return new ServiceResponse(
+            true,
+            'O Endereço foi encontrado pelo CEP.',
+            $findByPostalCodeResponse->data
+        );
+    }
+
+    /**
+     * Realiza a requisição na API ViaCep
+     *
+     * @param string $postalCode
+     *
+     * @return ServiceResponse
+     */
+    public function sendRequest(string $postalCode): ServiceResponse
     {
         try {
             $client = new Client();
 
-            $urlResponse = $client->get('viacep.com.br/ws/' . $postalCode . '/json');
+            $response = $client->get('viacep.com.br/ws/' . $postalCode . '/json');
 
-            $data = [];
-            $data = json_decode($urlResponse->getBody(), true);
+            $data = json_decode($response->getBody(), true);
 
             if (array_key_exists("erro", $data)) {
                 return new ServiceResponse(
@@ -251,7 +281,7 @@ class AddressService extends BaseService implements AddressServiceInterface
 
         return new ServiceResponse(
             true,
-            'Cep encontrado com sucesso.',
+            'A requisição foi realizada com sucesso.',
             $data
         );
     }
