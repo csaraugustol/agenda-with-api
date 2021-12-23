@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use App\Http\Responses\DefaultResponse;
-use App\Http\Requests\ViaCep\IndexRequest;
 use App\Http\Requests\Address\UpdateRequest;
 use App\Http\Resources\Address\AddressResource;
 use App\Services\Contracts\AddressServiceInterface;
