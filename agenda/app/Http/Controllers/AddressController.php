@@ -7,6 +7,7 @@ use App\Http\Responses\DefaultResponse;
 use App\Http\Requests\Address\UpdateRequest;
 use App\Http\Resources\Address\AddressResource;
 use App\Services\Contracts\AddressServiceInterface;
+use App\Http\Resources\Address\AddressViaCepResource;
 
 class AddressController extends ApiController
 {
@@ -71,5 +72,27 @@ class AddressController extends ApiController
         }
 
         return $this->response(new DefaultResponse());
+    }
+
+    /**
+     * Busca os dados do CEP informado
+     * pela API ViaCep
+     *
+     * GET /address/find-by-postal-code/{postalCode}
+     *
+     * @param string $postalCode
+     *
+     * @return JsonResponse
+     */
+    public function findByPostalCode(string $postalCode): JsonResponse
+    {
+        $postalCodeResponse = $this->addressService->findByPostalCode($postalCode);
+
+        if (!$postalCodeResponse->success || is_null($postalCodeResponse->data)) {
+            return $this->errorResponseFromService($postalCodeResponse);
+        }
+        return $this->response(new DefaultResponse(
+            new AddressViaCepResource($postalCodeResponse->data)
+        ));
     }
 }

@@ -61,6 +61,10 @@ Route::group(['middleware' => ['api.token.user']], function () {
             'as'   => 'delete',
             'uses' => 'AddressController@delete'
         ]);
+        Route::get('/find-by-postal-code/{postalCode}', [
+            'as'   => 'find-by-postal-code',
+            'uses' => 'AddressController@findByPostalCode'
+        ]);
     });
 
     //Tag
