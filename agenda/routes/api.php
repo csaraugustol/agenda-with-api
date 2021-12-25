@@ -109,5 +109,9 @@ Route::group(['middleware' => ['api.token.user']], function () {
             'as'   => 'logout',
             'uses' => 'UserController@logout'
         ]);
+        Route::post('/change-password', [
+            'as'   => 'change-password',
+            'uses' => 'UserController@changePassword'
+        ]);
     });
 });

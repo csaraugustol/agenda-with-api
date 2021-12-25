@@ -275,4 +275,40 @@ class UserService extends BaseService implements UserServiceInterface
             $user
         );
     }
+
+    /**
+     * Realiza alteração da senha do usuário
+     *
+     * @param string $password
+     * @param string $userId
+     *
+     * @return ServiceResponse
+     */
+    public function changePassword(string $password, string $userId): ServiceResponse
+    {
+        try {
+            $findUserResponse = $this->find($userId);
+            if (!$findUserResponse->success || is_null($findUserResponse->data)) {
+                return new ServiceResponse(
+                    false,
+                    $findUserResponse->message,
+                    null,
+                    $findUserResponse->internalErrors
+                );
+            }
+
+            $passwordUpdate = $this->userRepository->update(
+                ['password' => bcrypt($password)],
+                $userId
+            );
+        } catch (Throwable $throwable) {
+            return $this->defaultErrorReturn($throwable, compact('password', 'userId'));
+        }
+
+        return new ServiceResponse(
+            true,
+            'Senha atualizada com sucesso.',
+            $passwordUpdate
+        );
+    }
 }

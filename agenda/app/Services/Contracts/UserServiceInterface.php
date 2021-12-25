@@ -13,4 +13,5 @@ interface UserServiceInterface
     public function update(array $params, string $userId): ServiceResponse;
     public function login(string $email, string $password): ServiceResponse;
     public function register(RegisterUserServiceParams $params): ServiceResponse;
+    public function changePassword(string $password, string $userId): ServiceResponse;
 }
