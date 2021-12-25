@@ -136,6 +136,15 @@ class UserController extends ApiController
         ));
     }
 
+    /**
+     * Atualiza senha do usuário
+     *
+     * POST /users/change-password
+     *
+     * @param UpdatePasswordRequest $request
+     *
+     * @return JsonResponse
+     */
     public function changePassword(UpdatePasswordRequest $request): JsonResponse
     {
         $changePasswordResponse = $this->userService->changePassword(
