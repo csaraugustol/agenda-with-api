@@ -39,7 +39,7 @@ class UpdatePasswordRequest extends FormRequest
     public function rules()
     {
         return [
-            'password'         => 'required|string|regex:/^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{6,15}$/',
+            'password'         => 'required|string|regex:/^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{8,20}$/',
             'confirm_password' => 'required|string|same:password',
         ];
     }
