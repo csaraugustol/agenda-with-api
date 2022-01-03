@@ -5,11 +5,13 @@ namespace App\Models;
 use App\Models\Traits\UuidAsPrimaryKey;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Askedio\SoftCascade\Traits\SoftCascadeTrait;
 
 class Contact extends Model
 {
     use SoftDeletes;
     use UuidAsPrimaryKey;
+    use SoftCascadeTrait;
 
     /**
      * Atributos da model para serem atribuídos
@@ -19,6 +21,17 @@ class Contact extends Model
     protected $fillable = [
         'name',
         'user_id',
+    ];
+
+    /**
+     * Relacionamentos das models que serão deletadas junto com o contato
+     *
+     * @var array
+     */
+    protected $softCascade = [
+        'adresses',
+        'phones',
+        'tagContacts'
     ];
 
     /**

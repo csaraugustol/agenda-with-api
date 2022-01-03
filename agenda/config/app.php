@@ -167,6 +167,7 @@ return [
          */
         Prettus\Repository\Providers\RepositoryServiceProvider::class,
         Waavi\Sanitizer\Laravel\SanitizerServiceProvider::class,
+        Askedio\SoftCascade\Providers\GenericServiceProvider::class,
 
         /*
          * Application Service Providers...
