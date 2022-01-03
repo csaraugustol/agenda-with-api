@@ -31,7 +31,7 @@ class Contact extends Model
     protected $softCascade = [
         'adresses',
         'phones',
-        'tagContacts'
+        'tagContacts',
     ];
 
     /**
