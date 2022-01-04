@@ -11,6 +11,7 @@ interface UserServiceInterface
     public function logout(string $userId): ServiceResponse;
     public function findByEmail(string $email): ServiceResponse;
     public function update(array $params, string $userId): ServiceResponse;
+    public function tokenToChangePassword(string $userId): ServiceResponse;
     public function login(string $email, string $password): ServiceResponse;
     public function register(RegisterUserServiceParams $params): ServiceResponse;
 }

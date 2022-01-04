@@ -9,6 +9,7 @@ use App\Http\Requests\User\UpdateRequest;
 use App\Http\Resources\User\UserResource;
 use App\Http\Requests\User\RegisterRequest;
 use App\Services\Contracts\UserServiceInterface;
+use App\Http\Resources\User\ChangePasswordResource;
 use App\Services\Params\User\RegisterUserServiceParams;
 use App\Http\Resources\AuthenticateToken\AuthenticateTokenResource;
 
@@ -132,6 +133,26 @@ class UserController extends ApiController
 
         return $this->response(new DefaultResponse(
             new UserResource($updateUserResponse->data)
+        ));
+    }
+
+    /**
+     * Retorna o token para alterar a senha do usuário
+     *
+     * GET /users/change-password
+     *
+     * @return JsonResponse
+     */
+    public function tokenToChangePassword(): JsonResponse
+    {
+        $createTokenResponse = $this->userService->tokenToChangePassword(user('id'));
+
+        if (!$createTokenResponse->success || is_null($createTokenResponse->data)) {
+            return $this->errorResponseFromService($createTokenResponse);
+        }
+
+        return $this->response(new DefaultResponse(
+            new ChangePasswordResource($createTokenResponse->data)
         ));
     }
 }
