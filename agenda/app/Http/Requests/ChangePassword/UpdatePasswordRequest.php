@@ -30,10 +30,10 @@ class UpdatePasswordRequest extends FormRequest
     {
         return [
             'after' => [
-                'current_password'     => 'cast:string',
-                'new_password'         => 'cast:string',
-                'confirm_new_password' => 'cast:string',
-                'token'                => 'cast:string',
+                'current_password'      => 'cast:string',
+                'new_password'          => 'cast:string',
+                'confirm_new_password'  => 'cast:string',
+                'token_update_password' => 'cast:string',
             ],
         ];
     }
