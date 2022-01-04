@@ -45,7 +45,7 @@ class ChangePasswordService extends BaseService implements ChangePasswordService
             $token = $this->changePasswordRepository->create([
                 'user_id'    => $userId,
                 'token'      => Hash::make(Carbon::now() . bin2hex(random_bytes(17))),
-                'expires_at' => Carbon::now()->addMinutes(config('auth.time_to_expire_login')),
+                'expires_at' => Carbon::now()->addMinutes(config('auth.time_to_expire_update_password')),
             ]);
         } catch (Throwable $throwable) {
             return $this->defaultErrorReturn($throwable, compact('userId'));

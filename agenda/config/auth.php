@@ -121,4 +121,11 @@ return [
     */
     'time_to_expire_login' => env('TIME_TO_EXPIRE_LOGIN', 5),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Tempo de expiração do token de alteração de senha
+    |--------------------------------------------------------------------------
+    */
+    'time_to_expire_update_password' => env('TIME_TO_EXPIRE_UPDATE_PASSWORD', 3),
+
 ];
