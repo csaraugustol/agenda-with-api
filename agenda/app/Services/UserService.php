@@ -287,7 +287,7 @@ class UserService extends BaseService implements UserServiceInterface
     {
         try {
             $newTokenResponse = app(ChangePasswordServiceInterface::class)
-            ->newToken($userId);
+                ->newToken($userId);
 
             if (!$newTokenResponse->success) {
                 return $newTokenResponse;

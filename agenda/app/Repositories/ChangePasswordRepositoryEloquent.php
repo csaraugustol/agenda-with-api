@@ -3,8 +3,8 @@
 namespace App\Repositories;
 
 use App\Models\ChangePassword;
-use App\Repositories\Contracts\ChangePasswordRepository;
 use Illuminate\Database\Eloquent\Collection;
+use App\Repositories\Contracts\ChangePasswordRepository;
 
 /**
  * Class ChangePasswordRepositoryEloquent
