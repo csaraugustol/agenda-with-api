@@ -277,7 +277,7 @@ class UserService extends BaseService implements UserServiceInterface
         );
     }
 
-     /**
+    /**
      * Retorna o token para alteração da senha
      *
      * @param string $userId
@@ -303,6 +303,61 @@ class UserService extends BaseService implements UserServiceInterface
             true,
             'Solicitação de alterar senha concluída com sucesso.',
             $token
+        );
+    }
+
+    /**
+     * Atualiza a senha do usuário
+     *
+     * @param string $userId
+     * @param string $currentPassword
+     * @param string $newPassword
+     *
+     * @return ServiceResponse
+     */
+    public function changePassword(
+        string $userId,
+        string $currentPassword,
+        string $newPassword
+    ): ServiceResponse {
+        try {
+            $findUserResponse = $this->find($userId);
+            if (!$findUserResponse->success || is_null($findUserResponse->data)) {
+                return new ServiceResponse(
+                    false,
+                    $findUserResponse->message,
+                    null,
+                    $findUserResponse->internalErrors
+                );
+            }
+
+            $user = $findUserResponse->data;
+            if (!password_verify($currentPassword, $user->password)) {
+                return new ServiceResponse(
+                    false,
+                    'A senha atual informada é inválida!',
+                    null,
+                    [
+                        new InternalError(
+                            'A senha atual informada é inválida!',
+                            20
+                        )
+                    ]
+                );
+            }
+
+            $passwordUpdate = $this->userRepository->update(
+                ['password' => bcrypt($newPassword)],
+                $userId
+            );
+        } catch (Throwable $throwable) {
+            return $this->defaultErrorReturn($throwable, compact('userId', 'currentPassword', 'newPassword'));
+        }
+
+        return new ServiceResponse(
+            true,
+            'Senha atualizada com sucesso.',
+            $passwordUpdate
         );
     }
 }

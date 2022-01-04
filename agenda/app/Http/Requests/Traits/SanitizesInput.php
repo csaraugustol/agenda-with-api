@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests\Traits;
 
+use Sanitizer;
 use Illuminate\Support\Arr;
-use App\Http\Requests\Traits\Sanitizer;
 
 trait SanitizesInput
 {

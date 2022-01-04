@@ -5,6 +5,7 @@ namespace App\Services;
 use Throwable;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
+use App\Services\Responses\InternalError;
 use App\Services\Responses\ServiceResponse;
 use App\Repositories\Contracts\ChangePasswordRepository;
 use App\Services\Contracts\ChangePasswordServiceInterface;
@@ -84,6 +85,46 @@ class ChangePasswordService extends BaseService implements ChangePasswordService
             true,
             'Os tokens foram deletados com sucesso.',
             null
+        );
+    }
+
+    /**
+     * Busca por um token para alterar a senha
+     *
+     * @param string $token
+     * @param string $userId
+     *
+     * @return ServiceResponse
+     */
+    public function findByToken(string $token, string $userId): ServiceResponse
+    {
+        try {
+            $changePassword = $this->changePasswordRepository->findByToken(
+                $token,
+                $userId
+            );
+
+            if (is_null($changePassword)) {
+                return new ServiceResponse(
+                    true,
+                    'O token informado, não foi localizado.',
+                    null,
+                    [
+                        new InternalError(
+                            'O token informado, não foi localizado.',
+                            17
+                        )
+                    ]
+                );
+            }
+        } catch (Throwable $throwable) {
+            return $this->defaultErrorReturn($throwable, compact('token', 'userId'));
+        }
+
+        return new ServiceResponse(
+            true,
+            'Token encontrado.',
+            $changePassword
         );
     }
 }

@@ -14,4 +14,9 @@ interface UserServiceInterface
     public function tokenToChangePassword(string $userId): ServiceResponse;
     public function login(string $email, string $password): ServiceResponse;
     public function register(RegisterUserServiceParams $params): ServiceResponse;
+    public function changePassword(
+        string $userId,
+        string $currentPassword,
+        string $newPassword
+    ): ServiceResponse;
 }
