@@ -2,8 +2,6 @@
 
 namespace App\Http\Requests\ChangePassword;
 
-use App\Rules\CheckUserPassword;
-use App\Rules\CheckTokenToChangePassword;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Http\Requests\Traits\SanitizesInput;
 
