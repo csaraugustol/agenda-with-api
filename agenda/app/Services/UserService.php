@@ -275,4 +275,33 @@ class UserService extends BaseService implements UserServiceInterface
             $user
         );
     }
+
+     /**
+     * Retorna o token para alteração da senha
+     *
+     * @param string $userId
+     *
+     * @return ServiceResponse
+     */
+    public function tokenToChangePassword(string $userId): ServiceResponse
+    {
+        try {
+            $newTokenResponse = app(ChangePasswordServiceInterface::class)
+            ->newToken($userId);
+
+            if (!$newTokenResponse->success) {
+                return $newTokenResponse;
+            }
+
+            $token = $newTokenResponse->data;
+        } catch (Throwable $throwable) {
+            return $this->defaultErrorReturn($throwable, compact('userId'));
+        }
+
+        return new ServiceResponse(
+            true,
+            'Solicitação de alterar senha concluída com sucesso.',
+            $token
+        );
+    }
 }
