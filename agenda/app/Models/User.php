@@ -55,4 +55,12 @@ class User extends Model
     {
         return $this->hasMany(AuthenticateToken::class);
     }
+
+    /**
+     * Relacionamento do usuário com ChangePassword
+     */
+    public function changePasswords()
+    {
+        return $this->hasMany(ChangePassword::class);
+    }
 }
