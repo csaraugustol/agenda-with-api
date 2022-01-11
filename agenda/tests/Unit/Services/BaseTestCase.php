@@ -10,13 +10,13 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 class BaseTestCase extends TestCase
 {
     use WithFaker;
-    //use MockClassMethod;
+    use MockClassMethod;
     use DatabaseTransactions;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        //$this->resetMock();
+        $this->resetMock();
     }
 }
