@@ -151,7 +151,7 @@ class AddressService extends BaseService implements AddressServiceInterface
     {
         try {
             $findAddressResponse = $this->find($addressId);
-            if (!$findAddressResponse->success || is_null($findAddressResponse)) {
+            if (!$findAddressResponse->success || is_null($findAddressResponse->data)) {
                 return new ServiceResponse(
                     false,
                     $findAddressResponse->message,
