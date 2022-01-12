@@ -31,7 +31,7 @@ class AddressServiceTest extends BaseTestCase
      * Testa o método find na service de Endereço para encontrar
      * um endereço pelo id e executar sucesso
      */
-    public function testToFindAddressWhenReturnSuccess()
+    public function testReturnSuccessWhenAddressExists()
     {
         $addressFactory = factory(Address::class)->create();
 
@@ -49,7 +49,7 @@ class AddressServiceTest extends BaseTestCase
      * Testa o método find na service de Endereço que deve gerar uma falha
      * na busca de um endereço pelo id que não existe
      */
-    public function testToFindAddressWhenReturnIsFailure()
+    public function testFindAddressReturnErrorWhenAddressDoesntExists()
     {
         $findAddressResponse = $this->addressService->find($this->faker->uuid);
 
@@ -65,7 +65,7 @@ class AddressServiceTest extends BaseTestCase
      * Testa o método store na service de Endereço para a criação de um novo
      * endereço para o contato
      */
-    public function testStoreWhenCreateNewAddressWithSuccess()
+    public function testStoreAddressWithSuccess()
     {
         $contact = factory(Contact::class)->create();
 
@@ -96,7 +96,7 @@ class AddressServiceTest extends BaseTestCase
     {
         $address = factory(Address::class)->create();
 
-        $array = ['number' => 23];
+        $array = ['number' => $this->faker->buildingNumber];
 
         $updateAddressReponse = $this->addressService->update(
             $array,
@@ -143,7 +143,7 @@ class AddressServiceTest extends BaseTestCase
 
         $user = factory(User::class)->create();
 
-        $array   = ['city' => 'Londres'];
+        $array   = ['city' => $this->faker->city];
 
         $updateAddressReponse = $this->addressService->update(
             $array,

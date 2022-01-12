@@ -2,15 +2,12 @@
 
 namespace Tests\Integration\Models;
 
-use Tests\TestCase;
 use App\Models\Address;
 use App\Models\Contact;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\Unit\Services\BaseTestCase;
 
-class AddressTest extends TestCase
+class AddressTest extends BaseTestCase
 {
-    use DatabaseTransactions;
-
     /**
      * Verifica o relacionamento com o Contato
      */
