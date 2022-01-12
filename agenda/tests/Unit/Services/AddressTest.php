@@ -8,13 +8,10 @@ use App\Models\Contact;
 use App\Services\AddressService;
 use App\Services\Responses\ServiceResponse;
 use App\Services\Contracts\AddressServiceInterface;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Services\Params\Address\CreateAddressServiceParams;
 
 class AddressServiceTest extends BaseTestCase
 {
-    use DatabaseTransactions;
-
     /**
      * @var AddressService
      */
