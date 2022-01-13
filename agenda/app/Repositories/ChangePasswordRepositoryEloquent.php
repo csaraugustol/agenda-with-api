@@ -35,4 +35,20 @@ class ChangePasswordRepositoryEloquent extends BaseRepositoryEloquent implements
             ->where('user_id', $userId)
             ->get();
     }
+
+    /**
+     * Busca um token do usuário para validar a alteração da senha
+     *
+     * @param string $token
+     * @param string $userId
+     *
+     * @return ChangePassword|null
+     */
+    public function findByToken(string $token, string $userId): ?ChangePassword
+    {
+        return $this->model
+            ->where('token', $token)
+            ->where('user_id', $userId)
+            ->first();
+    }
 }

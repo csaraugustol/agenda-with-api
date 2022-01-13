@@ -12,6 +12,6 @@ $factory->define(ChangePassword::class, function (Faker $faker) {
     return [
         'user_id'    => factory(User::class),
         'token'      => Hash::make(Carbon::now() . bin2hex(random_bytes(17))),
-        'expires_at' => Carbon::now()->addMinutes(config('auth.time_to_expire_login')),
+        'expires_at' => Carbon::now()->addMinutes(config('auth.time_to_expire_update_password')),
     ];
 });

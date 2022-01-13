@@ -113,5 +113,9 @@ Route::group(['middleware' => ['api.token.user']], function () {
             'as'   => 'change-password',
             'uses' => 'UserController@tokenToChangePassword'
         ]);
+        Route::post('/change-password', [
+            'as'   => 'change-password',
+            'uses' => 'UserController@changePassword'
+        ])->middleware('api.token.user.change.password');
     });
 });
