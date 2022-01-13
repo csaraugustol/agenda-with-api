@@ -126,7 +126,7 @@ class TagTest extends BaseTestCase
      * Testa o método Update na TagService retornando erro ao tentar atualizar
      * uma tag que pertence a outro usuário
      */
-    public function testUpdateReturnErrorWhenTagIsOtherUser()
+    public function testUpdateReturnErrorWhenTagOfOtherUser()
     {
         $tag = factory(Tag::class)->create();
 
@@ -145,6 +145,45 @@ class TagTest extends BaseTestCase
         $this->assertNull($updateTagResponse->data);
         $this->assertHasInternalError($updateTagResponse, 11);
         $this->assertIsArray($updateTagResponse->internalErrors);
+    }
+
+    /**
+     * Testa o método Delete na TagService retornando sucesso ao
+     * apagar uma tag vinculada ao usuário
+     */
+    public function testReturnSuccessWhenDeleteTag()
+    {
+        $tag = factory(Tag::class)->create();
+
+        $deleteTagResponse = $this->tagService->delete(
+            $tag->id,
+            $tag->user_id
+        );
+
+        $this->assertInstanceOf(ServiceResponse::class, $deleteTagResponse);
+        $this->assertNotFalse($deleteTagResponse->success);
+        $this->assertNull($deleteTagResponse->data);
+    }
+
+    /**
+     * Testa o método Delete na TagService retornando rrro ao tentar apagar
+     * uma tag que a outro usuário
+     */
+    public function testReturnErrorWhenDeleteTagOfOtherUser()
+    {
+        $tag = factory(Tag::class)->create();
+
+        $user = factory(User::class)->create();
+
+        $deleteTagResponse = $this->tagService->delete(
+            $tag->id,
+            $user->id,
+        );
+
+        $this->assertInstanceOf(ServiceResponse::class, $deleteTagResponse);
+        $this->assertFalse($deleteTagResponse->success);
+        $this->assertNull($deleteTagResponse->data);
+        $this->assertHasInternalError($deleteTagResponse, 11);
     }
 
     /**
