@@ -99,12 +99,12 @@ class ChangePasswordService extends BaseService implements ChangePasswordService
     public function findByToken(string $token, string $userId): ServiceResponse
     {
         try {
-            $changePassword = $this->changePasswordRepository->findByToken(
+            $tokenToChangePassword = $this->changePasswordRepository->findByToken(
                 $token,
                 $userId
             );
 
-            if (is_null($changePassword)) {
+            if (is_null($tokenToChangePassword)) {
                 return new ServiceResponse(
                     true,
                     'O token informado, não foi localizado.',
@@ -124,7 +124,7 @@ class ChangePasswordService extends BaseService implements ChangePasswordService
         return new ServiceResponse(
             true,
             'Token encontrado.',
-            $changePassword
+            $tokenToChangePassword
         );
     }
 }

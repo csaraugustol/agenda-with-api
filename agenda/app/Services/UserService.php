@@ -346,7 +346,7 @@ class UserService extends BaseService implements UserServiceInterface
                 );
             }
 
-            $passwordUpdate = $this->userRepository->update(
+            $userPasswordUpdate = $this->userRepository->update(
                 ['password' => bcrypt($newPassword)],
                 $userId
             );
@@ -357,7 +357,7 @@ class UserService extends BaseService implements UserServiceInterface
         return new ServiceResponse(
             true,
             'Senha atualizada com sucesso.',
-            $passwordUpdate
+            $userPasswordUpdate
         );
     }
 }

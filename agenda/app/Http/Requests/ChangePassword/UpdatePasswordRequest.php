@@ -31,7 +31,6 @@ class UpdatePasswordRequest extends FormRequest
                 'current_password'      => 'cast:string',
                 'new_password'          => 'cast:string',
                 'confirm_new_password'  => 'cast:string',
-                'token_update_password' => 'cast:string',
             ],
         ];
     }
@@ -47,7 +46,6 @@ class UpdatePasswordRequest extends FormRequest
             'current_password'      => 'required|string|',
             'new_password'          => 'required|string|regex:/^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{8,20}$/',
             'confirm_new_password'  => 'required|string|same:new_password',
-            'token_update_password' => 'required|string|',
         ];
     }
 
@@ -67,8 +65,6 @@ class UpdatePasswordRequest extends FormRequest
             'confirm_new_password.required'  => 'O campo CONFIRMAÇÂO DE SENHA é obrigatório',
             'confirm_new_password.string'    => 'O campo CONFIRMAÇÂO DE SENHA deve ser do tipo string',
             'confirm_new_password.same'      => 'As senhas digitadas não são iguais',
-            'token_update_password.required' => 'O campo TOKEN é obrigatório',
-            'token_update_password.string'   => 'O campo TOKEN deve ser do tipo string',
         ];
     }
 }

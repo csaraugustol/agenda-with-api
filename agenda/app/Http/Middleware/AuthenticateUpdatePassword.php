@@ -8,7 +8,7 @@ use App\Traits\ResponseHelpers;
 use App\Services\Responses\InternalError;
 use App\Services\Contracts\ChangePasswordServiceInterface;
 
-class TokenToUpdatePassword
+class AuthenticateUpdatePassword
 {
     use ResponseHelpers;
 
@@ -33,6 +33,14 @@ class TokenToUpdatePassword
     {
         $token = $request->token_update_password;
 
+        if (is_null($token)) {
+            return $this->sendError(
+                'O token de atualização não foi informado.',
+                [],
+                422
+            );
+        }
+
         $tokenToChangePasswordResponse = $this->changePasswordService->findByToken(
             $token,
             user('id')
@@ -50,8 +58,8 @@ class TokenToUpdatePassword
             return $this->unauthenticatedErrorResponse([$error]);
         }
 
-        $changePassword = $tokenToChangePasswordResponse->data;
-        if ($changePassword->expires_at < Carbon::now()) {
+        $tokenToChangePassword = $tokenToChangePasswordResponse->data;
+        if ($tokenToChangePassword->expires_at < Carbon::now()) {
             $error = new InternalError(
                 'O token foi expirado!',
                 19

@@ -64,6 +64,6 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'api.token.user' => \App\Http\Middleware\ApiAuthenticate::class,
-        'api.token.user.change.password' => \App\Http\Middleware\TokenToUpdatePassword::class,
+        'api.token.user.change.password' => \App\Http\Middleware\AuthenticateUpdatePassword::class,
     ];
 }
