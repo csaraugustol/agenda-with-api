@@ -2,10 +2,10 @@
 
 namespace Tests\Unit\Services;
 
+use Carbon\Carbon;
 use App\Models\User;
 use App\Services\AuthenticateTokenService;
 use App\Services\Responses\ServiceResponse;
-use Carbon\Carbon;
 
 class AuthenticateTokenTest extends BaseTestCase
 {
@@ -35,10 +35,14 @@ class AuthenticateTokenTest extends BaseTestCase
         $this->assertLessThan($createTokenResponse->data->expires_at, Carbon::now());
     }
 
-    public function testReturnErrorWhenStoreTokenToUserDoesntExists()
+    public function testReturnErrorWhenUserDoesntExists()
     {
+        $user = factory(User::class)->create();
+
+        $user->delete();
+
         $createTokenResponse = $this->authenticateTokenService->storeToken(
-            $this->faker->uuid
+            $user->id
         );
 
         $this->assertInstanceOf(ServiceResponse::class, $createTokenResponse);
@@ -62,8 +66,12 @@ class AuthenticateTokenTest extends BaseTestCase
 
     public function testReturnErrorWhenClearTokenToUserDoesntExists()
     {
+        $user = factory(User::class)->create();
+
+        $user->delete();
+
         $clearTokenResponse = $this->authenticateTokenService->clearToken(
-            $this->faker->uuid
+            $user->id
         );
 
         $this->assertInstanceOf(ServiceResponse::class, $clearTokenResponse);
@@ -88,5 +96,18 @@ class AuthenticateTokenTest extends BaseTestCase
         $this->assertTrue($findTokenResponse->success);
         $this->assertNotNull($findTokenResponse->data);
         $this->assertEquals($findTokenResponse->data->user_id, $user->id);
+    }
+
+    public function testReturnErrorWhenTokenDoesntExists()
+    {
+        $findTokenResponse = $this->authenticateTokenService->findToken(
+            $this->faker->sha1
+        );
+
+        $this->assertInstanceOf(ServiceResponse::class, $findTokenResponse);
+        $this->assertNotFalse($findTokenResponse->success);
+        $this->assertIsBool($findTokenResponse->success);
+        $this->assertNull($findTokenResponse->data);
+        $this->assertHasInternalError($findTokenResponse, 5);
     }
 }
