@@ -13,8 +13,13 @@ class PhoneTest extends BaseTestCase
      */
     public function testRelationshipPhoneWithContact()
     {
-        $phone = factory(Phone::class)->create();
+        $contact = factory(Contact::class)->create();
+
+        $phone = factory(Phone::class)->create([
+            'contact_id' => $contact->id,
+        ]);
 
         $this->assertInstanceOf(Contact::class, $phone->contact);
+        $this->assertEquals($phone->contact->id, $contact->id);
     }
 }
