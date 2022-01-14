@@ -21,6 +21,10 @@ class AuthenticateTokenTest extends BaseTestCase
         $this->authenticateTokenService = app(AuthenticateTokenService::class);
     }
 
+    /**
+     * Testa o método StoreToken na service AuthenticateToken retornando sucesso
+     * ao criar um novo token para o usuário
+     */
     public function testReturnSuccessWhenStoreToken()
     {
         $user = factory(User::class)->create();
@@ -35,6 +39,10 @@ class AuthenticateTokenTest extends BaseTestCase
         $this->assertLessThan($createTokenResponse->data->expires_at, Carbon::now());
     }
 
+    /**
+     * Testa o método StoreToken na service AuthenticateToken retornando erro
+     * informando um usuário que não existe
+     */
     public function testReturnErrorWhenUserDoesntExists()
     {
         $user = factory(User::class)->create();
@@ -51,6 +59,10 @@ class AuthenticateTokenTest extends BaseTestCase
         $this->assertHasInternalError($createTokenResponse, 3);
     }
 
+    /**
+     * Testa o método ClearToken na service AuthenticateToken retornando sucesso
+     * ao limpar tokens existentes do usuário
+     */
     public function testReturnSuccessWhenClearTokenUser()
     {
         $user = factory(User::class)->create();
@@ -64,6 +76,10 @@ class AuthenticateTokenTest extends BaseTestCase
         $this->assertNull($clearTokenResponse->data);
     }
 
+    /**
+     * Testa o método ClearToken na service AuthenticateToken retornando erro
+     * ao tentar limpar tokens de um usuário que não existe
+     */
     public function testReturnErrorWhenClearTokenToUserDoesntExists()
     {
         $user = factory(User::class)->create();
@@ -80,6 +96,10 @@ class AuthenticateTokenTest extends BaseTestCase
         $this->assertHasInternalError($clearTokenResponse, 3);
     }
 
+    /**
+     * Testa o método FindToken na service AuthenticateToken retornando sucesso
+     * na busca do token do usuário
+     */
     public function testReturnSuccessWhenFindToken()
     {
         $user = factory(User::class)->create();
@@ -98,6 +118,10 @@ class AuthenticateTokenTest extends BaseTestCase
         $this->assertEquals($findTokenResponse->data->user_id, $user->id);
     }
 
+    /**
+     * Testa o método FindToken na service AuthenticateToken retornando erro
+     * ao buscar um token que não existe
+     */
     public function testReturnErrorWhenTokenDoesntExists()
     {
         $findTokenResponse = $this->authenticateTokenService->findToken(
