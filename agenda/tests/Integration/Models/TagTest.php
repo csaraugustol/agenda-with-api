@@ -15,9 +15,14 @@ class TagTest extends BaseTestCase
      */
     public function testRelationshipTagWithUser()
     {
-        $tag = factory(Tag::class)->create();
+        $user = factory(User::class)->create();
+
+        $tag = factory(Tag::class)->create([
+            'user_id' => $user->id
+        ]);
 
         $this->assertInstanceOf(User::class, $tag->user);
+        $this->assertEquals($tag->user->id, $user->id);
     }
 
     /**

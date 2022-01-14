@@ -5,6 +5,7 @@ namespace Tests\Unit\Services;
 use App\Models\Tag;
 use App\Models\User;
 use App\Services\Responses\ServiceResponse;
+use Illuminate\Database\Eloquent\Collection;
 use App\Services\Contracts\TagServiceInterface;
 use App\Services\Params\Tag\CreateTagServiceParams;
 
@@ -36,6 +37,25 @@ class TagTest extends BaseTestCase
         $this->assertNotNull($findTagResponse->data);
         $this->assertIsBool($findTagResponse->success);
         $this->assertTrue($findTagResponse->success);
+    }
+
+    /**
+     * Testa o método Find na TagService retornando erro ao tentar
+     * buscar uma tag que não existe
+     */
+    public function testFindReturnErrorWhenTagDoesntExists()
+    {
+        $tag = factory(Tag::class)->create();
+
+        $tag->delete();
+
+        $findTagResponse = $this->tagService->find($tag->id, $tag->user_id);
+
+        $this->assertInstanceOf(ServiceResponse::class, $findTagResponse);
+        $this->assertNull($findTagResponse->data);
+        $this->assertIsBool($findTagResponse->success);
+        $this->assertTrue($findTagResponse->success);
+        $this->assertHasInternalError($findTagResponse, 11);
     }
 
     /**
@@ -187,7 +207,7 @@ class TagTest extends BaseTestCase
     }
 
     /**
-     * Testa o método FindAll na TagService retornando sicesso ao buscar
+     * Testa o método FindAll na TagService retornando sucesso ao buscar
      * todas as tags do usuário
      */
     public function testReturnSuccessWhenFindAllTagsUser()
@@ -198,12 +218,10 @@ class TagTest extends BaseTestCase
         $findAllTagsResponse = $this->tagService->findAll($user->id);
 
         $this->assertInstanceOf(ServiceResponse::class, $findAllTagsResponse);
+        $this->assertInstanceOf(Collection::class, $findAllTagsResponse->data);
         $this->assertNotNull($findAllTagsResponse->data);
         $this->assertTrue($findAllTagsResponse->success);
-
-        foreach ($findAllTagsResponse->data as $tag) {
-            $this->assertEquals($user->id, $tag->user_id);
-        }
+        $this->assertEquals(3, count($findAllTagsResponse->data));
     }
 
     /**
@@ -214,24 +232,17 @@ class TagTest extends BaseTestCase
     {
         $user = factory(User::class)->create();
 
-        $tagName = 'TestandoBusca';
-
-        $createTagResponse = $this->tagService->store(
-            new CreateTagServiceParams(
-                $tagName,
-                $user->id
-            )
-        );
+        $tag = factory(Tag::class)->create(['user_id' => $user->id]);
 
         $findAllTagsResponse = $this->tagService->findAll(
             $user->id,
-            $createTagResponse->data->description
+            $tag->description
         );
 
         $this->assertInstanceOf(ServiceResponse::class, $findAllTagsResponse);
         $this->assertNotNull($findAllTagsResponse->data);
         $this->assertTrue($findAllTagsResponse->success);
-        $this->assertEquals($tagName, $findAllTagsResponse->data[0]->description);
+        $this->assertEquals($tag->description, $findAllTagsResponse->data[0]->description);
     }
 
     /**
@@ -261,7 +272,7 @@ class TagTest extends BaseTestCase
         );
 
         $this->assertInstanceOf(ServiceResponse::class, $findAllTagsResponse);
-        $this->assertCount(0, $findAllTagsResponse->data);
+        $this->assertEmpty($findAllTagsResponse->data);
         $this->assertTrue($findAllTagsResponse->success);
     }
 }
