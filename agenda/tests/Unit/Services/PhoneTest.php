@@ -23,8 +23,8 @@ class PhoneTest extends BaseTestCase
     }
 
     /**
-     * Testa o método Find na PhoneService retornando sucesso na busca do id
-     * do telefone informado
+     * Testa o método Find na PhoneService retornando sucesso na busca do
+     * telefone do id informado
      */
     public function testFindReturnSuccessWhenExistsPhone()
     {
@@ -39,8 +39,8 @@ class PhoneTest extends BaseTestCase
     }
 
     /**
-     * Testa o método Find na PhoneService forçando um erro com um id fake
-     * para verificar se a resposta de erro está correta
+     * Testa o método Find na PhoneService retornando um erro ao usar um id fake
+     * para buscar um telefone
      */
     public function testeFindReturnErrorWhenPhoneDoesntExists()
     {
@@ -53,8 +53,8 @@ class PhoneTest extends BaseTestCase
     }
 
     /**
-     * Testa o método Store na PhoneService para verificar a criação com
-     * sucesso de um novo número de telefone para o contato do usuário
+     * Testa o método Store na PhoneService para retornar sucesso na criação
+     * de um novo número de telefone para o contato do usuário
      */
     public function testStoreReturnSuccessWhenCreateNewPhone()
     {
