@@ -8,6 +8,7 @@ use App\Services\Contracts\TagServiceInterface;
 use App\Services\Contracts\ContactServiceInterface;
 use App\Repositories\Contracts\TagContactRepository;
 use App\Services\Contracts\TagContactServiceInterface;
+use App\Services\Contracts\UserServiceInterface;
 
 class TagContactService extends BaseService implements TagContactServiceInterface
 {
@@ -36,6 +37,16 @@ class TagContactService extends BaseService implements TagContactServiceInterfac
     public function attach(string $tagId, string $contactId, string $userId): ServiceResponse
     {
         try {
+            $findUserResponse = app(UserServiceInterface::class)->find($userId);
+            if (!$findUserResponse->success || is_null($findUserResponse->data)) {
+                return new ServiceResponse(
+                    false,
+                    $findUserResponse->message,
+                    null,
+                    $findUserResponse->internalErrors
+                );
+            }
+
             $findTagResponse = app(TagServiceInterface::class)->find(
                 $tagId,
                 $userId
