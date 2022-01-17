@@ -79,6 +79,7 @@ class AuthenticateTokenTest extends BaseTestCase
         $this->assertInstanceOf(ServiceResponse::class, $clearTokenResponse);
         $this->assertTrue($clearTokenResponse->success);
         $this->assertNull($clearTokenResponse->data);
+        $this->assertEmpty($user->authenticateTokens);
     }
 
     /**
