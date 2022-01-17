@@ -2,9 +2,9 @@
 
 namespace Tests\Unit\Services;
 
-use App\Models\AuthenticateToken;
 use Carbon\Carbon;
 use App\Models\User;
+use App\Models\AuthenticateToken;
 use App\Services\AuthenticateTokenService;
 use App\Services\Responses\ServiceResponse;
 
