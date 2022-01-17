@@ -12,7 +12,7 @@ class TagContactTest extends BaseTestCase
     /**
      * Verifica o relacionamento com a Tag
      */
-    public function testRelationshipWithTag()
+    public function testRelationshipTagContactWithTag()
     {
         $tag = factory(Tag::class)->create();
 
@@ -27,7 +27,7 @@ class TagContactTest extends BaseTestCase
     /**
      * Verifica o relacionamento com o Contato
      */
-    public function testRelationshipWithContact()
+    public function testRelationshipTagContactWithContact()
     {
         $contact = factory(Contact::class)->create();
 
