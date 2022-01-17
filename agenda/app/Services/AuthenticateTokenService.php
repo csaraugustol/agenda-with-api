@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use App\Services\Responses\InternalError;
 use App\Services\Responses\ServiceResponse;
+use App\Services\Contracts\UserServiceInterface;
 use App\Repositories\Contracts\AuthenticateTokenRepository;
 use App\Services\Contracts\AuthenticateTokenServiceInterface;
 
@@ -35,6 +36,16 @@ class AuthenticateTokenService extends BaseService implements AuthenticateTokenS
     public function storeToken(string $userId): ServiceResponse
     {
         try {
+            $findUserResponse = app(UserServiceInterface::class)->find($userId);
+            if (!$findUserResponse->success || is_null($findUserResponse->data)) {
+                return new ServiceResponse(
+                    false,
+                    $findUserResponse->message,
+                    null,
+                    $findUserResponse->internalErrors
+                );
+            }
+
             //Verifica se existe tokens do usuário ativo
             $clearTokenResponse = $this->clearToken($userId);
             if (!$clearTokenResponse->success) {
@@ -68,6 +79,16 @@ class AuthenticateTokenService extends BaseService implements AuthenticateTokenS
     public function clearToken(string $userId): ServiceResponse
     {
         try {
+            $findUserResponse = app(UserServiceInterface::class)->find($userId);
+            if (!$findUserResponse->success || is_null($findUserResponse->data)) {
+                return new ServiceResponse(
+                    false,
+                    $findUserResponse->message,
+                    null,
+                    $findUserResponse->internalErrors
+                );
+            }
+
             $authenticateTokens = $this->authenticateTokenRepository
                 ->returnAllUserTokens($userId);
 

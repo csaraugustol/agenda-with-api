@@ -8,6 +8,7 @@ use App\Models\Contact;
 use App\Models\TagContact;
 use App\Models\ChangePassword;
 use Illuminate\Database\Seeder;
+use App\Models\AuthenticateToken;
 
 class CompleteDiarySeeder extends Seeder
 {
@@ -19,6 +20,7 @@ class CompleteDiarySeeder extends Seeder
     public function run()
     {
         factory(User::class, 3)->create()->each(function ($user) {
+            factory(AuthenticateToken::class)->create(['user_id' => $user->id]);
             factory(ChangePassword::class)->create(['user_id' => $user->id]);
             $tags = factory(Tag::class, 2)->create(['user_id' => $user->id]);
             factory(Contact::class, 2)->create(['user_id' => $user->id])->each(function ($contact) use ($tags) {
