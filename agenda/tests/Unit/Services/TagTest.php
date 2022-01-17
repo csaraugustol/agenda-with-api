@@ -239,11 +239,13 @@ class TagTest extends BaseTestCase
             $tag->description
         );
 
+        $data = $findAllTagsResponse->data->first();
+
         $this->assertInstanceOf(ServiceResponse::class, $findAllTagsResponse);
         $this->assertInstanceOf(Collection::class, $findAllTagsResponse->data);
         $this->assertNotNull($findAllTagsResponse->data);
         $this->assertTrue($findAllTagsResponse->success);
-        $this->assertEquals($tag->description, $findAllTagsResponse->data[0]->description);
+        $this->assertEquals($tag->description, $data->description);
     }
 
     /**
