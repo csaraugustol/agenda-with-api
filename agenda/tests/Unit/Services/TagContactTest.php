@@ -271,7 +271,7 @@ class TagContactTest extends BaseTestCase
 
     /**
      * Testa o método Detach na service TagContactService retornando erro ao
-     * tentar desvincular uma tag de um contato, com um contato que não existe
+     * tentar desvincular uma tag de um contato, com um usuário que não existe
      */
     public function testReturnErrorDetachWhenUserDoesExists()
     {
