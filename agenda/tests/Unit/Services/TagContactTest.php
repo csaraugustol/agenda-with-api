@@ -25,7 +25,7 @@ class TagContactTest extends BaseTestCase
 
     /**
      * Testa o método Attach na service TagContactService retornando sucesso ao
-     * ao vincular uma tag e um contato do usuário
+     * vincular uma tag e um contato pertencentes ao usuário
      */
     public function testReturnSuccessWhenAttachTagContact()
     {
@@ -113,7 +113,7 @@ class TagContactTest extends BaseTestCase
 
     /**
      * Testa o método Attach na service TagContactService retornando erro ao
-     * tentar realizar um vínculo com uma tag e um contato de um usuário
+     * tentar realizar um vínculo entre uma tag e um contato, de um usuário
      * que não existe
      */
     public function testReturnErrorWhenUserDoesntExists()
@@ -146,7 +146,7 @@ class TagContactTest extends BaseTestCase
 
     /**
      * Testa o método Attach na service TagContactService retornando erro ao
-     * tentar realizar um vínculo com uma tag e um contato com um id de usuário
+     * tentar realizar um vínculo entre uma tag e um contato, com um id de usuário
      * diferente do que está vinculados a tag e o contato
      */
     public function testReturnErrorWhenAttachTagContactOfOtherUser()
@@ -210,7 +210,7 @@ class TagContactTest extends BaseTestCase
 
     /**
      * Testa o método Detach na service TagContactService retornando erro ao
-     * tentar desvincular uma tag de um contato com uma tag que não existe
+     * tentar desvincular uma tag de um contato, com uma tag que não existe
      */
     public function testReturnErrorDetachWhenTagDoesExists()
     {
@@ -241,7 +241,7 @@ class TagContactTest extends BaseTestCase
 
     /**
      * Testa o método Detach na service TagContactService retornando erro ao
-     * tentar desvincular uma tag de um contato com um contato que não existe
+     * tentar desvincular uma tag de um contato, com um contato que não existe
      */
     public function testReturnErrorDetachWhenContactDoesExists()
     {
@@ -271,7 +271,7 @@ class TagContactTest extends BaseTestCase
 
     /**
      * Testa o método Detach na service TagContactService retornando erro ao
-     * tentar desvincular uma tag de um contato com um contato que não existe
+     * tentar desvincular uma tag de um contato, com um contato que não existe
      */
     public function testReturnErrorDetachWhenUserDoesExists()
     {
