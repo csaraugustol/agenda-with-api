@@ -5,10 +5,10 @@ namespace App\Services;
 use Throwable;
 use App\Services\Responses\ServiceResponse;
 use App\Services\Contracts\TagServiceInterface;
+use App\Services\Contracts\UserServiceInterface;
 use App\Services\Contracts\ContactServiceInterface;
 use App\Repositories\Contracts\TagContactRepository;
 use App\Services\Contracts\TagContactServiceInterface;
-use App\Services\Contracts\UserServiceInterface;
 
 class TagContactService extends BaseService implements TagContactServiceInterface
 {
@@ -124,12 +124,49 @@ class TagContactService extends BaseService implements TagContactServiceInterfac
      *
      * @param string $tagId
      * @param string $contactId
+     * @param string $userId
      *
      * @return ServiceResponse
      */
-    public function detach(string $tagId, string $contactId): ServiceResponse
+    public function detach(string $tagId, string $contactId, string $userId): ServiceResponse
     {
         try {
+            $findUserResponse = app(UserServiceInterface::class)->find($userId);
+            if (!$findUserResponse->success || is_null($findUserResponse->data)) {
+                return new ServiceResponse(
+                    false,
+                    $findUserResponse->message,
+                    null,
+                    $findUserResponse->internalErrors
+                );
+            }
+
+            $findTagResponse = app(TagServiceInterface::class)->find(
+                $tagId,
+                $userId
+            );
+            if (!$findTagResponse->success || is_null($findTagResponse->data)) {
+                return new ServiceResponse(
+                    false,
+                    $findTagResponse->message,
+                    null,
+                    $findTagResponse->internalErrors
+                );
+            }
+
+            $findContactResponse = app(ContactServiceInterface::class)->find(
+                $contactId,
+                $userId
+            );
+            if (!$findContactResponse->success || is_null($findContactResponse->data)) {
+                return new ServiceResponse(
+                    false,
+                    $findContactResponse->message,
+                    null,
+                    $findContactResponse->internalErrors
+                );
+            }
+
             $tagContact = $this->tagContactRepository->findTagContact(
                 $tagId,
                 $contactId
