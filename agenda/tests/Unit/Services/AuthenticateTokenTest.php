@@ -68,6 +68,10 @@ class AuthenticateTokenTest extends BaseTestCase
     {
         $user = factory(User::class)->create();
 
+        factory(AuthenticateToken::class, 5)->create([
+            'user_id' => $user->id
+        ]);
+
         $clearTokenResponse = $this->authenticateTokenService->clearToken(
             $user->id
         );
