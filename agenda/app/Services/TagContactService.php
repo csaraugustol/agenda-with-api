@@ -37,7 +37,9 @@ class TagContactService extends BaseService implements TagContactServiceInterfac
     public function attach(string $tagId, string $contactId, string $userId): ServiceResponse
     {
         try {
-            $findUserResponse = app(UserServiceInterface::class)->find($userId);
+            $findUserResponse = app(UserServiceInterface::class)->find(
+                $userId
+            );
             if (!$findUserResponse->success || is_null($findUserResponse->data)) {
                 return new ServiceResponse(
                     false,
@@ -131,7 +133,9 @@ class TagContactService extends BaseService implements TagContactServiceInterfac
     public function detach(string $tagId, string $contactId, string $userId): ServiceResponse
     {
         try {
-            $findUserResponse = app(UserServiceInterface::class)->find($userId);
+            $findUserResponse = app(UserServiceInterface::class)->find(
+                $userId
+            );
             if (!$findUserResponse->success || is_null($findUserResponse->data)) {
                 return new ServiceResponse(
                     false,
