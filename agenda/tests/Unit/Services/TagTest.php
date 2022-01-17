@@ -213,7 +213,7 @@ class TagTest extends BaseTestCase
     public function testReturnSuccessWhenFindAllTagsUser()
     {
         $user = factory(User::class)->create();
-        $tag = factory(Tag::class, 3)->create(['user_id' => $user->id]);
+        factory(Tag::class, 3)->create(['user_id' => $user->id]);
 
         $findAllTagsResponse = $this->tagService->findAll($user->id);
 
