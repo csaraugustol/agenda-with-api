@@ -7,6 +7,7 @@ use App\Services\Responses\InternalError;
 use App\Services\Responses\ServiceResponse;
 use App\Repositories\Contracts\TagRepository;
 use App\Services\Contracts\TagServiceInterface;
+use App\Services\Contracts\UserServiceInterface;
 use App\Services\Params\Tag\CreateTagServiceParams;
 
 class TagService extends BaseService implements TagServiceInterface
@@ -161,6 +162,16 @@ class TagService extends BaseService implements TagServiceInterface
     public function findAll(string $userId, string $description = null): ServiceResponse
     {
         try {
+            $findUserResponse = app(UserServiceInterface::class)->find($userId);
+            if (!$findUserResponse->success || is_null($findUserResponse->data)) {
+                return new ServiceResponse(
+                    false,
+                    $findUserResponse->message,
+                    null,
+                    $findUserResponse->internalErrors
+                );
+            }
+
             $tags = $this->tagRepository->findAll($userId, $description);
         } catch (Throwable $throwable) {
             return new $this->defaultErrorReturn($throwable, compact('userId', 'description'));
