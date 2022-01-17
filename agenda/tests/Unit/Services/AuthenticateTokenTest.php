@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Services;
 
+use App\Models\AuthenticateToken;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Services\AuthenticateTokenService;
@@ -104,12 +105,12 @@ class AuthenticateTokenTest extends BaseTestCase
     {
         $user = factory(User::class)->create();
 
-        $createTokenResponse = $this->authenticateTokenService->storeToken(
-            $user->id
-        );
+        $authenticateToken = factory(AuthenticateToken::class)->create([
+            'user_id' => $user->id
+        ]);
 
         $findTokenResponse = $this->authenticateTokenService->findToken(
-            $createTokenResponse->data->token
+            $authenticateToken->token
         );
 
         $this->assertInstanceOf(ServiceResponse::class, $findTokenResponse);

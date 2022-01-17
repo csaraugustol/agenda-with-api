@@ -13,6 +13,13 @@ class AuthenticateTokenTest extends BaseTestCase
      */
     public function testRelationshipAuthenticateTokenWithUser()
     {
-        //
+        $user = factory(User::class)->create();
+
+        $authenticateToken = factory(AuthenticateToken::class)->create([
+            'user_id' => $user->id
+        ]);
+
+        $this->assertInstanceOf(User::class, $authenticateToken->user);
+        $this->assertEquals($authenticateToken->user->id, $user->id);
     }
 }
