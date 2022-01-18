@@ -23,6 +23,10 @@ class UserTest extends BaseTestCase
         $this->userService = app(UserServiceInterface::class);
     }
 
+    /**
+     * Testa o método Register na UserService retornando sucesso ao realizar
+     * um registro de um novo usuário
+     */
     public function testReturnSuccessWhenRegisterUser()
     {
         $registerUserResponse = $this->userService->register(
@@ -39,6 +43,10 @@ class UserTest extends BaseTestCase
         $this->assertNotNull($registerUserResponse->data);
     }
 
+    /**
+     * Testa o método Login na UserService retornando sucesso ao tentar realizar
+     * o login do usuário
+     */
     public function testReturnSuccessWhenTryLogin()
     {
         $password = $this->faker->password;
@@ -58,6 +66,10 @@ class UserTest extends BaseTestCase
         $this->assertNotEmpty($user->authenticateTokens);
     }
 
+     /**
+     * Testa o método Login na UserService retornando erro ao tentar efetuar
+     * login com um usuário que não existe
+     */
     public function testReturnErrorWhenTryLoginAndUserDoesntExist()
     {
         $password = $this->faker->password;
@@ -79,6 +91,10 @@ class UserTest extends BaseTestCase
         $this->assertHasInternalError($loginResponse, 1);
     }
 
+     /**
+     * Testa o método Login na UserService retornando erro ao tentar realizar
+     * login com um e-mail incorreto
+     */
     public function testReturnErrorWhenTryLoginWhereEmailIsIncorrect()
     {
         $password = $this->faker->password;
@@ -98,6 +114,10 @@ class UserTest extends BaseTestCase
         $this->assertHasInternalError($loginResponse, 1);
     }
 
+    /**
+     * Testa o método Login na UserService retornando erro ao tentar realizar
+     * login com uma senha incorreta
+     */
     public function testReturnErrorWhenTryLoginWherePasswordIsIncorrect()
     {
         $user = factory(User::class)->create([
@@ -115,6 +135,10 @@ class UserTest extends BaseTestCase
         $this->assertHasInternalError($loginResponse, 1);
     }
 
+    /**
+     * Testa o método Logout na UserService retornando sucesso ao tentar realizar
+     * o logout do usuário
+     */
     public function testReturnSuccessWhenTryLogout()
     {
         $user = factory(User::class)->create();
@@ -130,7 +154,11 @@ class UserTest extends BaseTestCase
         $this->assertNull($logoutResponse->data);
     }
 
-    public function testReturnSuccessWhenTryLogoutAndUserDoesntExists()
+    /**
+     * Testa o método Logout na UserService retornando erro ao tentar realizar
+     * o logout com dados de um usuário que não existe
+     */
+    public function testReturnErrorWhenTryLogoutAndUserDoesntExists()
     {
         $user = factory(User::class)->create();
 
@@ -144,7 +172,11 @@ class UserTest extends BaseTestCase
         $this->assertHasInternalError($logoutResponse, 3);
     }
 
-    public function testReturnSuccessWhenTryLogoutAndIdIsIncorrect()
+    /**
+     * Testa o método Logout na UserService retornando erro ao tentar realizar
+     * o logout com um id de usuário inválido
+     */
+    public function testReturnErrorWhenTryLogoutAndIdIsIncorrect()
     {
         $logoutResponse = $this->userService->logout($this->faker->uuid);
 
@@ -154,6 +186,10 @@ class UserTest extends BaseTestCase
         $this->assertHasInternalError($logoutResponse, 3);
     }
 
+    /**
+     * Testa o método FindByEmail na UserService retornando sucesso ao tentar
+     * buscar um usuário pelo seu e-mail
+     */
     public function testReturnSuccessWhenFindByEmail()
     {
         $user = factory(User::class)->create();
@@ -166,6 +202,10 @@ class UserTest extends BaseTestCase
         $this->assertNotNull($findEmailResponse->data);
     }
 
+    /**
+     * Testa o método FindByEmail na UserService retornando erro ao tentar
+     * buscar um usuário com um email que não existe
+     */
     public function testReturnErrorWhenEmailDoestExists()
     {
         $findEmailResponse = $this->userService->findByEmail(
@@ -178,6 +218,10 @@ class UserTest extends BaseTestCase
         $this->assertHasInternalError($findEmailResponse, 3);
     }
 
+    /**
+     * Testa o método Update na UserService retornando sucesso ao tentar
+     * realizar a atualização de dados do usuário
+     */
     public function testReturnSuccessWhenUpdateUser()
     {
         $user = factory(User::class)->create();
@@ -193,6 +237,10 @@ class UserTest extends BaseTestCase
         $this->assertEquals($updateUserResponse->data->name, $array['name']);
     }
 
+    /**
+     * Testa o método Update na UserService retornando erro ao tentar realizar
+     * a atualização de dados de um usuário que não existe
+     */
     public function testUpdateReturnErrorWhenUserDoesntExists()
     {
         $user = factory(User::class)->create();
@@ -210,6 +258,10 @@ class UserTest extends BaseTestCase
         $this->assertHasInternalError($updateUserResponse, 3);
     }
 
+    /**
+     * Testa o método Find na UserService retornando sucesso ao tentar realizar
+     * a busca de um usuário pelo seu id
+     */
     public function testReturnSuccessWhenFindUser()
     {
         $user = factory(User::class)->create();
@@ -223,6 +275,10 @@ class UserTest extends BaseTestCase
         $this->assertNotNull($findUserResponse->data);
     }
 
+    /**
+     * Testa o método Find na UserService retornando erro ao tentar realizar
+     * a busca de um usuário que não existe
+     */
     public function testFindReturnErrorWhenUserDoesntExists()
     {
         $user = factory(User::class)->create();
@@ -238,6 +294,10 @@ class UserTest extends BaseTestCase
         $this->assertHasInternalError($findUserResponse, 3);
     }
 
+    /**
+     * Testa o método TokenToChangePassword na UserService retornando sucesso
+     * ao criar um token para a atualização de senha do usuário
+     */
     public function testReturnSuccessWhenCreateTokenToChangePassword()
     {
         $user = factory(User::class)->create();
@@ -246,27 +306,40 @@ class UserTest extends BaseTestCase
             'user_id' => $user->id
         ]);
 
-        $findUserResponse = $this->userService->tokenToChangePassword($user->id);
+        $tokenToChangePasswordResponse = $this->userService->tokenToChangePassword(
+            $user->id
+        );
 
-        $this->assertInstanceOf(ServiceResponse::class, $findUserResponse);
-        $this->assertTrue($findUserResponse->success);
-        $this->assertNotNull($findUserResponse->data);
+        $this->assertInstanceOf(ServiceResponse::class, $tokenToChangePasswordResponse);
+        $this->assertTrue($tokenToChangePasswordResponse->success);
+        $this->assertNotNull($tokenToChangePasswordResponse->data);
     }
 
+    /**
+     * Testa o método TokenToChangePassword na UserService retornando erro
+     * ao tentar criar um token para a atualização de senha para um usuário
+     * que não existe
+     */
     public function testTokenToChangePasswordReturnErrorWhenUserDoesntExists()
     {
         $user = factory(User::class)->create();
 
         $user->delete();
 
-        $findUserResponse = $this->userService->tokenToChangePassword($user->id);
+        $tokenToChangePasswordResponse = $this->userService->tokenToChangePassword(
+            $user->id
+        );
 
-        $this->assertInstanceOf(ServiceResponse::class, $findUserResponse);
-        $this->assertFalse($findUserResponse->success);
-        $this->assertNull($findUserResponse->data);
-        $this->assertHasInternalError($findUserResponse, 3);
+        $this->assertInstanceOf(ServiceResponse::class, $tokenToChangePasswordResponse);
+        $this->assertFalse($tokenToChangePasswordResponse->success);
+        $this->assertNull($tokenToChangePasswordResponse->data);
+        $this->assertHasInternalError($tokenToChangePasswordResponse, 3);
     }
 
+    /**
+     * Testa o método ChangePassword na UserService retornando sucesso ao
+     * realizar a atualização de senha do usuário
+     */
     public function testReturnSuccessWhenChangePassword()
     {
         $password = $this->faker->password;
@@ -281,12 +354,19 @@ class UserTest extends BaseTestCase
             $this->faker->password
         );
 
+        //dd($changePasswordResponse);
+
         $this->assertInstanceOf(ServiceResponse::class, $changePasswordResponse);
         $this->assertTrue($changePasswordResponse->success);
         $this->assertIsObject($changePasswordResponse->data);
         $this->assertNotNull($changePasswordResponse->data);
+        $this->assertNotNull($changePasswordResponse->data->changePasswords);
     }
 
+    /**
+     * Testa o método ChangePassword na UserService retornando erro ao tentar
+     * realizar a atualização de senha de um usuário que não existe
+     */
     public function testChangePasswordReturnErrorWhenUserDoesntExist()
     {
         $password = $this->faker->password;
@@ -310,6 +390,11 @@ class UserTest extends BaseTestCase
         $this->assertHasInternalError($changePasswordResponse, 3);
     }
 
+    /**
+     * Testa o método ChangePassword na UserService retornando erro ao tentar
+     * realizar a atualização de senha de um usuário informando a senha atual
+     * de forma incorreta
+     */
     public function testChangePasswordReturnErrorWhenCurrentPasswordIsIncorrect()
     {
         $user = factory(User::class)->create();
