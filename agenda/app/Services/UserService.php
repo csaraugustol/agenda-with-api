@@ -84,6 +84,7 @@ class UserService extends BaseService implements UserServiceInterface
             }
 
             $user = $findUserResponse->data;
+            //dd($password, $user->password);
             if (!password_verify($password, $user->password)) {
                 return new ServiceResponse(
                     false,
