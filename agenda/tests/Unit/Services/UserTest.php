@@ -2,11 +2,12 @@
 
 namespace Tests\Unit\Services;
 
-use App\Models\AuthenticateToken;
 use App\Models\User;
+use App\Models\ChangePassword;
+use App\Models\AuthenticateToken;
+use App\Services\Responses\ServiceResponse;
 use App\Services\Contracts\UserServiceInterface;
 use App\Services\Params\User\RegisterUserServiceParams;
-use App\Services\Responses\ServiceResponse;
 
 class UserTest extends BaseTestCase
 {
@@ -235,5 +236,94 @@ class UserTest extends BaseTestCase
         $this->assertTrue($findUserResponse->success);
         $this->assertNull($findUserResponse->data);
         $this->assertHasInternalError($findUserResponse, 3);
+    }
+
+    public function testReturnSuccessWhenCreateTokenToChangePassword()
+    {
+        $user = factory(User::class)->create();
+
+        factory(ChangePassword::class)->create([
+            'user_id' => $user->id
+        ]);
+
+        $findUserResponse = $this->userService->tokenToChangePassword($user->id);
+
+        $this->assertInstanceOf(ServiceResponse::class, $findUserResponse);
+        $this->assertTrue($findUserResponse->success);
+        $this->assertNotNull($findUserResponse->data);
+    }
+
+    public function testTokenToChangePasswordReturnErrorWhenUserDoesntExists()
+    {
+        $user = factory(User::class)->create();
+
+        $user->delete();
+
+        $findUserResponse = $this->userService->tokenToChangePassword($user->id);
+
+        $this->assertInstanceOf(ServiceResponse::class, $findUserResponse);
+        $this->assertFalse($findUserResponse->success);
+        $this->assertNull($findUserResponse->data);
+        $this->assertHasInternalError($findUserResponse, 3);
+    }
+
+    public function testReturnSuccessWhenChangePassword()
+    {
+        $password = $this->faker->password;
+
+        $user = factory(User::class)->create([
+            'password' => bcrypt($password)
+        ]);
+
+        $changePasswordResponse = $this->userService->changePassword(
+            $user->id,
+            $password,
+            $this->faker->password
+        );
+
+        $this->assertInstanceOf(ServiceResponse::class, $changePasswordResponse);
+        $this->assertTrue($changePasswordResponse->success);
+        $this->assertIsObject($changePasswordResponse->data);
+        $this->assertNotNull($changePasswordResponse->data);
+    }
+
+    public function testChangePasswordReturnErrorWhenUserDoesntExist()
+    {
+        $password = $this->faker->password;
+
+        $user = factory(User::class)->create([
+            'password' => bcrypt($password)
+        ]);
+
+        $user->delete();
+
+        $changePasswordResponse = $this->userService->changePassword(
+            $user->id,
+            $password,
+            $this->faker->password
+        );
+
+        $this->assertInstanceOf(ServiceResponse::class, $changePasswordResponse);
+        $this->assertFalse($changePasswordResponse->success);
+        $this->assertIsBool($changePasswordResponse->success);
+        $this->assertNull($changePasswordResponse->data);
+        $this->assertHasInternalError($changePasswordResponse, 3);
+    }
+
+    public function testChangePasswordReturnErrorWhenCurrentPasswordIsIncorrect()
+    {
+        $user = factory(User::class)->create();
+
+        $changePasswordResponse = $this->userService->changePassword(
+            $user->id,
+            $this->faker->password,
+            $this->faker->password
+        );
+
+        $this->assertInstanceOf(ServiceResponse::class, $changePasswordResponse);
+        $this->assertFalse($changePasswordResponse->success);
+        $this->assertIsBool($changePasswordResponse->success);
+        $this->assertNull($changePasswordResponse->data);
+        $this->assertHasInternalError($changePasswordResponse, 20);
     }
 }
