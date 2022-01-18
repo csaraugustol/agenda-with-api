@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use App\Services\Responses\InternalError;
 use App\Services\Responses\ServiceResponse;
+use App\Services\Contracts\UserServiceInterface;
 use App\Repositories\Contracts\ChangePasswordRepository;
 use App\Services\Contracts\ChangePasswordServiceInterface;
 
@@ -35,6 +36,18 @@ class ChangePasswordService extends BaseService implements ChangePasswordService
     public function newToken(string $userId): ServiceResponse
     {
         try {
+            $findUserResponse = app(UserServiceInterface::class)->find(
+                $userId
+            );
+            if (!$findUserResponse->success || is_null($findUserResponse->data)) {
+                return new ServiceResponse(
+                    false,
+                    $findUserResponse->message,
+                    null,
+                    $findUserResponse->internalErrors
+                );
+            }
+
             //Verifica se existe tokens de alteração de senha ativos
             $clearTokenResponse = $this->clearToken($userId);
             if (!$clearTokenResponse->success) {
@@ -68,6 +81,18 @@ class ChangePasswordService extends BaseService implements ChangePasswordService
     public function clearToken(string $userId): ServiceResponse
     {
         try {
+            $findUserResponse = app(UserServiceInterface::class)->find(
+                $userId
+            );
+            if (!$findUserResponse->success || is_null($findUserResponse->data)) {
+                return new ServiceResponse(
+                    false,
+                    $findUserResponse->message,
+                    null,
+                    $findUserResponse->internalErrors
+                );
+            }
+
             $changePasswords = $this->changePasswordRepository
                 ->returnAllTokensToChangePassword($userId);
 
@@ -99,6 +124,18 @@ class ChangePasswordService extends BaseService implements ChangePasswordService
     public function findByToken(string $token, string $userId): ServiceResponse
     {
         try {
+            $findUserResponse = app(UserServiceInterface::class)->find(
+                $userId
+            );
+            if (!$findUserResponse->success || is_null($findUserResponse->data)) {
+                return new ServiceResponse(
+                    false,
+                    $findUserResponse->message,
+                    null,
+                    $findUserResponse->internalErrors
+                );
+            }
+
             $tokenToChangePassword = $this->changePasswordRepository->findByToken(
                 $token,
                 $userId
