@@ -176,4 +176,64 @@ class UserTest extends BaseTestCase
         $this->assertNull($findEmailResponse->data);
         $this->assertHasInternalError($findEmailResponse, 3);
     }
+
+    public function testReturnSuccessWhenUpdateUser()
+    {
+        $user = factory(User::class)->create();
+
+        $array = ['name' => $this->faker->name];
+
+        $updateUserResponse = $this->userService->update($array, $user->id);
+
+        $this->assertInstanceOf(ServiceResponse::class, $updateUserResponse);
+        $this->assertTrue($updateUserResponse->success);
+        $this->assertNotNull($updateUserResponse->data);
+        $this->assertNotEquals($updateUserResponse->data->name, $user->name);
+        $this->assertEquals($updateUserResponse->data->name, $array['name']);
+    }
+
+    public function testUpdateReturnErrorWhenUserDoesntExists()
+    {
+        $user = factory(User::class)->create();
+
+        $user->delete();
+
+        $updateUserResponse = $this->userService->update(
+            [],
+            $user->id
+        );
+
+        $this->assertInstanceOf(ServiceResponse::class, $updateUserResponse);
+        $this->assertFalse($updateUserResponse->success);
+        $this->assertNull($updateUserResponse->data);
+        $this->assertHasInternalError($updateUserResponse, 3);
+    }
+
+    public function testReturnSuccessWhenFindUser()
+    {
+        $user = factory(User::class)->create();
+
+        $findUserResponse = $this->userService->find($user->id);
+
+        $this->assertInstanceOf(ServiceResponse::class, $findUserResponse);
+        $this->assertInstanceOf(User::class, $findUserResponse->data);
+        $this->assertIsBool($findUserResponse->success);
+        $this->assertTrue($findUserResponse->success);
+        $this->assertNotNull($findUserResponse->data);
+    }
+
+    public function testFindReturnErrorWhenUserDoesntExists()
+    {
+        $user = factory(User::class)->create();
+
+        $user->delete();
+
+        $findUserResponse = $this->userService->find($user->id);
+
+        $this->assertInstanceOf(ServiceResponse::class, $findUserResponse);
+        $this->assertIsBool($findUserResponse->success);
+        $this->assertTrue($findUserResponse->success);
+        $this->assertNull($findUserResponse->data);
+        $this->assertHasInternalError($findUserResponse, 3);
+    }
 }
