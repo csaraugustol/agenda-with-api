@@ -348,13 +348,15 @@ class UserTest extends BaseTestCase
             'password' => bcrypt($password)
         ]);
 
+        factory(ChangePassword::class)->create([
+            'user_id' => $user->id
+        ]);
+
         $changePasswordResponse = $this->userService->changePassword(
             $user->id,
             $password,
             $this->faker->password
         );
-
-        //dd($changePasswordResponse);
 
         $this->assertInstanceOf(ServiceResponse::class, $changePasswordResponse);
         $this->assertTrue($changePasswordResponse->success);
