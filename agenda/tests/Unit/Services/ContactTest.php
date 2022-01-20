@@ -2,10 +2,10 @@
 
 namespace Tests\Unit\Services;
 
+use App\Models\Tag;
 use App\Models\User;
 use App\Models\Phone;
 use App\Models\Contact;
-use App\Models\Tag;
 use App\Services\Responses\ServiceResponse;
 use Illuminate\Database\Eloquent\Collection;
 use App\Services\Contracts\ContactServiceInterface;
