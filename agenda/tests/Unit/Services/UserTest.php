@@ -152,6 +152,7 @@ class UserTest extends BaseTestCase
         $this->assertInstanceOf(ServiceResponse::class, $logoutResponse);
         $this->assertTrue($logoutResponse->success);
         $this->assertNull($logoutResponse->data);
+        $this->assertEmpty($user->authenticateTokens);
     }
 
     /**
