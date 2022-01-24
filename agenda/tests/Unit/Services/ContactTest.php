@@ -33,34 +33,24 @@ class ContactTest extends BaseTestCase
     {
         $user = factory(User::class)->create();
 
-        $firstContact = factory(Contact::class)->create([
+        factory(Contact::class, 3)->create([
             'user_id' => $user->id
-        ]);
-
-        factory(Phone::class)->create([
-            'contact_id' => $firstContact->id
-        ]);
-
-        $secondaryContact = factory(Contact::class)->create([
-            'user_id' => $user->id
-        ]);
-
-        factory(Phone::class)->create([
-            'contact_id' => $secondaryContact->id
         ]);
 
         $findAllContactsResponse = $this->contactService->findAllWithFilter(
             $user->id
         );
 
+        $contact = $findAllContactsResponse->data->first();
+
         $this->assertInstanceOf(ServiceResponse::class, $findAllContactsResponse);
         $this->assertInstanceOf(Collection::class, $findAllContactsResponse->data);
         $this->assertIsBool($findAllContactsResponse->success);
         $this->assertTrue($findAllContactsResponse->success);
         $this->assertNotEmpty($findAllContactsResponse->data);
-        $this->assertNotEmpty($firstContact->phones);
-        $this->assertNotEmpty($secondaryContact->phones);
-        $this->assertEquals(2, count($findAllContactsResponse->data));
+        $this->assertNotEmpty($user->contacts);
+        $this->assertEquals(3, count($findAllContactsResponse->data));
+        $this->assertEquals($contact->user_id, $user->id);
     }
 
     /**
@@ -71,26 +61,13 @@ class ContactTest extends BaseTestCase
     {
         $user = factory(User::class)->create();
 
-        $firstContact = factory(Contact::class)->create([
+        $contact = factory(Contact::class)->create([
             'user_id' => $user->id
         ]);
-
-        factory(Phone::class)->create([
-            'contact_id' => $firstContact->id
-        ]);
-
-        $secondaryContact = factory(Contact::class)->create([
-            'user_id' => $user->id
-        ]);
-
-        factory(Phone::class)->create([
-            'contact_id' => $secondaryContact->id
-        ]);
-
 
         $findAllContactsResponse = $this->contactService->findAllWithFilter(
             $user->id,
-            $firstContact->name
+            $contact->name
         );
 
         $data = $findAllContactsResponse->data->first();
@@ -101,8 +78,8 @@ class ContactTest extends BaseTestCase
         $this->assertIsBool($findAllContactsResponse->success);
         $this->assertTrue($findAllContactsResponse->success);
         $this->assertNotEmpty($user->contacts);
-        $this->assertNotEmpty($firstContact->phones);
-        $this->assertEquals($data->id, $firstContact->id);
+        $this->assertNotEmpty($contact->phones);
+        $this->assertEquals($data->id, $contact->id);
     }
 
     /**
@@ -118,13 +95,9 @@ class ContactTest extends BaseTestCase
             'user_id' => $user->id
         ]);
 
-        $phone = factory(Phone::class)->create([
-            'contact_id' => $contact->id
-        ]);
-
         $findAllContactsResponse = $this->contactService->findAllWithFilter(
             $user->id,
-            $phone->phone_number
+            $contact->phones->first()->phone_number
         );
 
         $data = $findAllContactsResponse->data->first();
@@ -165,7 +138,7 @@ class ContactTest extends BaseTestCase
         $this->assertNotEmpty($user->contacts);
     }
 
-     /**
+    /**
      * Testa o método FindAllWithFilter na ContactService retornando sucesso ao
      * tentar buscar um contato de um usuário que não tem nenhum contato
      * vinculado a ele
