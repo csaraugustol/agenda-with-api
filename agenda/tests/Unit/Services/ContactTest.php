@@ -135,7 +135,7 @@ class ContactTest extends BaseTestCase
         $this->assertNotFalse($findAllContactsResponse->success);
         $this->assertNotEmpty($user->contacts);
         $this->assertNotEmpty($contact->phones);
-        $this->assertEquals($data->name, $contact->name);
+        $this->assertEquals($data->id, $contact->id);
     }
 
     /**
