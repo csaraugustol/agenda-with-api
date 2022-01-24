@@ -89,7 +89,7 @@ class ContactTest extends BaseTestCase
     /**
      * Verifica o relacionamento com o Tag
      */
-    public function testRelationshipContactWithTag()
+    public function testRelationshipContactWithTags()
     {
         $user = factory(User::class)->create();
 
@@ -108,8 +108,9 @@ class ContactTest extends BaseTestCase
 
         $tagContact = $contact->tagcontacts->first();
 
+        $this->assertInstanceOf(Collection::class, $contact->tags);
+        $this->assertInstanceOf(Tag::class, $contact->tags->first());
         $this->assertEquals($tagContact->tag_id, $tag->id);
-        $this->assertEquals($tagContact->tag->id, $tag->id);
         $this->assertEquals($contact->user_id, $tag->user_id);
     }
 }
