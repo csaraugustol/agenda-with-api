@@ -119,12 +119,8 @@ class ContactTest extends BaseTestCase
     {
         $user = factory(User::class)->create();
 
-        $contact = factory(Contact::class)->create([
+        factory(Contact::class)->create([
             'user_id' => $user->id
-        ]);
-
-        factory(Phone::class)->create([
-            'contact_id' => $contact->id
         ]);
 
         $findAllContactsResponse = $this->contactService->findAllWithFilter(
@@ -152,10 +148,6 @@ class ContactTest extends BaseTestCase
         ]);
 
         $contact->delete();
-
-        factory(Phone::class)->create([
-            'contact_id' => $contact->id
-        ]);
 
         $findAllContactsResponse = $this->contactService->findAllWithFilter(
             $user->id,
