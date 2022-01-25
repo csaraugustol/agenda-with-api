@@ -6,6 +6,7 @@ use Throwable;
 use Illuminate\Support\Facades\DB;
 use App\Services\Responses\InternalError;
 use App\Services\Responses\ServiceResponse;
+use App\Services\Contracts\UserServiceInterface;
 use App\Repositories\Contracts\ContactRepository;
 use App\Services\Contracts\PhoneServiceInterface;
 use App\Services\Contracts\AddressServiceInterface;
@@ -65,6 +66,16 @@ class ContactService extends BaseService implements ContactServiceInterface
     public function find(string $contactId, string $userId): ServiceResponse
     {
         try {
+            $findUserResponse = app(UserServiceInterface::class)->find($userId);
+            if (!$findUserResponse->success || is_null($findUserResponse->data)) {
+                return new ServiceResponse(
+                    false,
+                    $findUserResponse->message,
+                    null,
+                    $findUserResponse->internalErrors
+                );
+            }
+
             $contact = $this->contactRepository->findContactByUserId(
                 $contactId,
                 $userId
