@@ -3,10 +3,8 @@
 namespace Tests\Feature;
 
 use Carbon\Carbon;
-use App\Models\User;
 use App\Models\Contact;
 use App\Models\ChangePassword;
-use App\Models\AuthenticateToken;
 
 class UserTest extends BaseTestCase
 {
@@ -146,7 +144,8 @@ class UserTest extends BaseTestCase
                         'code' => 1,
                     ],
                 ],
-            ], true)->assertJsonStructure(['errors']);
+            ], true)
+            ->assertJsonStructure(['errors']);
     }
 
     /**
@@ -236,11 +235,11 @@ class UserTest extends BaseTestCase
     {
         $generateUserAndToken = $this->generateUserAndToken();
 
+        $this->withHeaders(['Authorization' => $generateUserAndToken->token]);
+
         factory(Contact::class)->create([
             'user_id' => $generateUserAndToken->user->id
         ]);
-
-        $this->withHeaders(['Authorization' => $generateUserAndToken->token]);
 
         $this->get(route('contacts.index'))
             ->assertHeader('content-type', 'application/json')
@@ -250,6 +249,85 @@ class UserTest extends BaseTestCase
                 'request' => route('contacts.index'),
                 'method'  => 'GET',
                 'code'    => 200,
+                'data'    => [
+                    [
+                        'id'           => $generateUserAndToken->user->contacts->first()->id,
+                        'name'         => $generateUserAndToken->user->contacts->first()->name,
+                        'phone_number' => $generateUserAndToken->user->contacts->first()->phones->first()->phone_number
+                    ],
+                ],
+            ], true);
+    }
+
+    /**
+     * Retorna sucesso ao realizar busca dos contatos do usuário com autenticação
+     * pelo nome do contato
+     */
+    public function testReturnSuccessWhenListAllContactsWithFilterContactName()
+    {
+        $generateUserAndToken = $this->generateUserAndToken();
+
+        $this->withHeaders(['Authorization' => $generateUserAndToken->token]);
+
+        $contact = factory(Contact::class)->create([
+            'user_id' => $generateUserAndToken->user->id
+        ]);
+
+        $body = [
+            'filter' => $contact->name,
+        ];
+
+        $this->get(route('contacts.index'), $body)
+            ->assertHeader('content-type', 'application/json')
+            ->assertStatus(200)
+            ->assertJson([
+                'success' => true,
+                'request' => route('contacts.index'),
+                'method'  => 'GET',
+                'code'    => 200,
+                'data'    => [
+                    [
+                        'id'           => $generateUserAndToken->user->contacts->first()->id,
+                        'name'         => $generateUserAndToken->user->contacts->first()->name,
+                        'phone_number' => $generateUserAndToken->user->contacts->first()->phones->first()->phone_number
+                    ],
+                ],
+            ], true);
+    }
+
+    /**
+     * Retorna sucesso ao realizar busca dos contatos do usuário com autenticação
+     * pelo número de telefone do contato
+     */
+    public function testReturnSuccessWhenListAllContactsWithFilterPhoneNumber()
+    {
+        $generateUserAndToken = $this->generateUserAndToken();
+
+        $this->withHeaders(['Authorization' => $generateUserAndToken->token]);
+
+        $contact = factory(Contact::class)->create([
+            'user_id' => $generateUserAndToken->user->id
+        ]);
+
+        $body = [
+            'filter' => $contact->phones->first()->phone_number,
+        ];
+
+        $this->get(route('contacts.index'), $body)
+            ->assertHeader('content-type', 'application/json')
+            ->assertStatus(200)
+            ->assertJson([
+                'success' => true,
+                'request' => route('contacts.index'),
+                'method'  => 'GET',
+                'code'    => 200,
+                'data'    => [
+                    [
+                        'id'           => $generateUserAndToken->user->contacts->first()->id,
+                        'name'         => $generateUserAndToken->user->contacts->first()->name,
+                        'phone_number' => $generateUserAndToken->user->contacts->first()->phones->first()->phone_number
+                    ],
+                ],
             ], true);
     }
 
@@ -282,6 +360,10 @@ class UserTest extends BaseTestCase
      */
     public function testReturnSuccessWhenUserTryLogout()
     {
+        $generateToken = $this->generateUserAndToken();
+
+        $this->withHeaders(['Authorization' => $generateToken->token]);
+
         $this->get(route('users.logout'))
             ->assertHeader('content-type', 'application/json')
             ->assertStatus(200)
@@ -323,6 +405,10 @@ class UserTest extends BaseTestCase
      */
     public function testShowReturnSuccessWhenFindUser()
     {
+        $generateUserAndToken = $this->generateUserAndToken();
+
+        $this->withHeaders(['Authorization' => $generateUserAndToken->token]);
+
         $this->get(route('users.show'))
             ->assertHeader('content-type', 'application/json')
             ->assertStatus(200)
@@ -332,9 +418,9 @@ class UserTest extends BaseTestCase
                 'method'  => 'GET',
                 'code'    => 200,
                 'data'    => [
-                    'id'    => $this->user->id,
-                    'name'  => $this->user->name,
-                    'email' => $this->user->email,
+                    'id'    => $generateUserAndToken->user->id,
+                    'name'  => $generateUserAndToken->user->name,
+                    'email' => $generateUserAndToken->user->email,
                 ],
             ], true);
     }
@@ -369,6 +455,10 @@ class UserTest extends BaseTestCase
      */
     public function testChangePasswordReturnSuccessWhenCreateToken()
     {
+        $generateUserAndToken = $this->generateUserAndToken();
+
+        $this->withHeaders(['Authorization' => $generateUserAndToken->token]);
+
         $this->get(route('users.change-password'))
             ->assertHeader('content-type', 'application/json')
             ->assertStatus(200)
@@ -378,7 +468,7 @@ class UserTest extends BaseTestCase
                 'method'  => 'GET',
                 'code'    => 200,
                 'data'    => [
-                    'token' => $this->user->changePasswords->first()->token,
+                    'token' => $generateUserAndToken->user->changePasswords->first()->token,
                 ],
             ], true);
     }
@@ -388,25 +478,18 @@ class UserTest extends BaseTestCase
      */
     public function testChangePasswordReturnSuccessWhenChangePassword()
     {
-        $password = $this->faker->password;
-        $newPassword = $this->faker->password;
+        $generateUserAndToken = $this->generateUserAndToken();
 
-        $user = factory(User::class)->create([
-            'password' => bcrypt($password)
-        ]);
+        $this->withHeaders(['Authorization' => $generateUserAndToken->token]);
 
-        $authenticateToken = factory(AuthenticateToken::class)->create([
-            'user_id' => $user->id
-        ]);
-
-        $this->withHeaders(['Authorization' => 'Bearer ' . $authenticateToken->token]);
+        $newPassword = $this->faker->regexify('[A-Z+a-z+0-9]{8,20}');
 
         $changePasswordToken = factory(ChangePassword::class)->create([
-            'user_id' => $user->id
+            'user_id' => $generateUserAndToken->user->id
         ]);
 
         $body = [
-            'current_password'      => $password,
+            'current_password'      => $generateUserAndToken->password,
             'new_password'          => $newPassword,
             'confirm_new_password'  => $newPassword,
             'token_update_password' => $changePasswordToken->token,
@@ -421,9 +504,9 @@ class UserTest extends BaseTestCase
                 'method'  => 'POST',
                 'code'    => 200,
                 'data'    => [
-                    'id'    => $user->id,
-                    'name'  => $user->name,
-                    'email' => $user->email,
+                    'id'    => $generateUserAndToken->user->id,
+                    'name'  => $generateUserAndToken->user->name,
+                    'email' => $generateUserAndToken->user->email,
                 ],
             ], true);
     }
@@ -434,21 +517,14 @@ class UserTest extends BaseTestCase
      */
     public function testChangePasswordReturnErrorWhenChangePasswordWithoutToken()
     {
-        $password = $this->faker->password;
+        $generateUserAndToken = $this->generateUserAndToken();
+
+        $this->withHeaders(['Authorization' => $generateUserAndToken->token]);
+
         $newPassword = $this->faker->password;
 
-        $user = factory(User::class)->create([
-            'password' => bcrypt($password)
-        ]);
-
-        $authenticateToken = factory(AuthenticateToken::class)->create([
-            'user_id' => $user->id
-        ]);
-
-        $this->withHeaders(['Authorization' => 'Bearer ' . $authenticateToken->token]);
-
         $body = [
-            'current_password'      => $password,
+            'current_password'      => $generateUserAndToken->password,
             'new_password'          => $newPassword,
             'confirm_new_password'  => $newPassword,
             'token_update_password' => $this->faker->sha1,
@@ -476,26 +552,19 @@ class UserTest extends BaseTestCase
      */
     public function testChangePasswordReturnErrorWhenTokenExpired()
     {
-        $password = $this->faker->password;
+        $generateUserAndToken = $this->generateUserAndToken();
+
+        $this->withHeaders(['Authorization' => $generateUserAndToken->token]);
+
         $newPassword = $this->faker->password;
 
-        $user = factory(User::class)->create([
-            'password' => bcrypt($password)
-        ]);
-
-        $authenticateToken = factory(AuthenticateToken::class)->create([
-            'user_id' => $user->id
-        ]);
-
-        $this->withHeaders(['Authorization' => 'Bearer ' . $authenticateToken->token]);
-
         $changePasswordToken = factory(ChangePassword::class)->create([
-            'user_id' => $user->id,
+            'user_id' => $generateUserAndToken->user->id,
             'expires_at' => Carbon::now()->subMinutes(5)
         ]);
 
         $body = [
-            'current_password'      => $password,
+            'current_password'      => $generateUserAndToken->password,
             'new_password'          => $newPassword,
             'confirm_new_password'  => $newPassword,
             'token_update_password' => $changePasswordToken->token,
