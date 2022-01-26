@@ -3,7 +3,6 @@
 namespace Tests\Traits;
 
 use App\Models\User;
-use App\Models\Contact;
 use App\Models\AuthenticateToken;
 
 trait Authentication
@@ -20,17 +19,14 @@ trait Authentication
             'password' => bcrypt($password)
         ]);
 
-        factory(Contact::class)->create([
-            'user_id' => $user->id
-        ]);
-
         $authenticateToken = factory(AuthenticateToken::class)->create([
             'user_id' => $user->id
         ]);
 
         return (object) [
-            'user'  => $user,
-            'token' => 'Bearer ' . $authenticateToken->token
+            'user'     => $user,
+            'password' => $password,
+            'token'    => 'Bearer ' . $authenticateToken->token,
         ];
     }
 

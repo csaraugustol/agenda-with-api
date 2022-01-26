@@ -4,25 +4,15 @@ namespace Tests\Feature;
 
 use Carbon\Carbon;
 use App\Models\User;
+use App\Models\Contact;
 use App\Models\ChangePassword;
 use App\Models\AuthenticateToken;
 
 class UserTest extends BaseTestCase
 {
-    /**
-     * O usuário solicitante da request
-     * @var User
-     */
-    protected $user;
-
     public function setUp(): void
     {
         parent::setUp();
-
-        $tokenResponse = $this->generateUserAndToken();
-
-        $this->user = $tokenResponse->user;
-        $this->withHeaders(['Authorization' => $tokenResponse->token]);
     }
 
     /**
@@ -83,10 +73,10 @@ class UserTest extends BaseTestCase
      */
     public function testReturnErrorWhenRegisterNewUserWithEqualsEmail()
     {
-        $user = factory(User::class)->create();
+        $generateUser = $this->generateUserAndToken();
         $body = [
             'name'             => $this->faker->name,
-            'email'            => $user->email,
+            'email'            => $generateUser->user->email,
             'password'         => $this->faker->password,
             'confirm_password' => $this->faker->password
         ];
@@ -112,14 +102,11 @@ class UserTest extends BaseTestCase
      */
     public function testLoginReturnSuccess()
     {
-        $password = $this->faker->password;
-        $user = factory(User::class)->create([
-            'password' => bcrypt($password),
-        ]);
+        $generateUserAndDecryptedPassword = $this->generateUserAndToken();
 
         $body = [
-            'email'    => $user->email,
-            'password' => $password
+            'email'    => $generateUserAndDecryptedPassword->user->email,
+            'password' => $generateUserAndDecryptedPassword->password
         ];
 
         $this->postJson(route('users.login'), $body)
@@ -138,12 +125,10 @@ class UserTest extends BaseTestCase
      */
     public function testLoginReturnErrorWhenPasswordIsIncorrect()
     {
-        $user = factory(User::class)->create([
-            'password' => bcrypt($this->faker->password),
-        ]);
+        $generateUser = $this->generateUserAndToken();
 
         $body = [
-            'email'    => $user->email,
+            'email'    => $generateUser->user->email,
             'password' => $this->faker->password
         ];
 
@@ -161,7 +146,7 @@ class UserTest extends BaseTestCase
                         'code' => 1,
                     ],
                 ],
-            ], true) ->assertJsonStructure(['errors']);
+            ], true)->assertJsonStructure(['errors']);
     }
 
     /**
@@ -169,14 +154,11 @@ class UserTest extends BaseTestCase
      */
     public function testLoginReturnErrorWhenEmailIsIncorrect()
     {
-        $password = $this->faker->password;
-        factory(User::class)->create([
-            'password' => bcrypt($password),
-        ]);
+        $decryptedPassword = $this->generateUserAndToken();
 
         $body = [
             'email'    => $this->faker->email,
-            'password' => $password
+            'password' => $decryptedPassword->password
         ];
 
         $this->postJson(route('users.login'), $body)
@@ -193,7 +175,8 @@ class UserTest extends BaseTestCase
                         'code' => 1,
                     ],
                 ],
-            ], true) ->assertJsonStructure(['errors']);
+            ], true)
+            ->assertJsonStructure(['errors']);
     }
 
     /**
@@ -202,6 +185,10 @@ class UserTest extends BaseTestCase
      */
     public function testReturnSuccessWhenUpdatedUserAuthenticated()
     {
+        $generateUserAndToken = $this->generateUserAndToken();
+
+        $this->withHeaders(['Authorization' => $generateUserAndToken->token]);
+
         $this->patchJson(route('users.update'), [])
             ->assertHeader('content-type', 'application/json')
             ->assertStatus(200)
@@ -211,9 +198,9 @@ class UserTest extends BaseTestCase
                 'method'  => 'PATCH',
                 'code'    => 200,
                 'data'    => [
-                    'id'    => $this->user->id,
-                    'name'  => $this->user->name,
-                    'email' => $this->user->email,
+                    'id'    => $generateUserAndToken->user->id,
+                    'name'  => $generateUserAndToken->user->name,
+                    'email' => $generateUserAndToken->user->email,
                 ],
             ], true);
     }
@@ -247,6 +234,14 @@ class UserTest extends BaseTestCase
      */
     public function testReturnSuccessWhenListAllContactsOfUserAndIsAuthenticated()
     {
+        $generateUserAndToken = $this->generateUserAndToken();
+
+        factory(Contact::class)->create([
+            'user_id' => $generateUserAndToken->user->id
+        ]);
+
+        $this->withHeaders(['Authorization' => $generateUserAndToken->token]);
+
         $this->get(route('contacts.index'))
             ->assertHeader('content-type', 'application/json')
             ->assertStatus(200)
