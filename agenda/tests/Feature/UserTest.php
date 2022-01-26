@@ -512,6 +512,186 @@ class UserTest extends BaseTestCase
     }
 
     /**
+     * Retorna erro ao tentar atualizar a senha do usuário após não informar ao
+     * menos uma letra maiúscula para a nova senha
+     */
+    public function testChangePasswordReturnErrorWhenRegexDoesntHasUppercaseLetter()
+    {
+        $generateUserAndToken = $this->generateUserAndToken();
+
+        $this->withHeaders(['Authorization' => $generateUserAndToken->token]);
+
+        $newPassword = $this->faker->regexify('[A-Z+0-9]{8,20}');
+
+        $changePasswordToken = factory(ChangePassword::class)->create([
+            'user_id' => $generateUserAndToken->user->id
+        ]);
+
+        $body = [
+            'current_password'      => $generateUserAndToken->password,
+            'new_password'          => $newPassword,
+            'confirm_new_password'  => $newPassword,
+            'token_update_password' => $changePasswordToken->token,
+        ];
+
+        $this->postJson(route('users.change-password'), $body)
+            ->assertHeader('content-type', 'application/json')
+            ->assertStatus(422)
+            ->assertJson([
+                'success' => false,
+                'request' => route('users.change-password'),
+                'method'  => 'POST',
+                'code'    => 422,
+                'data'    => null,
+            ], true)
+            ->assertJsonStructure(['errors']);
+    }
+
+    /**
+     * Retorna erro ao tentar atualizar a senha do usuário após não informar ao
+     * menos uma letra minúscula para a nova senha
+     */
+    public function testChangePasswordReturnErrorWhenRegexDoesntHasLowercaseLetter()
+    {
+        $generateUserAndToken = $this->generateUserAndToken();
+
+        $this->withHeaders(['Authorization' => $generateUserAndToken->token]);
+
+        $newPassword = $this->faker->regexify('[a-z+0-9]{8,20}');
+
+        $changePasswordToken = factory(ChangePassword::class)->create([
+            'user_id' => $generateUserAndToken->user->id
+        ]);
+
+        $body = [
+            'current_password'      => $generateUserAndToken->password,
+            'new_password'          => $newPassword,
+            'confirm_new_password'  => $newPassword,
+            'token_update_password' => $changePasswordToken->token,
+        ];
+
+        $this->postJson(route('users.change-password'), $body)
+            ->assertHeader('content-type', 'application/json')
+            ->assertStatus(422)
+            ->assertJson([
+                'success' => false,
+                'request' => route('users.change-password'),
+                'method'  => 'POST',
+                'code'    => 422,
+                'data'    => null,
+            ], true)
+            ->assertJsonStructure(['errors']);
+    }
+
+    /**
+     * Retorna erro ao tentar atualizar a senha do usuário após não informar ao
+     * menos um número para a nova senha
+     */
+    public function testChangePasswordReturnErrorWhenRegexDoesntHasNumber()
+    {
+        $generateUserAndToken = $this->generateUserAndToken();
+
+        $this->withHeaders(['Authorization' => $generateUserAndToken->token]);
+
+        $newPassword = $this->faker->regexify('[A-Z+a-z]{8,20}');
+
+        $changePasswordToken = factory(ChangePassword::class)->create([
+            'user_id' => $generateUserAndToken->user->id
+        ]);
+
+        $body = [
+            'current_password'      => $generateUserAndToken->password,
+            'new_password'          => $newPassword,
+            'confirm_new_password'  => $newPassword,
+            'token_update_password' => $changePasswordToken->token,
+        ];
+
+        $this->postJson(route('users.change-password'), $body)
+            ->assertHeader('content-type', 'application/json')
+            ->assertStatus(422)
+            ->assertJson([
+                'success' => false,
+                'request' => route('users.change-password'),
+                'method'  => 'POST',
+                'code'    => 422,
+                'data'    => null,
+            ], true)
+            ->assertJsonStructure(['errors']);
+    }
+
+    /**
+     * Retorna erro ao tentar atualizar a senha do usuário após informar uma
+     * senha que seu tamanho é menor do que 8 caracteres
+     */
+    public function testChangePasswordReturnErrorWhenRegexHasLessEightCaracteres()
+    {
+        $generateUserAndToken = $this->generateUserAndToken();
+
+        $this->withHeaders(['Authorization' => $generateUserAndToken->token]);
+
+        $newPassword = $this->faker->regexify('[A-Z+a-z+0-9]{7}');
+
+        $changePasswordToken = factory(ChangePassword::class)->create([
+            'user_id' => $generateUserAndToken->user->id
+        ]);
+
+        $body = [
+            'current_password'      => $generateUserAndToken->password,
+            'new_password'          => $newPassword,
+            'confirm_new_password'  => $newPassword,
+            'token_update_password' => $changePasswordToken->token,
+        ];
+
+        $this->postJson(route('users.change-password'), $body)
+            ->assertHeader('content-type', 'application/json')
+            ->assertStatus(422)
+            ->assertJson([
+                'success' => false,
+                'request' => route('users.change-password'),
+                'method'  => 'POST',
+                'code'    => 422,
+                'data'    => null,
+            ], true)
+            ->assertJsonStructure(['errors']);
+    }
+
+    /**
+     * Retorna erro ao tentar atualizar a senha do usuário após informar uma
+     * senha que seu tamanho é mais do que 20 caracteres
+     */
+    public function testChangePasswordReturnErrorWhenRegexHasMoreTwentCaracteres()
+    {
+        $generateUserAndToken = $this->generateUserAndToken();
+
+        $this->withHeaders(['Authorization' => $generateUserAndToken->token]);
+
+        $newPassword = $this->faker->regexify('[A-Z+a-z+0-9]{21}');
+
+        $changePasswordToken = factory(ChangePassword::class)->create([
+            'user_id' => $generateUserAndToken->user->id
+        ]);
+
+        $body = [
+            'current_password'      => $generateUserAndToken->password,
+            'new_password'          => $newPassword,
+            'confirm_new_password'  => $newPassword,
+            'token_update_password' => $changePasswordToken->token,
+        ];
+
+        $this->postJson(route('users.change-password'), $body)
+            ->assertHeader('content-type', 'application/json')
+            ->assertStatus(422)
+            ->assertJson([
+                'success' => false,
+                'request' => route('users.change-password'),
+                'method'  => 'POST',
+                'code'    => 422,
+                'data'    => null,
+            ], true)
+            ->assertJsonStructure(['errors']);
+    }
+
+    /**
      * Retorna erro ao atualizar a senha do usuário quando o token de permissão
      * é inválido
      */
