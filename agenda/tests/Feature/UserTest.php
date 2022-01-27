@@ -70,10 +70,10 @@ class UserTest extends BaseTestCase
      */
     public function testReturnErrorWhenRegisterNewUserWithEqualsEmail()
     {
-        $generateUser = $this->generateUserAndToken();
+        $generateUser = $this->generateUserAndToken()->user;
         $body = [
             'name'             => $this->faker->name,
-            'email'            => $generateUser->user->email,
+            'email'            => $generateUser->email,
             'password'         => $this->faker->password,
             'confirm_password' => $this->faker->password
         ];
@@ -115,6 +115,11 @@ class UserTest extends BaseTestCase
                 'method'  => 'POST',
                 'code'    => 200,
             ], true);
+
+        $this->assertEquals(
+            $generateUserAndDecryptedPassword->user->id,
+            $generateUserAndDecryptedPassword->user->authenticateTokens->first()->user_id
+        );
     }
 
     /**
@@ -184,6 +189,7 @@ class UserTest extends BaseTestCase
     public function testReturnSuccessWhenUpdatedUserAuthenticated()
     {
         $generateUserAndToken = $this->generateUserAndToken();
+        $user = $generateUserAndToken->user;
 
         $this->withHeaders(['Authorization' => $generateUserAndToken->token]);
 
@@ -196,9 +202,9 @@ class UserTest extends BaseTestCase
                 'method'  => 'PATCH',
                 'code'    => 200,
                 'data'    => [
-                    'id'    => $generateUserAndToken->user->id,
-                    'name'  => $generateUserAndToken->user->name,
-                    'email' => $generateUserAndToken->user->email,
+                    'id'    => $user->id,
+                    'name'  => $user->name,
+                    'email' => $user->email,
                 ],
             ], true);
     }
@@ -246,6 +252,8 @@ class UserTest extends BaseTestCase
                 'code'    => 200,
                 'data'    => null,
             ], true);
+
+        $this->assertEmpty($generateToken->user->authenticateTokens);
     }
 
     /**
@@ -278,6 +286,7 @@ class UserTest extends BaseTestCase
     public function testShowReturnSuccessWhenFindUser()
     {
         $generateUserAndToken = $this->generateUserAndToken();
+        $user = $generateUserAndToken->user;
 
         $this->withHeaders(['Authorization' => $generateUserAndToken->token]);
 
@@ -290,9 +299,9 @@ class UserTest extends BaseTestCase
                 'method'  => 'GET',
                 'code'    => 200,
                 'data'    => [
-                    'id'    => $generateUserAndToken->user->id,
-                    'name'  => $generateUserAndToken->user->name,
-                    'email' => $generateUserAndToken->user->email,
+                    'id'    => $user->id,
+                    'name'  => $user->name,
+                    'email' => $user->email,
                 ],
             ], true);
     }
@@ -351,13 +360,14 @@ class UserTest extends BaseTestCase
     public function testChangePasswordReturnSuccessWhenChangePassword()
     {
         $generateUserAndToken = $this->generateUserAndToken();
+        $user = $generateUserAndToken->user;
 
         $this->withHeaders(['Authorization' => $generateUserAndToken->token]);
 
         $newPassword = $this->faker->regexify('[A-Z+a-z+0-9]{8,20}');
 
         $changePasswordToken = factory(ChangePassword::class)->create([
-            'user_id' => $generateUserAndToken->user->id
+            'user_id' => $user->id
         ]);
 
         $body = [
@@ -376,9 +386,9 @@ class UserTest extends BaseTestCase
                 'method'  => 'POST',
                 'code'    => 200,
                 'data'    => [
-                    'id'    => $generateUserAndToken->user->id,
-                    'name'  => $generateUserAndToken->user->name,
-                    'email' => $generateUserAndToken->user->email,
+                    'id'    => $user->id,
+                    'name'  => $user->name,
+                    'email' => $user->email,
                 ],
             ], true);
     }
