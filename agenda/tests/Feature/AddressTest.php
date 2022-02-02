@@ -4,6 +4,9 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use App\Models\Contact;
+use App\Services\AddressService;
+use Tests\Mocks\Providers\ViaCepProvider;
+use App\Services\Responses\ServiceResponse;
 
 class AddressTest extends BaseTestCase
 {
@@ -287,5 +290,73 @@ class AddressTest extends BaseTestCase
             ]);
 
         $this->assertEmpty($this->user->contacts->first()->adresses);
+    }
+
+    /**
+     * Retorna erro ao tentar realizar a busca de informações de um CEP pela
+     * API e o cep informado é inválido
+     */
+    public function testReturnErrorWhenFindByInvalidPostalCode()
+    {
+        $postalCode = $this->faker->regexify('[0-9]{8}');
+
+        $mockPostalCodeResponse = app(ViaCepProvider::class)
+            ->getMockPostalCodeDoesntExists()->response;
+
+        $this->applyMock(AddressService::class);
+
+        $this->get(route('address.find-by-postal-code', $postalCode))
+            ->assertHeader('content-type', 'application/json')
+            ->assertJson([
+                'success' => false,
+                'request' => route('address.find-by-postal-code', $postalCode),
+                'method'  => 'GET',
+                'code'    => 200,
+                'data'    => null,
+            ], true)
+            ->assertJsonStructure(['errors'])
+            ->assertJsonFragment([
+                'code' => $mockPostalCodeResponse->code
+            ]);
+    }
+
+    /**
+     * Retorna sucesso ao tentar realizar a busca de informações de um CEP pela
+     * API
+     */
+    public function testReturnSuccessWhenFindByPostalCodeWithAPI()
+    {
+        $postalCode = $this->faker->regexify('[0-9]{8}');
+
+        $mockPostalCodeResponse = app(ViaCepProvider::class)->getMockPostalCode(
+            $postalCode
+        )->response;
+
+        $this->addMockMethod(
+            'sendRequest',
+            new ServiceResponse(
+                true,
+                '',
+                $mockPostalCodeResponse
+            )
+        );
+
+        $this->applyMock(AddressService::class);
+
+        $this->get(route('address.find-by-postal-code', '12345'))
+            ->assertHeader('content-type', 'application/json')
+            ->assertJson([
+                'success' => true,
+                'request' => route('address.find-by-postal-code', '12345'),
+                'method'  => 'GET',
+                'code'    => 200,
+                'data'    => [
+                    'street_name'  => $mockPostalCodeResponse->logradouro,
+                    'neighborhood' => $mockPostalCodeResponse->bairro,
+                    'city'         => $mockPostalCodeResponse->localidade,
+                    'state'        => $mockPostalCodeResponse->uf,
+                    'postal_code'  => $mockPostalCodeResponse->cep,
+                ],
+            ], true);
     }
 }

@@ -236,7 +236,7 @@ class AddressService extends BaseService implements AddressServiceInterface
 
             $response = $client->get('viacep.com.br/ws/' . $postalCode . '/json');
 
-            $data = json_decode($response->getBody(), true);
+            $data = json_decode((string) $response->getBody());
 
             if (array_key_exists("erro", $data)) {
                 return new ServiceResponse(

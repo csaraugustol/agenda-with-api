@@ -14,7 +14,7 @@ $factory->define(Address::class, function (Faker $faker) {
         'neighborhood' => $faker->streetSuffix,
         'city'         => $faker->city,
         'state'        => $faker->state,
-        'postal_code'  => $faker->postcode,
+        'postal_code'  => $faker->regexify('[0-9]{8}'),
         'country'      => $faker->country,
         'contact_id'   => factory(Contact::class),
     ];
