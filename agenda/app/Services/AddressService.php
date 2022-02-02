@@ -3,13 +3,12 @@
 namespace App\Services;
 
 use Throwable;
-use GuzzleHttp\Client;
 use App\Services\Responses\InternalError;
-use GuzzleHttp\Exception\RequestException;
 use App\Services\Responses\ServiceResponse;
 use App\Repositories\Contracts\AddressRepository;
 use App\Services\Contracts\AddressServiceInterface;
 use App\Services\Contracts\ContactServiceInterface;
+use App\Services\Contracts\ExternalServiceInterface;
 use App\Services\Params\Address\CreateAddressServiceParams;
 
 class AddressService extends BaseService implements AddressServiceInterface
@@ -201,7 +200,8 @@ class AddressService extends BaseService implements AddressServiceInterface
     public function findByPostalCode(string $postalCode): ServiceResponse
     {
         try {
-            $findByPostalCodeResponse = $this->sendRequest($postalCode);
+            $findByPostalCodeResponse = app(ExternalServiceInterface::class)
+                ->sendRequest($postalCode);
 
             if (!$findByPostalCodeResponse->success || is_null($findByPostalCodeResponse->data)) {
                 return new ServiceResponse(
@@ -219,70 +219,6 @@ class AddressService extends BaseService implements AddressServiceInterface
             true,
             'O Endereço foi encontrado pelo CEP.',
             $findByPostalCodeResponse->data
-        );
-    }
-
-    /**
-     * Realiza a requisição na API ViaCep
-     *
-     * @param string $postalCode
-     *
-     * @return ServiceResponse
-     */
-    public function sendRequest(string $postalCode): ServiceResponse
-    {
-        try {
-            $client = new Client();
-
-            $response = $client->get('viacep.com.br/ws/' . $postalCode . '/json');
-
-            $data = json_decode((string) $response->getBody());
-
-            if (array_key_exists("erro", $data)) {
-                return new ServiceResponse(
-                    false,
-                    'O cep informado é inválido.',
-                    null,
-                    [
-                        new InternalError(
-                            'O cep informado é inválido.',
-                            16
-                        )
-                    ]
-                );
-            }
-        } catch (RequestException $requestError) {
-            if ($requestError->getCode() === 400) {
-                return new ServiceResponse(
-                    false,
-                    'O cep informado é inválido.',
-                    null,
-                    [
-                        new InternalError(
-                            'O cep informado é inválido.',
-                            16
-                        )
-                    ]
-                );
-            }
-
-            return new ServiceResponse(
-                false,
-                'Requisição inválida.',
-                null,
-                [
-                    new InternalError(
-                        'Requisição inválida.',
-                        17
-                    )
-                ]
-            );
-        }
-
-        return new ServiceResponse(
-            true,
-            'A requisição foi realizada com sucesso.',
-            $data
         );
     }
 }
