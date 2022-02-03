@@ -58,10 +58,6 @@ class TagTest extends BaseTestCase
     {
         $this->withHeaders(['Authorization' => $this->generateUnauthorizedToken()]);
 
-        factory(Tag::class)->create([
-            'user_id' => $this->user->id
-        ]);
-
         $this->get(route('tags.index'))
             ->assertHeader('content-type', 'application/json')
             ->assertStatus(401)
@@ -98,7 +94,7 @@ class TagTest extends BaseTestCase
                 'code'    => 200,
                 'data'    => [
                     'id'          => $this->user->tags->first()->id,
-                    'description' => $this->user->tags->first()->description,
+                    'description' => $body['description'],
                 ],
             ], true);
     }
@@ -110,11 +106,7 @@ class TagTest extends BaseTestCase
     {
         $this->withHeaders(['Authorization' => $this->generateUnauthorizedToken()]);
 
-        $body = [
-            'description' => $this->faker->word,
-        ];
-
-        $this->postJson(route('tags.store'), $body)
+        $this->postJson(route('tags.store'), [])
             ->assertHeader('content-type', 'application/json')
             ->assertStatus(401)
             ->assertJson([
@@ -159,8 +151,6 @@ class TagTest extends BaseTestCase
                     'description' => $newTagDescription,
                 ],
             ], true);
-
-        $this->assertNotEquals($newTagDescription, $tag->description);
     }
 
     /**
@@ -202,22 +192,14 @@ class TagTest extends BaseTestCase
     {
         $this->withHeaders(['Authorization' => $this->generateUnauthorizedToken()]);
 
-        $tag = factory(Tag::class)->create([
-            'user_id' => $this->user->id
-        ]);
+        $idFaker = $this->faker->uuid;
 
-        $newTagDescription = $this->faker->word;
-
-        $body = [
-            'description' => $newTagDescription,
-        ];
-
-        $this->patchJson(route('tags.update', $tag->id), $body)
+        $this->patchJson(route('tags.update', $idFaker), [])
             ->assertHeader('content-type', 'application/json')
             ->assertStatus(401)
             ->assertJson([
                 'success' => false,
-                'request' => route('tags.update', $tag->id),
+                'request' => route('tags.update', $idFaker),
                 'method'  => 'PATCH',
                 'code'    => 401,
                 'data'    => null
@@ -312,16 +294,14 @@ class TagTest extends BaseTestCase
     {
         $this->withHeaders(['Authorization' => $this->generateUnauthorizedToken()]);
 
-        $tag = factory(Tag::class)->create([
-            'user_id' => $this->user->id
-        ]);
+        $idFaker = $this->faker->uuid;
 
-        $this->deleteJson(route('tags.delete', $tag->id))
+        $this->deleteJson(route('tags.delete', $idFaker))
             ->assertHeader('content-type', 'application/json')
             ->assertStatus(401)
             ->assertJson([
                 'success' => false,
-                'request' => route('tags.delete', $tag->id),
+                'request' => route('tags.delete', $idFaker),
                 'method'  => 'DELETE',
                 'code'    => 401,
                 'data'    => null,
@@ -365,7 +345,7 @@ class TagTest extends BaseTestCase
                 ],
             ], true);
 
-        $this->assertNotEmpty($this->user->tags->first()->tagContacts->first());
+        $this->assertNotNull($this->user->tags->first()->tagContacts->first());
     }
 
     /**
@@ -526,24 +506,14 @@ class TagTest extends BaseTestCase
     {
         $this->withHeaders(['Authorization' => $this->generateUnauthorizedToken()]);
 
-        $contact = factory(Contact::class)->create([
-            'user_id' => $this->user->id
-        ]);
+        $idFaker = $this->faker->uuid;
 
-        $tag = factory(Tag::class)->create([
-            'user_id' => $this->user->id
-        ]);
-
-        $body = [
-            'contact_id' => $contact->id,
-        ];
-
-        $this->postJson(route('tags.attach', $tag->id), $body)
+        $this->postJson(route('tags.attach', $idFaker), [])
             ->assertHeader('content-type', 'application/json')
             ->assertStatus(401)
             ->assertJson([
                 'success' => false,
-                'request' => route('tags.attach', $tag->id),
+                'request' => route('tags.attach', $idFaker),
                 'method'  => 'POST',
                 'code'    => 401,
                 'data'    => null,
@@ -742,24 +712,14 @@ class TagTest extends BaseTestCase
     {
         $this->withHeaders(['Authorization' => $this->generateUnauthorizedToken()]);
 
-        $contact = factory(Contact::class)->create([
-            'user_id' => $this->user->id
-        ]);
+        $idFaker = $this->faker->uuid;
 
-        $tag = factory(Tag::class)->create([
-            'user_id' => $this->user->id
-        ]);
-
-        $body = [
-            'contact_id' => $contact->id,
-        ];
-
-        $this->postJson(route('tags.detach', $tag->id), $body)
+        $this->postJson(route('tags.detach', $idFaker), [])
             ->assertHeader('content-type', 'application/json')
             ->assertStatus(401)
             ->assertJson([
                 'success' => false,
-                'request' => route('tags.detach', $tag->id),
+                'request' => route('tags.detach', $idFaker),
                 'method'  => 'POST',
                 'code'    => 401,
                 'data'    => null,
