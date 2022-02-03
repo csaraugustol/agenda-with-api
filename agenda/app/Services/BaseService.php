@@ -6,9 +6,22 @@ use Throwable;
 use App\Exceptions\PolicyException;
 use App\Services\Responses\InternalError;
 use App\Services\Responses\ServiceResponse;
+use App\Services\Contracts\BaseServiceInterface;
+use GuzzleHttp\Client;
 
-class BaseService
+class BaseService implements BaseServiceInterface
 {
+    public function __construct()
+    {
+        $client = new Client([
+            'headers'  => [
+                'Content-Type' => 'application/json'
+            ]
+        ]);
+
+        $this->setClient($client);
+    }
+
     /**
      * Retorno do erro padrão em caso de erro nas services
      *
@@ -39,5 +52,15 @@ class BaseService
             __('services/base.unknow_error_try_again'),
             $data
         );
+    }
+
+    /**
+     * Seta o client
+     *
+     * @param Client $client
+     */
+    public function setClient(Client $client)
+    {
+        $this->client = $client;
     }
 }
