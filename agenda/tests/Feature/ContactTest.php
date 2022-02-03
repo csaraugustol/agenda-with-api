@@ -59,15 +59,15 @@ class ContactTest extends BaseTestCase
      */
     public function testReturnSuccessWhenListAllContactsWithFilterContactName()
     {
-        $contact = factory(Contact::class)->create([
+        $contact = factory(Contact::class, 3)->create([
             'user_id' => $this->user->id
         ]);
+
+        $contact =  $this->user->contacts->first();
 
         $body = [
             'filter' => $contact->name,
         ];
-
-        $contact =  $this->user->contacts->first();
 
         $this->get(route('contacts.index'), $body)
             ->assertHeader('content-type', 'application/json')
@@ -93,16 +93,16 @@ class ContactTest extends BaseTestCase
      */
     public function testReturnSuccessWhenListAllContactsWithFilterPhoneNumber()
     {
-        $contact = factory(Contact::class)->create([
+        $contact = factory(Contact::class, 5)->create([
             'user_id' => $this->user->id
         ]);
+
+        $contact =  $this->user->contacts->first();
+        $phone =  $this->user->contacts->first()->phones->first();
 
         $body = [
             'filter' => $contact->phones->first()->phone_number,
         ];
-
-        $contact =  $this->user->contacts->first();
-        $phone =  $this->user->contacts->first()->phones->first();
 
         $this->get(route('contacts.index'), $body)
             ->assertHeader('content-type', 'application/json')
@@ -221,8 +221,6 @@ class ContactTest extends BaseTestCase
             ->assertJsonFragment([
                 'code' => 14
             ]);
-
-        $this->assertEmpty($this->user->contacts);
     }
 
     /**
@@ -233,16 +231,14 @@ class ContactTest extends BaseTestCase
     {
         $this->withHeaders(['Authorization' => $this->generateUnauthorizedToken()]);
 
-        $contact = factory(Contact::class)->create([
-            'user_id' => $this->user->id
-        ]);
+        $idContact = $this->faker->uuid;
 
-        $this->get(route('contacts.show', $contact->id))
+        $this->get(route('contacts.show', $idContact))
             ->assertHeader('content-type', 'application/json')
             ->assertStatus(401)
             ->assertJson([
                 'success' => false,
-                'request' => route('contacts.show', $contact->id),
+                'request' => route('contacts.show', $idContact),
                 'method'  => 'GET',
                 'code'    => 401,
                 'data'    =>  null,
@@ -401,29 +397,7 @@ class ContactTest extends BaseTestCase
     {
         $this->withHeaders(['Authorization' => $this->generateUnauthorizedToken()]);
 
-        $body = [
-            "name"   => $this->faker->name,
-            'phones' => [
-                [
-                    'phone_number' => $this->faker->phoneNumber,
-                ],
-            ],
-            'adresses' => [
-                [
-                    'street_name'  => $this->faker->streetName,
-                    'number'       => $this->faker->buildingNumber,
-                    'complement'   => $this->faker->secondaryAddress,
-                    'neighborhood' => $this->faker->streetSuffix,
-                    'city'         => $this->faker->city,
-                    'state'        => $this->faker->stateAbbr,
-                    'postal_code'  => $this->faker->regexify('[0-9]{5}-[0-9]{3}'),
-                    'country'      => $this->faker->country,
-                ],
-            ],
-            'tags' => [],
-        ];
-
-        $this->postJson(route('contacts.store'), $body)
+        $this->postJson(route('contacts.store'), [])
             ->assertHeader('content-type', 'application/json')
             ->assertStatus(401)
             ->assertJson([
@@ -757,16 +731,14 @@ class ContactTest extends BaseTestCase
     {
         $this->withHeaders(['Authorization' => $this->generateUnauthorizedToken()]);
 
-        $contact = factory(Contact::class)->create([
-            'user_id' => $this->user->id
-        ]);
+        $idContact = $this->faker->uuid;
 
-        $this->deleteJson(route('contacts.delete', $contact->id))
+        $this->deleteJson(route('contacts.delete', $idContact))
             ->assertHeader('content-type', 'application/json')
             ->assertStatus(401)
             ->assertJson([
                 'success' => false,
-                'request' => route('contacts.delete', $contact->id),
+                'request' => route('contacts.delete', $idContact),
                 'method'  => 'DELETE',
                 'code'    => 401,
                 'data'    =>  null,
