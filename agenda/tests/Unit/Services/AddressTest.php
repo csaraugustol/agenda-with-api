@@ -5,7 +5,6 @@ namespace Tests\Unit\Services;
 use App\Models\User;
 use App\Models\Address;
 use App\Models\Contact;
-use App\Services\AddressService;
 use Tests\Mocks\Providers\ViaCepProvider;
 use App\Services\Responses\ServiceResponse;
 use App\Services\Contracts\AddressServiceInterface;
@@ -221,9 +220,8 @@ class AddressServiceTest extends BaseTestCase
         $this->assertHasInternalError($deleteAddressResponse, 15);
     }
 
-     /**
-     * Retorna sucesso ao tentar realizar a busca de informações de um CEP pela
-     * API
+    /**
+     * Retorna sucesso ao tentar realizar a busca de informações de um CEP
      */
     public function testReturnSuccessWhenFindByAddressOfPostalCode()
     {
@@ -232,7 +230,6 @@ class AddressServiceTest extends BaseTestCase
         $mockPostalCodeResponse = $this->viaCepProvider->getMockPostalCode(
             $postalCode
         );
-
 
         $this->viaCepProvider->setMockRequest(
             $this->addressService,
@@ -243,7 +240,5 @@ class AddressServiceTest extends BaseTestCase
         $findAddressResponse = $this->addressService->findByPostalCode(
             $mockPostalCodeResponse->response->cep
         );
-
-        dd($findAddressResponse);
     }
 }

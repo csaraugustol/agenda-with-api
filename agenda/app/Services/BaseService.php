@@ -3,17 +3,23 @@
 namespace App\Services;
 
 use Throwable;
+use GuzzleHttp\Client;
 use App\Exceptions\PolicyException;
 use App\Services\Responses\InternalError;
 use App\Services\Responses\ServiceResponse;
 use App\Services\Contracts\BaseServiceInterface;
-use GuzzleHttp\Client;
 
 class BaseService implements BaseServiceInterface
 {
+    /**
+     * @var Client
+     */
+    protected $client;
+
     public function __construct()
     {
         $client = new Client([
+            'base_uri' => 'https://viacep.com.br/',
             'headers'  => [
                 'Content-Type' => 'application/json'
             ]
