@@ -675,22 +675,14 @@ class ContactTest extends BaseTestCase
     {
         $this->withHeaders(['Authorization' => $this->generateUnauthorizedToken()]);
 
-        $contact = factory(Contact::class)->create([
-            'user_id' => $this->user->id
-        ]);
+        $idContact = $this->faker->uuid;
 
-        $newContactName = $this->faker->name;
-
-        $body = [
-            'name' => $newContactName,
-        ];
-
-        $this->patchJson(route('contacts.update', $contact->id), $body)
+        $this->patchJson(route('contacts.update', $idContact), [])
             ->assertHeader('content-type', 'application/json')
             ->assertStatus(401)
             ->assertJson([
                 'success' => false,
-                'request' => route('contacts.update', $contact->id),
+                'request' => route('contacts.update', $idContact),
                 'method'  => 'PATCH',
                 'code'    => 401,
                 'data'    =>  null,
