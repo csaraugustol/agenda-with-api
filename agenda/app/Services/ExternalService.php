@@ -11,6 +11,23 @@ use App\Services\Contracts\ExternalServiceInterface;
 class ExternalService extends BaseService implements ExternalServiceInterface
 {
     /**
+     * @var Client
+     */
+    protected $client;
+
+    public function __construct()
+    {
+        $client = new Client([
+            'base_uri' => 'https://viacep.com.br/ws/',
+            'headers'  => [
+                'Content-Type' => 'application/json'
+            ]
+        ]);
+
+        $this->setClient($client);
+    }
+
+    /**
      * Realiza a requisição na API ViaCep
      *
      * @param string $postalCode
@@ -20,9 +37,7 @@ class ExternalService extends BaseService implements ExternalServiceInterface
     public function sendRequest(string $postalCode): ServiceResponse
     {
         try {
-            $client = new Client();
-
-            $response = $client->get('viacep.com.br/ws/' . $postalCode . '/json');
+            $response = $this->client->get($postalCode . '/json');
 
             $data = json_decode((string) $response->getBody());
 
@@ -72,5 +87,17 @@ class ExternalService extends BaseService implements ExternalServiceInterface
             'A requisição foi realizada com sucesso.',
             $data
         );
+    }
+
+    /**
+     * Seta o client
+     *
+     * @param Client $client
+     *
+     * @return void
+     */
+    public function setClient(Client $client): void
+    {
+        $this->client = $client;
     }
 }

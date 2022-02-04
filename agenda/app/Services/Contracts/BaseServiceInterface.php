@@ -6,5 +6,5 @@ use GuzzleHttp\Client;
 
 interface BaseServiceInterface
 {
-    public function setClient(Client $client);
+    //
 }

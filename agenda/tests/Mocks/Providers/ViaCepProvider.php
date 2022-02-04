@@ -40,4 +40,15 @@ class ViaCepProvider extends BaseProvider
             ]
         ];
     }
+
+    /**
+     * Retorna erro quando o CEP informado é inválido
+     */
+    public function getMockResponseErrorAPIViaCep(): object
+    {
+        return (object) [
+            'status_code' => 200,
+            'response'   => null,
+        ];
+    }
 }

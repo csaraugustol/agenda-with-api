@@ -5,6 +5,7 @@ namespace Tests\Unit\Services;
 use App\Models\User;
 use App\Models\Address;
 use App\Models\Contact;
+use App\Services\ExternalService;
 use Tests\Mocks\Providers\ViaCepProvider;
 use App\Services\Responses\ServiceResponse;
 use App\Services\Contracts\AddressServiceInterface;
@@ -231,8 +232,21 @@ class AddressServiceTest extends BaseTestCase
             $postalCode
         );
 
+        $this->addMockMethod(
+            'sendRequest',
+            new ServiceResponse(
+                true,
+                '',
+                $mockPostalCodeResponse->response
+            )
+        );
+
+        $this->applyMock(ExternalService::class);
+
+        $externalService = app(ExternalService::class);
+
         $this->viaCepProvider->setMockRequest(
-            $this->addressService,
+            $externalService,
             $mockPostalCodeResponse->status_code,
             $mockPostalCodeResponse->response,
         );
@@ -240,5 +254,46 @@ class AddressServiceTest extends BaseTestCase
         $findAddressResponse = $this->addressService->findByPostalCode(
             $mockPostalCodeResponse->response->cep
         );
+
+        $this->assertInstanceOf(ServiceResponse::class, $findAddressResponse);
+        $this->assertTrue($findAddressResponse->success);
+        $this->assertNotNull($findAddressResponse->data);
+    }
+
+
+    /**
+     * Retorna erro ao tentar realizar a busca de informações de um CEP que não
+     * existe
+     */
+    public function testReturErrorWhenFindByAddressOfPostalCode()
+    {
+        $mockPostalCodeResponse = $this->viaCepProvider->getMockResponseErrorAPIViaCep();
+
+        $this->addMockMethod(
+            'sendRequest',
+            new ServiceResponse(
+                true,
+                '',
+                $mockPostalCodeResponse->response
+            )
+        );
+
+        $this->applyMock(ExternalService::class);
+
+        $externalService = app(ExternalService::class);
+
+        $this->viaCepProvider->setMockRequest(
+            $externalService,
+            $mockPostalCodeResponse->status_code,
+            $mockPostalCodeResponse->response,
+        );
+
+        $findAddressResponse = $this->addressService->findByPostalCode(
+            $this->faker->regexify('[0-9]{8}')
+        );
+
+        $this->assertInstanceOf(ServiceResponse::class, $findAddressResponse);
+        $this->assertFalse($findAddressResponse->success);
+        $this->assertNull($findAddressResponse->data);
     }
 }
