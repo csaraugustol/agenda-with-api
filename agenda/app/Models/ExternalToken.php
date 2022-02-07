@@ -39,7 +39,7 @@ class ExternalToken extends Model
     {
         $value = strtoupper($value);
         if (!in_array($value, config('enum.system.type'))) {
-            throw new Exception(
+            return new Exception(
                 'O tipo não é válido!',
                 21
             );
