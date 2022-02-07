@@ -5,6 +5,7 @@ namespace Tests\Integration\Models;
 use App\Models\Tag;
 use App\Models\User;
 use App\Models\Contact;
+use App\Models\ExternalToken;
 use App\Models\ChangePassword;
 use App\Models\AuthenticateToken;
 use Tests\Unit\Services\BaseTestCase;
@@ -82,5 +83,23 @@ class UserTest extends BaseTestCase
         $this->assertInstanceOf(Collection::class, $user->changePasswords);
         $this->assertInstanceOf(ChangePassword::class, $changePassword);
         $this->assertEquals($changePassword->user_id, $user->id);
+    }
+
+    /**
+     * Verifica o relacionamento do User com o ExternalToken
+     */
+    public function testRelationshipUserWithExternalToken()
+    {
+        $user = factory(User::class)->create();
+
+        factory(ExternalToken::class)->create([
+            'user_id' => $user->id
+        ]);
+
+        $externalToken = $user->externalTokens->first();
+
+        $this->assertInstanceOf(Collection::class, $user->externalTokens);
+        $this->assertInstanceOf(ExternalToken::class, $externalToken);
+        $this->assertEquals($externalToken->user_id, $user->id);
     }
 }

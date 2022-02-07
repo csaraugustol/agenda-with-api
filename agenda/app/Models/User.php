@@ -69,6 +69,6 @@ class User extends Model
      */
     public function externalTokens()
     {
-        return $this->hasMany(AuthenticateToken::class);
+        return $this->hasMany(ExternalToken::class);
     }
 }
