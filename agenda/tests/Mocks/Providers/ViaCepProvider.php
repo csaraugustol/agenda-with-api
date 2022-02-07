@@ -29,26 +29,26 @@ class ViaCepProvider extends BaseProvider
     }
 
     /**
-     * Retorna erro e o código de erro quando o CEP informado é inválido
-     */
-    public function getMockPostalCodeDoesntExists(): object
-    {
-        return (object) [
-            'status_code' => 200,
-            'response'    => (object) [
-                'code' => 16
-            ]
-        ];
-    }
-
-    /**
      * Retorna erro quando o CEP informado é inválido
      */
     public function getMockResponseErrorAPIViaCep(): object
     {
         return (object) [
             'status_code' => 200,
-            'response'   => null,
+            'response'   => (object) [
+                'erro' => true,
+            ]
+        ];
+    }
+
+    /**
+     * Retorna erro quando o formato do CEP que foi informado é inválido
+     */
+    public function getMockResponseWhenRequestError()
+    {
+        return (object) [
+            'status_code' => 400,
+            'response'    => null,
         ];
     }
 }

@@ -34,7 +34,7 @@ class ExternalService extends BaseService implements ExternalServiceInterface
      *
      * @return ServiceResponse
      */
-    public function sendRequest(string $postalCode): ServiceResponse
+    public function sendRequestViaCep(string $postalCode): ServiceResponse
     {
         try {
             $response = $this->client->get($postalCode . '/json');

@@ -201,7 +201,7 @@ class AddressService extends BaseService implements AddressServiceInterface
     {
         try {
             $findByPostalCodeResponse = app(ExternalServiceInterface::class)
-                ->sendRequest($postalCode);
+                ->sendRequestViaCep($postalCode);
 
             if (!$findByPostalCodeResponse->success || is_null($findByPostalCodeResponse->data)) {
                 return new ServiceResponse(

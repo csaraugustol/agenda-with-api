@@ -233,7 +233,7 @@ class AddressServiceTest extends BaseTestCase
         );
 
         $this->addMockMethod(
-            'sendRequest',
+            'sendRequestViaCep',
             new ServiceResponse(
                 true,
                 '',
@@ -242,14 +242,6 @@ class AddressServiceTest extends BaseTestCase
         );
 
         $this->applyMock(ExternalService::class);
-
-        $externalService = app(ExternalService::class);
-
-        $this->viaCepProvider->setMockRequest(
-            $externalService,
-            $mockPostalCodeResponse->status_code,
-            $mockPostalCodeResponse->response,
-        );
 
         $findAddressResponse = $this->addressService->findByPostalCode(
             $mockPostalCodeResponse->response->cep
@@ -269,17 +261,6 @@ class AddressServiceTest extends BaseTestCase
     {
         $mockPostalCodeResponse = $this->viaCepProvider->getMockResponseErrorAPIViaCep();
 
-        $this->addMockMethod(
-            'sendRequest',
-            new ServiceResponse(
-                true,
-                '',
-                $mockPostalCodeResponse->response
-            )
-        );
-
-        $this->applyMock(ExternalService::class);
-
         $externalService = app(ExternalService::class);
 
         $this->viaCepProvider->setMockRequest(
@@ -290,6 +271,32 @@ class AddressServiceTest extends BaseTestCase
 
         $findAddressResponse = $this->addressService->findByPostalCode(
             $this->faker->regexify('[0-9]{8}')
+        );
+
+        $this->assertInstanceOf(ServiceResponse::class, $findAddressResponse);
+        $this->assertHasInternalError($findAddressResponse, 16);
+        $this->assertFalse($findAddressResponse->success);
+        $this->assertNull($findAddressResponse->data);
+    }
+
+    /**
+     * Retorna erro ao tentar realizar a busca de informações de um CEP que possui
+     * um formato inválido
+     */
+    public function testReturErrorWhenFindByInvalidFormatPostalCode()
+    {
+        $mockPostalCodeResponse = $this->viaCepProvider->getMockResponseWhenRequestError();
+
+        $externalService = app(ExternalService::class);
+
+        $this->viaCepProvider->setMockRequest(
+            $externalService,
+            $mockPostalCodeResponse->status_code,
+            $mockPostalCodeResponse->response,
+        );
+
+        $findAddressResponse = $this->addressService->findByPostalCode(
+            $this->faker->regexify('[0-7]{7}')
         );
 
         $this->assertInstanceOf(ServiceResponse::class, $findAddressResponse);

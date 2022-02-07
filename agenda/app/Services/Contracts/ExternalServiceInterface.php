@@ -7,6 +7,6 @@ use App\Services\Responses\ServiceResponse;
 
 interface ExternalServiceInterface
 {
-    public function sendRequest(string $postalCode): ServiceResponse;
+    public function sendRequestViaCep(string $postalCode): ServiceResponse;
     public function setClient(Client $client);
 }

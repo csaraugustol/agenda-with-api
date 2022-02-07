@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\User;
 use App\Models\Contact;
 use App\Services\AddressService;
+use App\Services\ExternalService;
 use Tests\Mocks\Providers\ViaCepProvider;
 use App\Services\Responses\ServiceResponse;
 
@@ -301,7 +302,7 @@ class AddressTest extends BaseTestCase
         $postalCode = $this->faker->regexify('[0-9]{8}');
 
         $mockPostalCodeResponse = app(ViaCepProvider::class)
-            ->getMockPostalCodeDoesntExists()->response;
+            ->getMockResponseErrorAPIViaCep()->response;
 
         $this->applyMock(AddressService::class);
 
@@ -314,10 +315,7 @@ class AddressTest extends BaseTestCase
                 'code'    => 200,
                 'data'    => null,
             ], true)
-            ->assertJsonStructure(['errors'])
-            ->assertJsonFragment([
-                'code' => $mockPostalCodeResponse->code
-            ]);
+            ->assertJsonStructure(['errors']);
     }
 
     /**
@@ -333,7 +331,7 @@ class AddressTest extends BaseTestCase
         )->response;
 
         $this->addMockMethod(
-            'sendRequest',
+            'sendRequestViaCep',
             new ServiceResponse(
                 true,
                 '',
@@ -341,13 +339,13 @@ class AddressTest extends BaseTestCase
             )
         );
 
-        $this->applyMock(AddressService::class);
+        $this->applyMock(ExternalService::class);
 
-        $this->get(route('address.find-by-postal-code', '12345'))
+        $this->get(route('address.find-by-postal-code', $postalCode))
             ->assertHeader('content-type', 'application/json')
             ->assertJson([
                 'success' => true,
-                'request' => route('address.find-by-postal-code', '12345'),
+                'request' => route('address.find-by-postal-code', $postalCode),
                 'method'  => 'GET',
                 'code'    => 200,
                 'data'    => [
