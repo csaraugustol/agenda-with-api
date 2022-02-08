@@ -262,10 +262,10 @@ class AddressServiceTest extends BaseTestCase
     {
         $mockPostalCodeResponse = $this->viaCepProvider->getMockResponseErrorAPIViaCep();
 
-        $ViaCepService = app(ViaCepService::class);
+        $viaCepService = app(ViaCepService::class);
 
         $this->viaCepProvider->setMockRequest(
-            $ViaCepService,
+            $viaCepService,
             $mockPostalCodeResponse->status_code,
             $mockPostalCodeResponse->response,
         );
@@ -288,10 +288,10 @@ class AddressServiceTest extends BaseTestCase
     {
         $mockPostalCodeResponse = $this->viaCepProvider->getMockResponseWhenRequestError();
 
-        $ViaCepService = app(ViaCepService::class);
+        $viaCepService = app(ViaCepService::class);
 
         $this->viaCepProvider->setMockRequest(
-            $ViaCepService,
+            $viaCepService,
             $mockPostalCodeResponse->status_code,
             $mockPostalCodeResponse->response,
         );
