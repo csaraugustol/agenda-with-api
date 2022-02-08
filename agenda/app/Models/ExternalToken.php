@@ -38,12 +38,12 @@ class ExternalToken extends Model
     public function setTypeAttribute(string $value)
     {
         $value = strtoupper($value);
-        if (!in_array($value, config('enum.system.type'))) {
+        if (!in_array($value, config('enum.system'))) {
             return new Exception(
                 'O tipo não é válido!',
                 21
             );
         }
-        $this->attributes['type'] = $value;
+        $this->attributes['system'] = $value;
     }
 }
