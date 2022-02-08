@@ -297,7 +297,7 @@ class AddressServiceTest extends BaseTestCase
         );
 
         $findAddressResponse = $this->addressService->findByPostalCode(
-            $this->faker->regexify('[0-7]{7}')
+            $this->faker->regexify('[0-9]{7}')
         );
 
         $this->assertInstanceOf(ServiceResponse::class, $findAddressResponse);
