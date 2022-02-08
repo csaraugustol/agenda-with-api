@@ -345,7 +345,6 @@ class AddressTest extends BaseTestCase
         );
 
         $this->get(route('address.find-by-postal-code', $postalCode))
-            ->dump()
             ->assertHeader('content-type', 'application/json')
             ->assertJson([
                 'success' => false,
@@ -353,6 +352,11 @@ class AddressTest extends BaseTestCase
                 'method'  => 'GET',
                 'code'    => 200,
                 'data'    => null,
+                'errors'  => [
+                    [
+                        'code' => 16,
+                    ],
+                ],
             ], true)
             ->assertJsonStructure(['errors'])
             ->assertJsonFragment([
