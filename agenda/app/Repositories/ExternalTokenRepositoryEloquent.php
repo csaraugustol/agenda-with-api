@@ -3,13 +3,13 @@
 namespace App\Repositories;
 
 use App\Models\ExternalToken;
-use App\Services\Contracts\ExternalTokenServiceInterface;
+use App\Repositories\Contracts\ExternalTokenRepository;
 
 /**
  * Class ExternalTokenRepositoryEloquent
  * @package namespace App\Repositories;
  */
-class ExternalTokenRepositoryEloquent extends BaseRepositoryEloquent implements ExternalTokenServiceInterface
+class ExternalTokenRepositoryEloquent extends BaseRepositoryEloquent implements ExternalTokenRepository
 {
     /**
      * Retorna nome da model
