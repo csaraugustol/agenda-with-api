@@ -5,7 +5,7 @@ namespace Tests\Unit\Services;
 use App\Models\User;
 use App\Models\Address;
 use App\Models\Contact;
-use App\Services\ExternalService;
+use App\Services\ViaCepService;
 use Tests\Mocks\Providers\ViaCepProvider;
 use App\Services\Responses\ServiceResponse;
 use App\Services\Contracts\AddressServiceInterface;
@@ -241,7 +241,7 @@ class AddressServiceTest extends BaseTestCase
             )
         );
 
-        $this->applyMock(ExternalService::class);
+        $this->applyMock(ViaCepService::class);
 
         $findAddressResponse = $this->addressService->findByPostalCode(
             $mockPostalCodeResponse->response->cep
@@ -250,6 +250,7 @@ class AddressServiceTest extends BaseTestCase
         $this->assertInstanceOf(ServiceResponse::class, $findAddressResponse);
         $this->assertTrue($findAddressResponse->success);
         $this->assertNotNull($findAddressResponse->data);
+        $this->assertEquals($mockPostalCodeResponse->response->uf, $findAddressResponse->data->uf);
     }
 
 
@@ -261,10 +262,10 @@ class AddressServiceTest extends BaseTestCase
     {
         $mockPostalCodeResponse = $this->viaCepProvider->getMockResponseErrorAPIViaCep();
 
-        $externalService = app(ExternalService::class);
+        $ViaCepService = app(ViaCepService::class);
 
         $this->viaCepProvider->setMockRequest(
-            $externalService,
+            $ViaCepService,
             $mockPostalCodeResponse->status_code,
             $mockPostalCodeResponse->response,
         );
@@ -287,10 +288,10 @@ class AddressServiceTest extends BaseTestCase
     {
         $mockPostalCodeResponse = $this->viaCepProvider->getMockResponseWhenRequestError();
 
-        $externalService = app(ExternalService::class);
+        $ViaCepService = app(ViaCepService::class);
 
         $this->viaCepProvider->setMockRequest(
-            $externalService,
+            $ViaCepService,
             $mockPostalCodeResponse->status_code,
             $mockPostalCodeResponse->response,
         );
@@ -302,5 +303,6 @@ class AddressServiceTest extends BaseTestCase
         $this->assertInstanceOf(ServiceResponse::class, $findAddressResponse);
         $this->assertFalse($findAddressResponse->success);
         $this->assertNull($findAddressResponse->data);
+        $this->assertHasInternalError($findAddressResponse, 16);
     }
 }

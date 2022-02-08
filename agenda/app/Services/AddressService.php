@@ -6,9 +6,9 @@ use Throwable;
 use App\Services\Responses\InternalError;
 use App\Services\Responses\ServiceResponse;
 use App\Repositories\Contracts\AddressRepository;
+use App\Services\Contracts\ViaCepServiceInterface;
 use App\Services\Contracts\AddressServiceInterface;
 use App\Services\Contracts\ContactServiceInterface;
-use App\Services\Contracts\ExternalServiceInterface;
 use App\Services\Params\Address\CreateAddressServiceParams;
 
 class AddressService extends BaseService implements AddressServiceInterface
@@ -200,7 +200,7 @@ class AddressService extends BaseService implements AddressServiceInterface
     public function findByPostalCode(string $postalCode): ServiceResponse
     {
         try {
-            $findByPostalCodeResponse = app(ExternalServiceInterface::class)
+            $findByPostalCodeResponse = app(ViaCepServiceInterface::class)
                 ->sendRequestViaCep($postalCode);
 
             if (!$findByPostalCodeResponse->success || is_null($findByPostalCodeResponse->data)) {

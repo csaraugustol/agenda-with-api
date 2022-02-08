@@ -4,8 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use App\Models\Contact;
-use App\Services\AddressService;
-use App\Services\ExternalService;
+use App\Services\ViaCepService;
 use Tests\Mocks\Providers\ViaCepProvider;
 use App\Services\Responses\ServiceResponse;
 
@@ -17,6 +16,11 @@ class AddressTest extends BaseTestCase
      */
     protected $user;
 
+    /**
+     * @var ViaCepProvider
+     */
+    protected $viaCepProvider;
+
     public function setUp(): void
     {
         parent::setUp();
@@ -25,6 +29,7 @@ class AddressTest extends BaseTestCase
 
         $this->user = $tokenResponse->user;
         $this->withHeaders(['Authorization' => $tokenResponse->token]);
+        $this->viaCepProvider = app(ViaCepProvider::class);
     }
 
     /**
@@ -169,8 +174,6 @@ class AddressTest extends BaseTestCase
             ->assertJsonFragment([
                 'code' => 9
             ]);
-
-        $this->assertEmpty($this->user->contacts->first()->adresses);
     }
 
     /**
@@ -289,8 +292,6 @@ class AddressTest extends BaseTestCase
             ->assertJsonFragment([
                 'code' => 9
             ]);
-
-        $this->assertEmpty($this->user->contacts->first()->adresses);
     }
 
     /**
@@ -301,10 +302,16 @@ class AddressTest extends BaseTestCase
     {
         $postalCode = $this->faker->regexify('[0-9]{8}');
 
-        $mockPostalCodeResponse = app(ViaCepProvider::class)
-            ->getMockResponseErrorAPIViaCep()->response;
+        $mockPostalCodeResponse = $this->viaCepProvider
+            ->getMockResponseErrorAPIViaCep();
 
-        $this->applyMock(AddressService::class);
+        $viaCepService = app(ViaCepService::class);
+
+        $this->viaCepProvider->setMockRequest(
+            $viaCepService,
+            $mockPostalCodeResponse->status_code,
+            $mockPostalCodeResponse->response,
+        );
 
         $this->get(route('address.find-by-postal-code', $postalCode))
             ->assertHeader('content-type', 'application/json')
@@ -316,6 +323,41 @@ class AddressTest extends BaseTestCase
                 'data'    => null,
             ], true)
             ->assertJsonStructure(['errors']);
+    }
+
+    /**
+     * Retorna erro ao tentar realizar a busca de informações de um CEP pela
+     * API que tem seu formato inválido
+     */
+    public function testReturnErrorWhenFindInvalidFormatPostalCode()
+    {
+        $postalCode = $this->faker->regexify('[0-7]{7}');
+
+        $mockPostalCodeResponse = $this->viaCepProvider
+            ->getMockResponseWhenRequestError();
+
+        $viaCepService = app(ViaCepService::class);
+
+        $this->viaCepProvider->setMockRequest(
+            $viaCepService,
+            $mockPostalCodeResponse->status_code,
+            $mockPostalCodeResponse->response,
+        );
+
+        $this->get(route('address.find-by-postal-code', $postalCode))
+            ->dump()
+            ->assertHeader('content-type', 'application/json')
+            ->assertJson([
+                'success' => false,
+                'request' => route('address.find-by-postal-code', $postalCode),
+                'method'  => 'GET',
+                'code'    => 200,
+                'data'    => null,
+            ], true)
+            ->assertJsonStructure(['errors'])
+            ->assertJsonFragment([
+                'code' => 16
+            ]);
     }
 
     /**
@@ -339,7 +381,7 @@ class AddressTest extends BaseTestCase
             )
         );
 
-        $this->applyMock(ExternalService::class);
+        $this->applyMock(ViaCepService::class);
 
         $this->get(route('address.find-by-postal-code', $postalCode))
             ->assertHeader('content-type', 'application/json')

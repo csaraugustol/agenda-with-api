@@ -6,9 +6,9 @@ use GuzzleHttp\Client;
 use App\Services\Responses\InternalError;
 use GuzzleHttp\Exception\RequestException;
 use App\Services\Responses\ServiceResponse;
-use App\Services\Contracts\ExternalServiceInterface;
+use App\Services\Contracts\ViaCepServiceInterface;
 
-class ExternalService extends BaseService implements ExternalServiceInterface
+class ViaCepService extends BaseService implements ViaCepServiceInterface
 {
     /**
      * @var Client
