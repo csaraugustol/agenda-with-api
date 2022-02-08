@@ -118,4 +118,12 @@ Route::group(['middleware' => ['api.token.user']], function () {
             'uses' => 'UserController@changePassword'
         ])->middleware('api.token.user.change.password');
     });
+
+    //VExpenses
+    Route::group(['prefix' => '/vexpenses', 'as' => 'vexpenses.'], function () {
+        Route::get('/generate-access-token', [
+            'as'   => 'generate-access-token',
+            'uses' => 'VExpensesController@VExpensesAccessToken'
+        ]);
+    });
 });

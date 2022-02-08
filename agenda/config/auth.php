@@ -128,4 +128,11 @@ return [
     */
     'time_to_expire_update_password' => env('TIME_TO_EXPIRE_UPDATE_PASSWORD', 3),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Varíável tipo de sistema 'VEXPENSES'
+    |--------------------------------------------------------------------------
+    */
+    'system_vexpenses' => env('SYSTEM_VEXPENSES', 'VEXPENSES'),
+
 ];
