@@ -63,4 +63,12 @@ class User extends Model
     {
         return $this->hasMany(ChangePassword::class);
     }
+
+    /**
+     * Relacionamento do usuário com ExternalToken
+     */
+    public function externalTokens()
+    {
+        return $this->hasMany(ExternalToken::class);
+    }
 }
