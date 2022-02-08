@@ -331,7 +331,7 @@ class AddressTest extends BaseTestCase
      */
     public function testReturnErrorWhenFindInvalidFormatPostalCode()
     {
-        $postalCode = $this->faker->regexify('[0-7]{7}');
+        $postalCode = $this->faker->regexify('[0-9]{7}');
 
         $mockPostalCodeResponse = $this->viaCepProvider
             ->getMockResponseWhenRequestError();
