@@ -5,6 +5,8 @@ namespace Tests\Unit\Services;
 use App\Models\User;
 use App\Models\Address;
 use App\Models\Contact;
+use App\Services\ViaCepService;
+use Tests\Mocks\Providers\ViaCepProvider;
 use App\Services\Responses\ServiceResponse;
 use App\Services\Contracts\AddressServiceInterface;
 use App\Services\Params\Address\CreateAddressServiceParams;
@@ -16,11 +18,17 @@ class AddressServiceTest extends BaseTestCase
      */
     protected $addressService;
 
+    /**
+     * @var ViaCepProvider
+     */
+    protected $viaCepProvider;
+
     public function setUp(): void
     {
         parent::setUp();
 
         $this->addressService = app(AddressServiceInterface::class);
+        $this->viaCepProvider = app(ViaCepProvider::class);
     }
 
     /**
@@ -211,5 +219,90 @@ class AddressServiceTest extends BaseTestCase
         $this->assertFalse($deleteAddressResponse->success);
         $this->assertNull($deleteAddressResponse->data);
         $this->assertHasInternalError($deleteAddressResponse, 15);
+    }
+
+    /**
+     * Retorna sucesso ao tentar realizar a busca de informações de um CEP
+     */
+    public function testReturnSuccessWhenFindByAddressOfPostalCode()
+    {
+        $postalCode = $this->faker->regexify('[0-9]{8}');
+
+        $mockPostalCodeResponse = $this->viaCepProvider->getMockPostalCode(
+            $postalCode
+        );
+
+        $this->addMockMethod(
+            'sendRequestViaCep',
+            new ServiceResponse(
+                true,
+                '',
+                $mockPostalCodeResponse->response
+            )
+        );
+
+        $this->applyMock(ViaCepService::class);
+
+        $findAddressResponse = $this->addressService->findByPostalCode(
+            $mockPostalCodeResponse->response->cep
+        );
+
+        $this->assertInstanceOf(ServiceResponse::class, $findAddressResponse);
+        $this->assertTrue($findAddressResponse->success);
+        $this->assertNotNull($findAddressResponse->data);
+        $this->assertEquals($mockPostalCodeResponse->response->uf, $findAddressResponse->data->uf);
+    }
+
+
+    /**
+     * Retorna erro ao tentar realizar a busca de informações de um CEP que não
+     * existe
+     */
+    public function testReturErrorWhenFindByAddressOfPostalCode()
+    {
+        $mockPostalCodeResponse = $this->viaCepProvider->getMockResponseErrorAPIViaCep();
+
+        $viaCepService = app(ViaCepService::class);
+
+        $this->viaCepProvider->setMockRequest(
+            $viaCepService,
+            $mockPostalCodeResponse->status_code,
+            $mockPostalCodeResponse->response,
+        );
+
+        $findAddressResponse = $this->addressService->findByPostalCode(
+            $this->faker->regexify('[0-9]{8}')
+        );
+
+        $this->assertInstanceOf(ServiceResponse::class, $findAddressResponse);
+        $this->assertHasInternalError($findAddressResponse, 16);
+        $this->assertFalse($findAddressResponse->success);
+        $this->assertNull($findAddressResponse->data);
+    }
+
+    /**
+     * Retorna erro ao tentar realizar a busca de informações de um CEP que possui
+     * um formato inválido
+     */
+    public function testReturErrorWhenFindByInvalidFormatPostalCode()
+    {
+        $mockPostalCodeResponse = $this->viaCepProvider->getMockResponseWhenRequestError();
+
+        $viaCepService = app(ViaCepService::class);
+
+        $this->viaCepProvider->setMockRequest(
+            $viaCepService,
+            $mockPostalCodeResponse->status_code,
+            $mockPostalCodeResponse->response,
+        );
+
+        $findAddressResponse = $this->addressService->findByPostalCode(
+            $this->faker->regexify('[0-9]{7}')
+        );
+
+        $this->assertInstanceOf(ServiceResponse::class, $findAddressResponse);
+        $this->assertFalse($findAddressResponse->success);
+        $this->assertNull($findAddressResponse->data);
+        $this->assertHasInternalError($findAddressResponse, 16);
     }
 }

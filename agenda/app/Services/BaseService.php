@@ -6,8 +6,9 @@ use Throwable;
 use App\Exceptions\PolicyException;
 use App\Services\Responses\InternalError;
 use App\Services\Responses\ServiceResponse;
+use App\Services\Contracts\BaseServiceInterface;
 
-class BaseService
+class BaseService implements BaseServiceInterface
 {
     /**
      * Retorno do erro padrão em caso de erro nas services

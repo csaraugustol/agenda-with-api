@@ -15,11 +15,11 @@ class AddressViaCepResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'street_name'  =>  $this->resource['logradouro'],
-            'neighborhood' =>  $this->resource['bairro'],
-            'city'         =>  $this->resource['localidade'],
-            'state'        =>  $this->resource['uf'],
-            'postal_code'  =>  $this->resource['cep'],
+            'street_name'  => $this->resource->logradouro,
+            'neighborhood' => $this->resource->bairro,
+            'city'         => $this->resource->localidade,
+            'state'        => $this->resource->uf,
+            'postal_code'  => $this->resource->cep,
         ];
     }
 }
