@@ -38,7 +38,7 @@ class ExternalToken extends Model
     public function setTypeAttribute(string $value)
     {
         $value = strtoupper($value);
-        if (!in_array($value, config('enum.system'))) {
+        if (!in_array($value, config('enum.external_tokens.system'))) {
             return new Exception(
                 'O tipo não é válido!',
                 21
