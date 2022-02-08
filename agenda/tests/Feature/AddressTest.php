@@ -353,6 +353,11 @@ class AddressTest extends BaseTestCase
                 'method'  => 'GET',
                 'code'    => 200,
                 'data'    => null,
+                'errors'  => [
+                    [
+                        'code' => 16,
+                    ],
+                ],
             ], true)
             ->assertJsonStructure(['errors'])
             ->assertJsonFragment([
