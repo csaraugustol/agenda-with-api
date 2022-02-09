@@ -30,7 +30,7 @@ class ExternalTokenTest extends BaseTestCase
     /**
      *Verifica se o tipo do sistema a ser integrado é igual 'VEXPENSES'
      */
-    public function testMethodSetTypeAttributeWhensystemIsVExpenses()
+    public function testMethodSetTypeAttributeWhenTypeSystemIsVExpenses()
     {
         $user = factory(User::class)->create();
 
@@ -50,7 +50,7 @@ class ExternalTokenTest extends BaseTestCase
     /**
      * Verifica se o tipo do sistema a ser integrado é diferente de 'VEXPENSES'
      */
-    public function testMethodSetTypeAttributeWhensystemDoesntIsVExpenses()
+    public function testMethodSetTypeAttributeWhenTypeSystemDoesntIsVExpenses()
     {
         $user = factory(User::class)->create();
 
