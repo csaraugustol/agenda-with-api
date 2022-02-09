@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\ExternalToken;
 use Throwable;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
@@ -9,6 +10,7 @@ use App\Services\Responses\ServiceResponse;
 use App\Services\Contracts\UserServiceInterface;
 use App\Repositories\Contracts\ExternalTokenRepository;
 use App\Services\Contracts\ExternalTokenServiceInterface;
+use Exception;
 
 class ExternalTokenService extends BaseService implements ExternalTokenServiceInterface
 {
@@ -29,11 +31,10 @@ class ExternalTokenService extends BaseService implements ExternalTokenServiceIn
      * Cria um token para acessar a integração com o VExpenses
      *
      * @param string $userId
-     * @param string $system
      *
      * @return ServiceResponse
      */
-    public function storeToken(string $userId, string $system): ServiceResponse
+    public function storeToken(string $userId): ServiceResponse
     {
         try {
             $findUserResponse = app(UserServiceInterface::class)->find($userId);
@@ -54,7 +55,7 @@ class ExternalTokenService extends BaseService implements ExternalTokenServiceIn
             $token = $this->externalTokenRepository->create([
                 'token'      => Hash::make(Carbon::now() . bin2hex(random_bytes(17))),
                 'expires_at' => Carbon::now()->addMinutes(config('auth.time_to_expire_access_vexpenses')),
-                'system'     => $system,
+                'system'     => config('enum.external_tokens.system.0'),
                 'user_id'    => $userId
             ]);
         } catch (Throwable $throwable) {

@@ -4,19 +4,19 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use App\Http\Responses\DefaultResponse;
-use App\Services\Contracts\VExpensesServiceInterface;
 use App\Http\Resources\ExternalToken\ExternalTokenResource;
+use App\Services\Contracts\VExpensesComunicationServiceInterface;
 
 class VExpensesController extends ApiController
 {
     /**
-     * @var VExpensesServiceInterface
+     * @var VExpensesComunicationServiceInterface
      */
-    protected $vExpensesService;
+    protected $vExpensesComunicationService;
 
-    public function __construct(VExpensesServiceInterface $vExpensesService)
+    public function __construct(VExpensesComunicationServiceInterface $vExpensesComunicationService)
     {
-        $this->vExpensesService = $vExpensesService;
+        $this->vExpensesComunicationService = $vExpensesComunicationService;
     }
 
     /**
@@ -28,7 +28,7 @@ class VExpensesController extends ApiController
      */
     public function VExpensesAccessToken(): JsonResponse
     {
-        $createTokenResponse = $this->vExpensesService->tokenToAccessVExpenses(
+        $createTokenResponse = $this->vExpensesComunicationService->tokenToAccessVExpenses(
             user('id')
         );
 

@@ -2,14 +2,11 @@
 
 namespace App\Services;
 
-use Throwable;
 use GuzzleHttp\Client;
 use App\Services\Responses\InternalError;
 use GuzzleHttp\Exception\RequestException;
 use App\Services\Responses\ServiceResponse;
-use App\Services\Contracts\UserServiceInterface;
 use App\Services\Contracts\VExpensesServiceInterface;
-use App\Services\Contracts\ExternalTokenServiceInterface;
 
 class VExpensesService extends BaseService implements VExpensesServiceInterface
 {
@@ -117,46 +114,5 @@ class VExpensesService extends BaseService implements VExpensesServiceInterface
     public function setClient(Client $client): void
     {
         $this->client = $client;
-    }
-
-    /**
-     * Retorna o token de acesso ao VExpenses
-     *
-     * @param string $userId
-     *
-     * @return ServiceResponse
-     */
-    public function tokenToAccessVExpenses(string $userId): ServiceResponse
-    {
-        try {
-            $findUserResponse = app(UserServiceInterface::class)->find(
-                $userId
-            );
-            if (!$findUserResponse->success || is_null($findUserResponse->data)) {
-                return new ServiceResponse(
-                    false,
-                    $findUserResponse->message,
-                    null,
-                    $findUserResponse->internalErrors
-                );
-            }
-
-            $externalTokenResponse = app(ExternalTokenServiceInterface::class)
-            ->storeToken($userId, config('auth.system_vexpenses'));
-
-            if (!$externalTokenResponse->success) {
-                return $externalTokenResponse;
-            }
-
-            $token = $externalTokenResponse->data;
-        } catch (Throwable $throwable) {
-            return $this->defaultErrorReturn($throwable, compact('userId'));
-        }
-
-        return new ServiceResponse(
-            true,
-            'Token gerado com sucesso.',
-            $token
-        );
     }
 }
