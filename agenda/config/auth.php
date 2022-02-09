@@ -135,4 +135,11 @@ return [
     */
     'system_vexpenses' => env('SYSTEM_VEXPENSES', 'VEXPENSES'),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Integração VExpenses
+    |--------------------------------------------------------------------------
+     */
+    'vexpenses_base_url' => env('VEXPENSES_BASE_URL', null),
+    'vexpenses_token' => env('VEXPENSES_TOKEN', null),
 ];

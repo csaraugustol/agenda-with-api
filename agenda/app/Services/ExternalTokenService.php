@@ -53,7 +53,7 @@ class ExternalTokenService extends BaseService implements ExternalTokenServiceIn
             $token = $this->externalTokenRepository->create([
                 'token'      => Hash::make(Carbon::now() . bin2hex(random_bytes(17))),
                 'expires_at' => Carbon::now()->addMinutes(config('auth.time_to_expire_access_vexpenses')),
-                'system'     => 'VEXPENSES',
+                'system'     => config('auth.system_vexpenses'),
                 'user_id'    => $userId
             ]);
         } catch (Throwable $throwable) {
