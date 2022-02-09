@@ -30,7 +30,7 @@ class ExternalTokenService extends BaseService implements ExternalTokenServiceIn
      *
      * @param string $token
      * @param string $userId
-     * @param string $typeSystem
+     * @param string $system
      * @param boolean $expiresAt
      * @param boolean $clearRectroativicsTokens
      *
@@ -39,7 +39,7 @@ class ExternalTokenService extends BaseService implements ExternalTokenServiceIn
     public function storeToken(
         string $token,
         string $userId,
-        string $typeSystem,
+        string $system,
         bool $expiresAt,
         bool $clearRectroativicsTokens
     ): ServiceResponse {
@@ -56,7 +56,7 @@ class ExternalTokenService extends BaseService implements ExternalTokenServiceIn
 
             //Verifica se será necessário limpar os tokens retroativos
             if ($clearRectroativicsTokens) {
-                $clearTokenResponse = $this->clearToken($userId, $typeSystem);
+                $clearTokenResponse = $this->clearToken($userId, $system);
                 if (!$clearTokenResponse->success) {
                     return $clearTokenResponse;
                 }
@@ -65,13 +65,13 @@ class ExternalTokenService extends BaseService implements ExternalTokenServiceIn
             $token = $this->externalTokenRepository->create([
                 'token'      => $token,
                 'expires_at' => $expiresAt ? Carbon::now()->addMinutes(config('auth.time_to_expire_access_vexpenses')) : null,
-                'system'     => $typeSystem,
+                'system'     => $system,
                 'user_id'    => $userId
             ]);
         } catch (Throwable $throwable) {
             return $this->defaultErrorReturn(
                 $throwable,
-                compact('token', 'userId', 'typeSystem', 'expiresAt', 'clearRectroativicsTokens')
+                compact('token', 'userId', 'system', 'expiresAt', 'clearRectroativicsTokens')
             );
         }
 
@@ -86,11 +86,11 @@ class ExternalTokenService extends BaseService implements ExternalTokenServiceIn
      * Limpa todos os tokens referentes a External Token, vinculados ao usuário
      *
      * @param string $userId
-     * @param string $typeSystem
+     * @param string $system
      *
      * @return ServiceResponse
      */
-    public function clearToken(string $userId, string $typeSystem): ServiceResponse
+    public function clearToken(string $userId, string $system): ServiceResponse
     {
         try {
             $findUserResponse = app(UserServiceInterface::class)->find($userId);
@@ -104,7 +104,7 @@ class ExternalTokenService extends BaseService implements ExternalTokenServiceIn
             }
 
             $externalTokens = $this->externalTokenRepository
-                ->returnAllExternalTokens($userId, $typeSystem);
+                ->returnAllExternalTokens($userId, $system);
 
             if (count($externalTokens)) {
                 //Deleta cada token existente
@@ -113,7 +113,7 @@ class ExternalTokenService extends BaseService implements ExternalTokenServiceIn
                 }
             }
         } catch (Throwable $throwable) {
-            return $this->defaultErrorReturn($throwable, compact('userId'));
+            return $this->defaultErrorReturn($throwable, compact('userId', 'system'));
         }
 
         return new ServiceResponse(

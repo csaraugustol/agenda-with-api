@@ -11,5 +11,5 @@ use Illuminate\Database\Eloquent\Collection;
 interface ExternalTokenRepository extends BaseRepositoryInterface
 {
     public function model();
-    public function returnAllExternalTokens(string $userId, string $typeSystem): Collection;
+    public function returnAllExternalTokens(string $userId, string $system): Collection;
 }

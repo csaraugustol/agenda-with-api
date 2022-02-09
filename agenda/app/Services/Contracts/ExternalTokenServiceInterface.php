@@ -9,9 +9,9 @@ interface ExternalTokenServiceInterface
     public function storeToken(
         string $token,
         string $userId,
-        string $typeSystem,
+        string $system,
         bool $expiresAt,
         bool $clearRectroativicsTokens
     ): ServiceResponse;
-    public function clearToken(string $userId, string $typeSystem): ServiceResponse;
+    public function clearToken(string $userId, string $system): ServiceResponse;
 }

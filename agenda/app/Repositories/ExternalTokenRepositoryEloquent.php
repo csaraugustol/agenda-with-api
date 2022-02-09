@@ -26,15 +26,15 @@ class ExternalTokenRepositoryEloquent extends BaseRepositoryEloquent implements 
      * Retorna todos os tokens vinculados ao usuário para acessar a integração
      *
      * @param string $userId
-     * @param string $typeSystem
+     * @param string $system
      *
      * @return Collection
      */
-    public function returnAllExternalTokens(string $userId, string $typeSystem): Collection
+    public function returnAllExternalTokens(string $userId, string $system): Collection
     {
         return $this->model
             ->where('user_id', $userId)
-            ->where('system', $typeSystem)
+            ->where('system', $system)
             ->get();
     }
 }
