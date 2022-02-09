@@ -2,9 +2,10 @@
 
 namespace App\Services\Contracts;
 
+use App\Services\Params\Vexpenses\AccessTokenServiceParams;
 use App\Services\Responses\ServiceResponse;
 
 interface VExpensesComunicationServiceInterface
 {
-    public function tokenToAccessVExpenses(string $userId): ServiceResponse;
+    public function tokenToAccessVexpenses(AccessTokenServiceParams $accessTokenServiceParams): ServiceResponse;
 }

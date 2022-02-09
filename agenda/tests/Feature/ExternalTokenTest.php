@@ -26,7 +26,7 @@ class ExternalTokenTest extends BaseTestCase
      * Retorna sucesso ao realizar a criação de um token para acessar a
      * integração com o VExpenses
      */
-    public function testReturnSuccessGenerateNewTokenToAccessVExpenses()
+    public function testReturnSuccessGenerateNewtokenToAccessVexpenses()
     {
         $response = $this->get(route('vexpenses.generate-access-token'));
 
@@ -49,7 +49,7 @@ class ExternalTokenTest extends BaseTestCase
      * Retorna erro ao tentar realizar a criação de um token de acesso ao
      * VExpenses com um usuário não autorizado
      */
-    public function testReturnErrorWhenGenerateNewTokenToAccessVExpensesAndUserIsUnauthorized()
+    public function testReturnErrorWhenGenerateNewtokenToAccessVexpensesAndUserIsUnauthorized()
     {
         $this->withHeaders(['Authorization' => $this->generateUnauthorizedToken()]);
 

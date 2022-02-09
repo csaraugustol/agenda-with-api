@@ -24,17 +24,17 @@ class ExternalTokenRepositoryEloquent extends BaseRepositoryEloquent implements 
 
      /**
      * Retorna todos os tokens vinculados ao usuário para acessar a integração
-     * com o VExpenses
      *
      * @param string $userId
+     * @param string $typeSystem
      *
      * @return Collection
      */
-    public function returnAllExternalTokensSystemVExpenses(string $userId): Collection
+    public function returnAllExternalTokens(string $userId, string $typeSystem): Collection
     {
         return $this->model
             ->where('user_id', $userId)
-            ->where('system', 'VEXPENSES')
+            ->where('system', $typeSystem)
             ->get();
     }
 }

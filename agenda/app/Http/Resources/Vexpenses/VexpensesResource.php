@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Resources\ExternalToken;
+namespace App\Http\Resources\Vexpenses;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ExternalTokenResource extends JsonResource
+class VexpensesResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,7 +16,6 @@ class ExternalTokenResource extends JsonResource
     {
         return [
             'token'      => $this->resource->token,
-            'expires_at' => $this->resource->expires_at,
             'system'     => $this->resource->system,
         ];
     }

@@ -31,7 +31,7 @@ class VExpensesComunicationTest extends BaseTestCase
         $user = factory(User::class)->create();
 
         $createAccessTokenResponse = $this->vExpensesComunicationService
-            ->tokenToAccessVExpenses($user->id);
+            ->tokenToAccessVexpenses($user->id);
 
         $this->assertInstanceOf(ServiceResponse::class, $createAccessTokenResponse);
         $this->assertInstanceOf(ExternalToken::class, $createAccessTokenResponse->data);
@@ -48,7 +48,7 @@ class VExpensesComunicationTest extends BaseTestCase
     public function testReturnErrorWhenUserDoesntExistsAndTryStoreAccessTokenToVExpenses()
     {
         $createAccessTokenResponse = $this->vExpensesComunicationService
-            ->tokenToAccessVExpenses($this->faker->uuid);
+            ->tokenToAccessVexpenses($this->faker->uuid);
 
         $this->assertInstanceOf(ServiceResponse::class, $createAccessTokenResponse);
         $this->assertNotTrue($createAccessTokenResponse->success);

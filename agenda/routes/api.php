@@ -121,9 +121,9 @@ Route::group(['middleware' => ['api.token.user']], function () {
 
     //VExpenses
     Route::group(['prefix' => '/vexpenses', 'as' => 'vexpenses.'], function () {
-        Route::get('/generate-access-token', [
-            'as'   => 'generate-access-token',
-            'uses' => 'VExpensesController@VExpensesAccessToken'
+        Route::post('/access-token', [
+            'as'   => 'access-token',
+            'uses' => 'VexpensesController@accessToken'
         ]);
     });
 });

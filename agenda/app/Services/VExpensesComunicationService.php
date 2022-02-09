@@ -6,6 +6,7 @@ use Throwable;
 use App\Services\Responses\ServiceResponse;
 use App\Services\Contracts\UserServiceInterface;
 use App\Services\Contracts\ExternalTokenServiceInterface;
+use App\Services\Params\Vexpenses\AccessTokenServiceParams;
 use App\Services\Contracts\VExpensesComunicationServiceInterface;
 
 class VExpensesComunicationService extends BaseService implements VExpensesComunicationServiceInterface
@@ -13,15 +14,15 @@ class VExpensesComunicationService extends BaseService implements VExpensesComun
     /**
      * Retorna o token de acesso ao VExpenses
      *
-     * @param string $userId
+     * @param AccessTokenServiceParams $accessTokenServiceParams
      *
      * @return ServiceResponse
      */
-    public function tokenToAccessVExpenses(string $userId): ServiceResponse
+    public function tokenToAccessVexpenses(AccessTokenServiceParams $accessTokenServiceParams): ServiceResponse
     {
         try {
             $findUserResponse = app(UserServiceInterface::class)->find(
-                $userId
+                $accessTokenServiceParams->user_id
             );
             if (!$findUserResponse->success || is_null($findUserResponse->data)) {
                 return new ServiceResponse(
@@ -33,7 +34,13 @@ class VExpensesComunicationService extends BaseService implements VExpensesComun
             }
 
             $externalTokenResponse = app(ExternalTokenServiceInterface::class)
-            ->storeToken($userId);
+                ->storeToken(
+                    $accessTokenServiceParams->token,
+                    $accessTokenServiceParams->user_id,
+                    $accessTokenServiceParams->system,
+                    $accessTokenServiceParams->expires_at,
+                    $accessTokenServiceParams->clear_rectroativics_tokens
+                );
 
             if (!$externalTokenResponse->success) {
                 return $externalTokenResponse;
@@ -41,7 +48,7 @@ class VExpensesComunicationService extends BaseService implements VExpensesComun
 
             $token = $externalTokenResponse->data;
         } catch (Throwable $throwable) {
-            return $this->defaultErrorReturn($throwable, compact('userId'));
+            return $this->defaultErrorReturn($throwable, compact('accessTokenServiceParams'));
         }
 
         return new ServiceResponse(
