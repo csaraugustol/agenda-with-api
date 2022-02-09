@@ -24,7 +24,6 @@ class ExternalTokenService extends BaseService implements ExternalTokenServiceIn
         $this->externalTokenRepository = $externalTokenRepository;
     }
 
-
     /**
      * Cria um token para acessar a integração
      *
