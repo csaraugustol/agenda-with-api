@@ -22,22 +22,22 @@ class VExpensesController extends ApiController
     /**
      * Retorna o token para acessar o VExpenses
      *
-     * GET /users/vexpenses-access-token
+     * GET /vexpenses/generate-access-token
      *
      * @return JsonResponse
      */
     public function VExpensesAccessToken(): JsonResponse
     {
-        $createTokenResponse = $this->vExpensesComunicationService->tokenToAccessVExpenses(
+        $createAccessTokenResponse = $this->vExpensesComunicationService->tokenToAccessVExpenses(
             user('id')
         );
 
-        if (!$createTokenResponse->success || is_null($createTokenResponse->data)) {
-            return $this->errorResponseFromService($createTokenResponse);
+        if (!$createAccessTokenResponse->success || is_null($createAccessTokenResponse->data)) {
+            return $this->errorResponseFromService($createAccessTokenResponse);
         }
 
         return $this->response(new DefaultResponse(
-            new ExternalTokenResource($createTokenResponse->data)
+            new ExternalTokenResource($createAccessTokenResponse->data)
         ));
     }
 }

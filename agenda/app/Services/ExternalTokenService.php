@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Models\ExternalToken;
 use Throwable;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
@@ -10,7 +9,6 @@ use App\Services\Responses\ServiceResponse;
 use App\Services\Contracts\UserServiceInterface;
 use App\Repositories\Contracts\ExternalTokenRepository;
 use App\Services\Contracts\ExternalTokenServiceInterface;
-use Exception;
 
 class ExternalTokenService extends BaseService implements ExternalTokenServiceInterface
 {

@@ -62,11 +62,13 @@ class ExternalTokenTest extends BaseTestCase
                 'method'  => 'GET',
                 'code'    => 401,
                 'data'    => null,
+                'errors'  => [
+                    [
+                        'code' => 6
+                    ],
+                ],
             ], true)
             ->assertJsonStructure(['errors'])
-            ->assertJsonFragment([
-                'code' => 6
-            ])
             ->assertUnauthorized();
     }
 }
