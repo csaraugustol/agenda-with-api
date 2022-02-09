@@ -53,7 +53,7 @@ class ExternalTokenService extends BaseService implements ExternalTokenServiceIn
             $token = $this->externalTokenRepository->create([
                 'token'      => Hash::make(Carbon::now() . bin2hex(random_bytes(17))),
                 'expires_at' => Carbon::now()->addMinutes(config('auth.time_to_expire_access_vexpenses')),
-                'system'     => config('enum.external_tokens.system.0'),
+                'system'     => 'VEXPENSES',
                 'user_id'    => $userId
             ]);
         } catch (Throwable $throwable) {
@@ -88,7 +88,7 @@ class ExternalTokenService extends BaseService implements ExternalTokenServiceIn
             }
 
             $externalTokens = $this->externalTokenRepository
-                ->returnAllExternalTokensOfUser($userId);
+                ->returnAllExternalTokensSystemVExpenses($userId);
 
             if (count($externalTokens)) {
                 //Deleta cada token existente

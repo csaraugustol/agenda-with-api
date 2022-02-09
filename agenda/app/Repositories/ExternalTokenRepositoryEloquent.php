@@ -30,11 +30,11 @@ class ExternalTokenRepositoryEloquent extends BaseRepositoryEloquent implements 
      *
      * @return Collection
      */
-    public function returnAllExternalTokensOfUser(string $userId, string $system = 'VEXPENSES'): Collection
+    public function returnAllExternalTokensSystemVExpenses(string $userId): Collection
     {
         return $this->model
             ->where('user_id', $userId)
-            ->where('system', $system)
+            ->where('system', 'VEXPENSES')
             ->get();
     }
 }
