@@ -5,9 +5,9 @@ namespace Tests\Unit\Services;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\ExternalToken;
-use App\Services\Params\Vexpenses\AccessTokenServiceParams;
 use App\Services\Responses\ServiceResponse;
 use App\Services\VexpensesIntegrationService;
+use App\Services\Params\Vexpenses\AccessTokenServiceParams;
 
 class VexpensesIntegrationTest extends BaseTestCase
 {

@@ -31,7 +31,11 @@ class ExternalTokenTest extends BaseTestCase
         $user = factory(User::class)->create();
 
         $createTokenResponse = $this->externalTokenService->storeToken(
-            $user->id
+            $this->faker->sha1,
+            $user->id,
+            'VEXPENSES',
+            false,
+            true
         );
 
         $this->assertInstanceOf(ServiceResponse::class, $createTokenResponse);
@@ -49,7 +53,11 @@ class ExternalTokenTest extends BaseTestCase
     public function testReturnErrorWhenUserDoesntExists()
     {
         $createTokenResponse = $this->externalTokenService->storeToken(
-            $this->faker->uuid
+            $this->faker->sha1,
+            $this->faker->uuid,
+            'VEXPENSES',
+            false,
+            true
         );
 
         $this->assertInstanceOf(ServiceResponse::class, $createTokenResponse);
