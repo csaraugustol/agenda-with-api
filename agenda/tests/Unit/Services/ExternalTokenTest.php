@@ -70,7 +70,8 @@ class ExternalTokenTest extends BaseTestCase
         ]);
 
         $clearTokenResponse = $this->externalTokenService->clearToken(
-            $user->id
+            $user->id,
+            'VEXPENSES'
         );
 
         $this->assertInstanceOf(ServiceResponse::class, $clearTokenResponse);
@@ -84,8 +85,9 @@ class ExternalTokenTest extends BaseTestCase
      */
     public function testReturnErrorWhenClearTokenToUserDoesntExists()
     {
-        $clearTokenResponse = $this->authenticateTokenService->clearToken(
-            $this->faker->uuid
+        $clearTokenResponse = $this->externalTokenService->clearToken(
+            $this->faker->uuid,
+            $this->faker->word
         );
 
         $this->assertInstanceOf(ServiceResponse::class, $clearTokenResponse);
