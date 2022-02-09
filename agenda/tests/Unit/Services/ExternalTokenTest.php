@@ -43,7 +43,6 @@ class ExternalTokenTest extends BaseTestCase
         $this->assertIsBool($createTokenResponse->success);
         $this->assertNotNull($createTokenResponse->data);
         $this->assertEquals($createTokenResponse->data->user_id, $user->id);
-        $this->assertLessThan($createTokenResponse->data->expires_at, Carbon::now());
     }
 
     /**
@@ -73,13 +72,13 @@ class ExternalTokenTest extends BaseTestCase
     {
         $user = factory(User::class)->create();
 
-        factory(ExternalToken::class, 3)->create([
+        $externalToken = factory(ExternalToken::class)->create([
             'user_id' => $user->id
         ]);
 
         $clearTokenResponse = $this->externalTokenService->clearToken(
             $user->id,
-            'VEXPENSES'
+            $externalToken->system
         );
 
         $this->assertInstanceOf(ServiceResponse::class, $clearTokenResponse);
