@@ -26,15 +26,15 @@ class ExternalTokenTest extends BaseTestCase
      * Retorna sucesso ao realizar a criação de um token para acessar a
      * integração com o VExpenses
      */
-    public function testReturnSuccessGenerateNewtokenToAccessVexpenses()
+    public function testReturnSuccessGenerateNewtokenToAccess()
     {
-        $response = $this->get(route('vexpenses.generate-access-token'));
+        $response = $this->get(route('vexpenses.access-token'));
 
         $response->assertHeader('content-type', 'application/json')
             ->assertStatus(200)
             ->assertJson([
                 'success' => true,
-                'request' => route('vexpenses.generate-access-token'),
+                'request' => route('vexpenses.access-token'),
                 'method'  => 'GET',
                 'code'    => 200,
                 'data'    => [
@@ -49,16 +49,16 @@ class ExternalTokenTest extends BaseTestCase
      * Retorna erro ao tentar realizar a criação de um token de acesso ao
      * VExpenses com um usuário não autorizado
      */
-    public function testReturnErrorWhenGenerateNewtokenToAccessVexpensesAndUserIsUnauthorized()
+    public function testReturnErrorWhenGenerateNewtokenToAccessAndUserIsUnauthorized()
     {
         $this->withHeaders(['Authorization' => $this->generateUnauthorizedToken()]);
 
-        $this->get(route('vexpenses.generate-access-token'))
+        $this->get(route('vexpenses.access-token'))
             ->assertHeader('content-type', 'application/json')
             ->assertStatus(401)
             ->assertJson([
                 'success' => false,
-                'request' => route('vexpenses.generate-access-token'),
+                'request' => route('vexpenses.access-token'),
                 'method'  => 'GET',
                 'code'    => 401,
                 'data'    => null,

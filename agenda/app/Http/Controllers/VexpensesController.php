@@ -7,18 +7,18 @@ use App\Http\Responses\DefaultResponse;
 use App\Http\Resources\Vexpenses\VexpensesResource;
 use App\Http\Requests\Vexpenses\AccessTokenRequest;
 use App\Services\Params\Vexpenses\AccessTokenServiceParams;
-use App\Services\Contracts\VExpensesComunicationServiceInterface;
+use App\Services\Contracts\VexpensesIntegrationServiceInterface;
 
 class VexpensesController extends ApiController
 {
     /**
-     * @var VExpensesComunicationServiceInterface
+     * @var VexpensesIntegrationServiceInterface
      */
-    protected $vExpensesComunicationService;
+    protected $VexpensesIntegrationService;
 
-    public function __construct(VExpensesComunicationServiceInterface $vExpensesComunicationService)
+    public function __construct(VexpensesIntegrationServiceInterface $VexpensesIntegrationService)
     {
-        $this->vExpensesComunicationService = $vExpensesComunicationService;
+        $this->VexpensesIntegrationService = $VexpensesIntegrationService;
     }
 
     /**
@@ -30,7 +30,7 @@ class VexpensesController extends ApiController
      */
     public function accessToken(AccessTokenRequest $request): JsonResponse
     {
-        $accessResponse = $this->vExpensesComunicationService->tokenToAccessVexpenses(
+        $accessResponse = $this->VexpensesIntegrationService->tokenToAccess(
             new AccessTokenServiceParams(
                 $request->token,
                 user('id'),
