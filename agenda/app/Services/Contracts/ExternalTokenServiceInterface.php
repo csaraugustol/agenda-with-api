@@ -12,7 +12,7 @@ interface ExternalTokenServiceInterface
         string $userId,
         string $system,
         Carbon $expiresAt = null,
-        bool $clearRectroativicsTokens
+        bool $clearRectroativicsTokens = true
     ): ServiceResponse;
     public function clearToken(string $userId, string $system): ServiceResponse;
 }

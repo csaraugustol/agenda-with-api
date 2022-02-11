@@ -27,11 +27,11 @@ class ExternalTokenService extends BaseService implements ExternalTokenServiceIn
     /**
      * Cria um token para acessar a integração
      *
-     * @param string      $token
-     * @param string      $userId
-     * @param string      $system
-     * @param Carbon|null $expiresAt
-     * @param boolean     $clearRectroativicsTokens
+     * @param string       $token
+     * @param string       $userId
+     * @param string       $system
+     * @param Carbon|null  $expiresAt
+     * @param boolean|true $clearRectroativicsTokens
      *
      * @return ServiceResponse
      */
@@ -40,7 +40,7 @@ class ExternalTokenService extends BaseService implements ExternalTokenServiceIn
         string $userId,
         string $system,
         Carbon $expiresAt = null,
-        bool $clearRectroativicsTokens
+        bool $clearRectroativicsTokens = true
     ): ServiceResponse {
         try {
             $findUserResponse = app(UserServiceInterface::class)->find($userId);

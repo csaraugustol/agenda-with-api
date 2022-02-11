@@ -143,7 +143,7 @@ class VexpensesService extends BaseService implements VexpensesServiceInterface
             }
 
             $externalTokenResponse = app(ExternalTokenServiceInterface::class)
-                ->storeToken($token, $userId, 'VEXPENSES', null, false);
+                ->storeToken($token, $userId, 'VEXPENSES');
 
             if (!$externalTokenResponse->success) {
                 return $externalTokenResponse;
