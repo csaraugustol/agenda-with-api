@@ -2,14 +2,12 @@
 
 namespace Tests\Unit\Services;
 
-use Carbon\Carbon;
 use App\Models\User;
 use App\Models\ExternalToken;
 use App\Services\Responses\ServiceResponse;
 use App\Services\VexpensesIntegrationService;
-use App\Services\Params\Vexpenses\AccessTokenServiceParams;
 
-class VexpensesIntegrationTest extends BaseTestCase
+class VexpensesTest extends BaseTestCase
 {
     /**
      * @var VexpensesIntegrationService
@@ -32,14 +30,13 @@ class VexpensesIntegrationTest extends BaseTestCase
         $user = factory(User::class)->create();
 
         $createAccessTokenResponse = $this->VexpensesIntegrationService
-            ->tokenToAccess($user->id);
+            ->tokenToAccess($this->faker->sha1, $user->id);
 
         $this->assertInstanceOf(ServiceResponse::class, $createAccessTokenResponse);
         $this->assertInstanceOf(ExternalToken::class, $createAccessTokenResponse->data);
         $this->assertNotFalse($createAccessTokenResponse->success);
         $this->assertNotNull($createAccessTokenResponse->data);
         $this->assertEquals($createAccessTokenResponse->data->user_id, $user->id);
-        $this->assertLessThan($createAccessTokenResponse->data->expires_at, Carbon::now());
     }
 
     /**
@@ -48,15 +45,8 @@ class VexpensesIntegrationTest extends BaseTestCase
      */
     public function testReturnErrorWhenUserDoesntExistsAndTryStoreAccessTokenToVExpenses()
     {
-        $accessTokenServiceParams = new AccessTokenServiceParams(
-            $this->faker->sha1,
-            $this->faker->uuid,
-            $this->faker->word,
-            false,
-            true
-        );
         $createAccessTokenResponse = $this->VexpensesIntegrationService
-            ->tokenToAccess($accessTokenServiceParams);
+            ->tokenToAccess($this->faker->sha1, $this->faker->uuid);
 
         $this->assertInstanceOf(ServiceResponse::class, $createAccessTokenResponse);
         $this->assertNotTrue($createAccessTokenResponse->success);

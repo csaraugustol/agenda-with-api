@@ -27,11 +27,11 @@ class ExternalTokenService extends BaseService implements ExternalTokenServiceIn
     /**
      * Cria um token para acessar a integração
      *
-     * @param string $token
-     * @param string $userId
-     * @param string $system
-     * @param boolean $expiresAt
-     * @param boolean $clearRectroativicsTokens
+     * @param string      $token
+     * @param string      $userId
+     * @param string      $system
+     * @param Carbon|null $expiresAt
+     * @param boolean     $clearRectroativicsTokens
      *
      * @return ServiceResponse
      */
@@ -39,7 +39,7 @@ class ExternalTokenService extends BaseService implements ExternalTokenServiceIn
         string $token,
         string $userId,
         string $system,
-        bool $expiresAt,
+        Carbon $expiresAt = null,
         bool $clearRectroativicsTokens
     ): ServiceResponse {
         try {
@@ -63,7 +63,7 @@ class ExternalTokenService extends BaseService implements ExternalTokenServiceIn
 
             $token = $this->externalTokenRepository->create([
                 'token'      => $token,
-                'expires_at' => $expiresAt ? Carbon::now()->addMinutes(config('auth.time_to_expire_access_vexpenses')) : null,
+                'expires_at' => $expiresAt,
                 'system'     => $system,
                 'user_id'    => $userId
             ]);

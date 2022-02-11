@@ -29,9 +29,6 @@ class AccessTokenRequest extends FormRequest
         return [
             'after' => [
                 'token'                      => 'cast:string',
-                'system'                     => 'cast:string',
-                'expires_at'                 => 'cast:bool',
-                'clear_rectroativics_tokens' => 'cast:bool',
             ],
         ];
     }
@@ -45,9 +42,6 @@ class AccessTokenRequest extends FormRequest
     {
         return [
             'token'                      => 'required|string',
-            'system'                     => 'required|string',
-            'expires_at'                 => 'required|bool',
-            'clear_rectroativics_tokens' => 'required|bool',
         ];
     }
 
@@ -61,12 +55,6 @@ class AccessTokenRequest extends FormRequest
         return [
             'token.required'                      => 'O campo TOKEN é obrigatório',
             'token.string'                        => 'O campo TOKEN deve ser do tipo string',
-            'system.required'                     => 'O campo TIPO DO SISTEMA é obrigatório',
-            'system.string'                       => 'O campo TIPO DO SISTEMA deve ser do tipo string',
-            'expires_at.required'                 => 'O campo EXPIRAÇÂO é obrigatório',
-            'expires_at.bool'                     => 'O campo EXPIRAÇÂO deve ser do tipo boleano',
-            'clear_rectroativics_tokens.required' => 'O campo LIMPAR TOKENS RETROATIVOS é obrigatório',
-            'clear_rectroativics_tokens.bool'     => 'O campo LIMPAR TOKENS RETROATIVOS deve ser do tipo boleano',
         ];
     }
 }

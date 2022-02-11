@@ -2,7 +2,6 @@
 
 namespace Tests\Unit\Services;
 
-use Carbon\Carbon;
 use App\Models\User;
 use App\Models\ExternalToken;
 use App\Services\ExternalTokenService;
@@ -34,7 +33,7 @@ class ExternalTokenTest extends BaseTestCase
             $this->faker->sha1,
             $user->id,
             'VEXPENSES',
-            false,
+            null,
             true
         );
 
@@ -55,7 +54,7 @@ class ExternalTokenTest extends BaseTestCase
             $this->faker->sha1,
             $this->faker->uuid,
             'VEXPENSES',
-            false,
+            null,
             true
         );
 

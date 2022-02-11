@@ -2,6 +2,7 @@
 
 namespace App\Services\Contracts;
 
+use Carbon\Carbon;
 use App\Services\Responses\ServiceResponse;
 
 interface ExternalTokenServiceInterface
@@ -10,7 +11,7 @@ interface ExternalTokenServiceInterface
         string $token,
         string $userId,
         string $system,
-        bool $expiresAt,
+        Carbon $expiresAt = null,
         bool $clearRectroativicsTokens
     ): ServiceResponse;
     public function clearToken(string $userId, string $system): ServiceResponse;

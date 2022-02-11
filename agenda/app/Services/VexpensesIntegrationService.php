@@ -9,7 +9,6 @@ use GuzzleHttp\Exception\RequestException;
 use App\Services\Responses\ServiceResponse;
 use App\Services\Contracts\UserServiceInterface;
 use App\Services\Contracts\ExternalTokenServiceInterface;
-use App\Services\Params\Vexpenses\AccessTokenServiceParams;
 use App\Services\Contracts\VexpensesIntegrationServiceInterface;
 
 class VexpensesIntegrationService extends BaseService implements VexpensesIntegrationServiceInterface
@@ -43,7 +42,7 @@ class VexpensesIntegrationService extends BaseService implements VexpensesIntegr
      *
      * @return ServiceResponse
      */
-    public function sendRequestVexpenses(
+    public function sendRequest(
         string $method,
         string $url,
         array $params = []
@@ -121,17 +120,18 @@ class VexpensesIntegrationService extends BaseService implements VexpensesIntegr
     }
 
     /**
-     * Retorna o token de acesso ao VExpenses
+     * Seta o token de integração com o VExpenses
      *
-     * @param AccessTokenServiceParams $accessTokenServiceParams
+     * @param string $token
+     * @param string $userId
      *
      * @return ServiceResponse
      */
-    public function tokenToAccess(AccessTokenServiceParams $accessTokenServiceParams): ServiceResponse
+    public function tokenToAccess(string $token, string $userId): ServiceResponse
     {
         try {
             $findUserResponse = app(UserServiceInterface::class)->find(
-                $accessTokenServiceParams->user_id
+                $userId
             );
             if (!$findUserResponse->success || is_null($findUserResponse->data)) {
                 return new ServiceResponse(
@@ -143,13 +143,7 @@ class VexpensesIntegrationService extends BaseService implements VexpensesIntegr
             }
 
             $externalTokenResponse = app(ExternalTokenServiceInterface::class)
-                ->storeToken(
-                    $accessTokenServiceParams->token,
-                    $accessTokenServiceParams->user_id,
-                    $accessTokenServiceParams->system,
-                    $accessTokenServiceParams->expires_at,
-                    $accessTokenServiceParams->clear_rectroativics_tokens
-                );
+                ->storeToken($token, $userId, 'VEXPENSES', null, false);
 
             if (!$externalTokenResponse->success) {
                 return $externalTokenResponse;
@@ -157,7 +151,7 @@ class VexpensesIntegrationService extends BaseService implements VexpensesIntegr
 
             $token = $externalTokenResponse->data;
         } catch (Throwable $throwable) {
-            return $this->defaultErrorReturn($throwable, compact('accessTokenServiceParams'));
+            return $this->defaultErrorReturn($throwable, compact('token', 'userId'));
         }
 
         return new ServiceResponse(
