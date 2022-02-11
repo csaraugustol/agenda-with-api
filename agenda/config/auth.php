@@ -128,4 +128,11 @@ return [
     */
     'time_to_expire_update_password' => env('TIME_TO_EXPIRE_UPDATE_PASSWORD', 3),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Integração VExpenses
+    |--------------------------------------------------------------------------
+     */
+    'vexpenses_base_url' => env('VEXPENSES_BASE_URL', null),
+    'vexpenses_token' => env('VEXPENSES_TOKEN', null),
 ];
