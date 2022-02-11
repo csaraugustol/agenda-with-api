@@ -4,6 +4,7 @@ namespace App\Services;
 
 use Throwable;
 use GuzzleHttp\Client;
+use App\Models\ExternalToken;
 use App\Services\Responses\InternalError;
 use GuzzleHttp\Exception\RequestException;
 use App\Services\Responses\ServiceResponse;
@@ -23,8 +24,7 @@ class VexpensesService extends BaseService implements VexpensesServiceInterface
         $client = new Client([
             'base_uri' => config('auth.vexpenses_base_url'),
             'headers'  => [
-                'Accept' => 'application/json',
-                'Authorization' => user()->externalTokens->first()->token,
+                'Accept'        => 'application/json',
             ]
         ]);
 
@@ -41,7 +41,29 @@ class VexpensesService extends BaseService implements VexpensesServiceInterface
     public function sendRequest(string $route): ServiceResponse
     {
         try {
-            $response = $this->client->get($route);
+            $externalToken = $this->getToken();
+
+            if (is_null($externalToken)) {
+                return new ServiceResponse(
+                    false,
+                    'Usuário não possui um token de integração com o VExpenses.',
+                    null,
+                    [
+                        new InternalError(
+                            'Usuário não possui um token de integração com o VExpenses.',
+                            24
+                        )
+                    ]
+                );
+            }
+
+            $options = [
+                'headers' => [
+                    'Authorization' => $externalToken->token,
+                ]
+            ];
+
+            $response = $this->client->get($route, $options);
 
             $body = json_decode((string) $response->getBody());
         } catch (RequestException $requestError) {
@@ -147,5 +169,15 @@ class VexpensesService extends BaseService implements VexpensesServiceInterface
             'Token gerado com sucesso.',
             $token
         );
+    }
+
+    /**
+     * Retorna ExternalToken para validar o token
+     *
+     * @return string
+     */
+    private function getToken(): ?ExternalToken
+    {
+        return user()->externalTokens()->where('system', 'VEXPENSES')->first();
     }
 }
