@@ -13,11 +13,11 @@ class VexpensesController extends ApiController
     /**
      * @var VexpensesServiceInterface
      */
-    protected $VexpensesService;
+    protected $vexpensesService;
 
-    public function __construct(VexpensesServiceInterface $VexpensesService)
+    public function __construct(VexpensesServiceInterface $vexpensesService)
     {
-        $this->VexpensesService = $VexpensesService;
+        $this->vexpensesService = $vexpensesService;
     }
 
     /**

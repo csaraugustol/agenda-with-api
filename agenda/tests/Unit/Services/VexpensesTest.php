@@ -12,13 +12,13 @@ class VexpensesTest extends BaseTestCase
     /**
      * @var VexpensesService
      */
-    protected $VexpensesService;
+    protected $vexpensesService;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->VexpensesService = app(VexpensesService::class);
+        $this->vexpensesService = app(VexpensesService::class);
     }
 
     /**
@@ -29,7 +29,7 @@ class VexpensesTest extends BaseTestCase
     {
         $user = factory(User::class)->create();
 
-        $createAccessTokenResponse = $this->VexpensesService
+        $createAccessTokenResponse = $this->vexpensesService
             ->tokenToAccess($this->faker->sha1, $user->id);
 
         $this->assertInstanceOf(ServiceResponse::class, $createAccessTokenResponse);
@@ -45,7 +45,7 @@ class VexpensesTest extends BaseTestCase
      */
     public function testReturnErrorWhenUserDoesntExistsAndTryStoreAccessTokenToVExpenses()
     {
-        $createAccessTokenResponse = $this->VexpensesService
+        $createAccessTokenResponse = $this->vexpensesService
             ->tokenToAccess($this->faker->sha1, $this->faker->uuid);
 
         $this->assertInstanceOf(ServiceResponse::class, $createAccessTokenResponse);
