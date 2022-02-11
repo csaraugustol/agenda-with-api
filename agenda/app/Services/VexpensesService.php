@@ -24,7 +24,7 @@ class VexpensesService extends BaseService implements VexpensesServiceInterface
         $client = new Client([
             'base_uri' => config('auth.vexpenses_base_url'),
             'headers'  => [
-                'Accept'        => 'application/json',
+                'Accept' => 'application/json',
             ]
         ]);
 
