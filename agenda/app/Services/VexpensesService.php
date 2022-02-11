@@ -13,7 +13,7 @@ use App\Services\Contracts\ExternalTokenServiceInterface;
 
 class VexpensesService extends BaseService implements VexpensesServiceInterface
 {
-        /**
+    /**
      * @var Client
      */
     protected $client;
@@ -23,67 +23,35 @@ class VexpensesService extends BaseService implements VexpensesServiceInterface
         $client = new Client([
             'base_uri' => config('auth.vexpenses_base_url'),
             'headers'  => [
-                'Content-Type' => 'application/json',
                 'Accept' => 'application/json',
-                'Authorization' => 'Bearer ' . config('auth.vexpenses_token'),
-            ],
-            'verify' => env('APP_ENV') === 'production' ? true : false,
+                'Authorization' => user()->externalTokens->first()->token,
+            ]
         ]);
 
         $this->setClient($client);
     }
 
     /**
-     * Envio de Requisição para VExpenses
+     * Envio de Requisição para a API VExpenses
      *
-     * @param  string   $method
-     * @param  string   $url
-     * @param  array    $params
+     * @param string $route
      *
      * @return ServiceResponse
      */
-    public function sendRequest(
-        string $method,
-        string $url,
-        array $params = []
-    ): ServiceResponse {
+    public function sendRequest(string $route): ServiceResponse
+    {
         try {
-            $options = [];
-            $method = strtolower($method);
-
-            if (!empty($params)) {
-                $optionsType = $method !== 'get' ? 'json' : 'query';
-                $options[$optionsType] = $params;
-            }
-
-            $response = $this->client->{$method}($url, $options);
+            $response = $this->client->get($route);
 
             $body = json_decode((string) $response->getBody());
         } catch (RequestException $requestError) {
-            $errorResponse = $requestError->getResponse();
+            $responseCode = $requestError->getCode();
 
-            if ($requestError->getCode() === 500) {
-                $body = $errorResponse->getBody();
-
-                return $this->defaultErrorReturn(
-                    $requestError,
-                    compact('method', 'url', 'params', 'body')
-                );
-            }
-
-            $response = json_decode((string) $errorResponse->getBody());
-            $response->code = $requestError->getCode();
-
-            $this->defaultErrorReturn(
-                $requestError,
-                compact('method', 'url', 'params', 'response')
-            );
-
-            if ($response->code === 401) {
+            if ($responseCode === 401) {
                 return new ServiceResponse(
                     false,
                     'O token é inválido!',
-                    $response,
+                    null,
                     [
                         new InternalError(
                             'O token é inválido!',
@@ -93,10 +61,30 @@ class VexpensesService extends BaseService implements VexpensesServiceInterface
                 );
             }
 
+            if ($responseCode === 405) {
+                return new ServiceResponse(
+                    false,
+                    'A rota informada não é válida!',
+                    null,
+                    [
+                        new InternalError(
+                            'A rota informada não é válida!',
+                            26
+                        )
+                    ]
+                );
+            }
+
             return new ServiceResponse(
                 false,
-                'Houve uma falha na requisição.',
-                $response
+                'Requisição inválida.',
+                null,
+                [
+                    new InternalError(
+                        'Requisição inválida.',
+                        27
+                    )
+                ]
             );
         }
 
