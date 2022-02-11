@@ -32,9 +32,8 @@ class VexpensesTest extends BaseTestCase
             'token' => $this->faker->sha1
         ];
 
-        $response = $this->postJson(route('vexpenses.access-token'), $body);
-
-        $response->assertHeader('content-type', 'application/json')
+        $this->postJson(route('vexpenses.access-token'), $body)
+            ->assertHeader('content-type', 'application/json')
             ->assertStatus(200)
             ->assertJson([
                 'success' => true,
@@ -42,8 +41,7 @@ class VexpensesTest extends BaseTestCase
                 'method'  => 'POST',
                 'code'    => 200,
                 'data'    => [
-                    'token'      => $response['data']['token'],
-                    'system'     => $response['data']['system']
+                    'token'  => $body['token'],
                 ],
             ], true);
     }

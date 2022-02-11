@@ -29,7 +29,7 @@ class VexpensesController extends ApiController
      */
     public function accessToken(AccessTokenRequest $request): JsonResponse
     {
-        $accessResponse = $this->VexpensesService->tokenToAccess(
+        $accessResponse = $this->vexpensesService->tokenToAccess(
             $request->token,
             user('id')
         );

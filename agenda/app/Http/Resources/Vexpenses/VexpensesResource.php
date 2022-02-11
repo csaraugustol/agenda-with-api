@@ -16,7 +16,6 @@ class VexpensesResource extends JsonResource
     {
         return [
             'token'  => $this->resource->token,
-            'system' => $this->resource->system,
         ];
     }
 }

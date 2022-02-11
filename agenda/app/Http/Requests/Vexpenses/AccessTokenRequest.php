@@ -28,7 +28,7 @@ class AccessTokenRequest extends FormRequest
     {
         return [
             'after' => [
-                'token'                      => 'cast:string',
+                'token' => 'cast:string',
             ],
         ];
     }
@@ -41,7 +41,7 @@ class AccessTokenRequest extends FormRequest
     public function rules()
     {
         return [
-            'token'                      => 'required|string',
+            'token' => 'required|string',
         ];
     }
 
@@ -53,8 +53,8 @@ class AccessTokenRequest extends FormRequest
     public function messages()
     {
         return [
-            'token.required'                      => 'O campo TOKEN é obrigatório',
-            'token.string'                        => 'O campo TOKEN deve ser do tipo string',
+            'token.required' => 'O campo TOKEN é obrigatório',
+            'token.string'   => 'O campo TOKEN deve ser do tipo string',
         ];
     }
 }
