@@ -14,7 +14,7 @@ class AlterTableContactAddColumnExternalId extends Migration
     public function up()
     {
         Schema::table('contacts', function (Blueprint $table) {
-            $table->uuid('external_id')->after('user_id')->nullable();
+            $table->string('external_id')->after('user_id')->nullable();
         });
     }
 
