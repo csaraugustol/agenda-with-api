@@ -6,22 +6,22 @@ use Illuminate\Http\JsonResponse;
 use App\Http\Responses\DefaultResponse;
 use App\Http\Resources\Vexpenses\VexpensesResource;
 use App\Http\Requests\Vexpenses\AccessTokenRequest;
-use App\Services\Contracts\VexpensesIntegrationServiceInterface;
+use App\Services\Contracts\VexpensesServiceInterface;
 
 class VexpensesController extends ApiController
 {
     /**
-     * @var VexpensesIntegrationServiceInterface
+     * @var VexpensesServiceInterface
      */
-    protected $VexpensesIntegrationService;
+    protected $VexpensesService;
 
-    public function __construct(VexpensesIntegrationServiceInterface $VexpensesIntegrationService)
+    public function __construct(VexpensesServiceInterface $VexpensesService)
     {
-        $this->VexpensesIntegrationService = $VexpensesIntegrationService;
+        $this->VexpensesService = $VexpensesService;
     }
 
     /**
-     * Retorna o token para acessar o VExpenses
+     * Seta o token para acessar o VExpenses
      *
      * POST /vexpenses/access-token
      *
@@ -29,9 +29,9 @@ class VexpensesController extends ApiController
      */
     public function accessToken(AccessTokenRequest $request): JsonResponse
     {
-        $accessResponse = $this->VexpensesIntegrationService->tokenToAccess(
-                $request->token,
-                user('id')
+        $accessResponse = $this->VexpensesService->tokenToAccess(
+            $request->token,
+            user('id')
         );
 
         if (!$accessResponse->success || is_null($accessResponse->data)) {

@@ -4,21 +4,21 @@ namespace Tests\Unit\Services;
 
 use App\Models\User;
 use App\Models\ExternalToken;
+use App\Services\VexpensesService;
 use App\Services\Responses\ServiceResponse;
-use App\Services\VexpensesIntegrationService;
 
 class VexpensesTest extends BaseTestCase
 {
     /**
-     * @var VexpensesIntegrationService
+     * @var VexpensesService
      */
-    protected $VexpensesIntegrationService;
+    protected $VexpensesService;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->VexpensesIntegrationService = app(VexpensesIntegrationService::class);
+        $this->VexpensesService = app(VexpensesService::class);
     }
 
     /**
@@ -29,7 +29,7 @@ class VexpensesTest extends BaseTestCase
     {
         $user = factory(User::class)->create();
 
-        $createAccessTokenResponse = $this->VexpensesIntegrationService
+        $createAccessTokenResponse = $this->VexpensesService
             ->tokenToAccess($this->faker->sha1, $user->id);
 
         $this->assertInstanceOf(ServiceResponse::class, $createAccessTokenResponse);
@@ -45,7 +45,7 @@ class VexpensesTest extends BaseTestCase
      */
     public function testReturnErrorWhenUserDoesntExistsAndTryStoreAccessTokenToVExpenses()
     {
-        $createAccessTokenResponse = $this->VexpensesIntegrationService
+        $createAccessTokenResponse = $this->VexpensesService
             ->tokenToAccess($this->faker->sha1, $this->faker->uuid);
 
         $this->assertInstanceOf(ServiceResponse::class, $createAccessTokenResponse);

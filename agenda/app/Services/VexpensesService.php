@@ -8,10 +8,10 @@ use App\Services\Responses\InternalError;
 use GuzzleHttp\Exception\RequestException;
 use App\Services\Responses\ServiceResponse;
 use App\Services\Contracts\UserServiceInterface;
+use App\Services\Contracts\VexpensesServiceInterface;
 use App\Services\Contracts\ExternalTokenServiceInterface;
-use App\Services\Contracts\VexpensesIntegrationServiceInterface;
 
-class VexpensesIntegrationService extends BaseService implements VexpensesIntegrationServiceInterface
+class VexpensesService extends BaseService implements VexpensesServiceInterface
 {
         /**
      * @var Client
