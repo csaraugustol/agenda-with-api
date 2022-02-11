@@ -15,7 +15,7 @@ class VexpensesResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'token'  => $this->resource->token,
+            'token' => $this->resource->token,
         ];
     }
 }
