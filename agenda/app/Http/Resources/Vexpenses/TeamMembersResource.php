@@ -15,12 +15,12 @@ class TeamMembersResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id'                      => $this->resource->id,
-            'external_id'             => $this->resource->external_id,
-            'name'                    => $this->resource->name,
-            'email'                   => $this->resource->email,
-            'phone1'                  => $this->resource->phone1,
-            'phone2'                  => $this->resource->phone2,
+            'id'          => $this->resource->id,
+            'external_id' => $this->resource->external_id,
+            'name'        => $this->resource->name,
+            'email'       => $this->resource->email,
+            'phone1'      => $this->resource->phone1,
+            'phone2'      => $this->resource->phone2,
         ];
     }
 }
