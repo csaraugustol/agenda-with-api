@@ -134,5 +134,4 @@ return [
     |--------------------------------------------------------------------------
      */
     'vexpenses_base_url' => env('VEXPENSES_BASE_URL', null),
-    'vexpenses_token' => env('VEXPENSES_TOKEN', null),
 ];
