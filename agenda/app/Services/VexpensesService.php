@@ -113,7 +113,7 @@ class VexpensesService extends BaseService implements VexpensesServiceInterface
         return new ServiceResponse(
             true,
             'Requisição realiza com sucesso.',
-            $body
+            $body->data
         );
     }
 
