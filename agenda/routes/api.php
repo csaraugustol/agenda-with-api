@@ -125,5 +125,9 @@ Route::group(['middleware' => ['api.token.user']], function () {
             'as'   => 'access-token',
             'uses' => 'VexpensesController@accessToken'
         ]);
+        Route::get('/team-members', [
+            'as'   => 'team-members',
+            'uses' => 'VexpensesController@teamMembers'
+        ]);
     });
 });
