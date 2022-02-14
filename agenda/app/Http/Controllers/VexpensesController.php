@@ -53,7 +53,9 @@ class VexpensesController extends ApiController
      */
     public function teamMembers(): JsonResponse
     {
-        $teamMembersResponse = $this->vexpensesService->sendRequest('team-members');
+        $teamMembersResponse = $this->vexpensesService->findAllTeamMembers(
+            'team-members'
+        );
 
         if (!$teamMembersResponse->success || is_null($teamMembersResponse->data)) {
             return $this->errorResponseFromService($teamMembersResponse);

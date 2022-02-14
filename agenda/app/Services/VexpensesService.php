@@ -180,4 +180,63 @@ class VexpensesService extends BaseService implements VexpensesServiceInterface
     {
         return user()->externalTokens()->where('system', 'VEXPENSES')->first();
     }
+
+    /**
+     * Retorna todos os membros de equipe do Vexpenses
+     *
+     * @param string $route
+     *
+     * @return ServiceResponse
+     */
+    public function findAllTeamMembers(string $route): ServiceResponse
+    {
+        try {
+            $findMembersResponse = $this->sendRequest($route);
+
+            if (!$findMembersResponse->success || is_null($findMembersResponse->data)) {
+                return new ServiceResponse(
+                    false,
+                    $findMembersResponse->message,
+                    null,
+                    $findMembersResponse->internalErrors
+                );
+            }
+
+            $allMembers = collect($findMembersResponse->data);
+
+            //Filtragem para verificar se o phone1 é vazio
+            $firstFilterMembers = $allMembers->filter(function ($member) {
+                if ($member->phone1 !== "") {
+                    return $member;
+                }
+            });
+
+            //Filtragem para verificar se o phone1 é null
+            $secondaryFilterMembers = $firstFilterMembers->filter(function ($member) {
+                if (!is_null($member->phone1)) {
+                    return $member;
+                }
+            });
+
+            //Retorna os dados relevantes do membro
+            $members = $secondaryFilterMembers->map(function ($member) {
+                    return (object) [
+                        'id'          => $member->id,
+                        'external_id' => $member->external_id,
+                        'name'        => $member->name,
+                        'email'       => $member->email,
+                        'phone1'      => $member->phone1,
+                        'phone2'      => $member->phone2,
+                    ];
+            });
+        } catch (Throwable $throwable) {
+            return $this->defaultErrorReturn($throwable, compact('route'));
+        }
+
+        return new ServiceResponse(
+            true,
+            'Membros retornados com sucesso.',
+            $members
+        );
+    }
 }
