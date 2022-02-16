@@ -3,6 +3,10 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use App\Models\ExternalToken;
+use App\Services\Responses\ServiceResponse;
+use App\Services\VexpensesService;
+use Tests\Mocks\Providers\VexpensesProvider;
 
 class VexpensesTest extends BaseTestCase
 {
@@ -12,6 +16,11 @@ class VexpensesTest extends BaseTestCase
      */
     protected $user;
 
+    /**
+     * @var VexpensesProvider
+     */
+    protected $vexpensesProvider;
+
     public function setUp(): void
     {
         parent::setUp();
@@ -20,6 +29,7 @@ class VexpensesTest extends BaseTestCase
 
         $this->user = $tokenResponse->user;
         $this->withHeaders(['Authorization' => $tokenResponse->token]);
+        $this->vexpensesProvider = app(VexpensesProvider::class);
     }
 
     /**
@@ -90,5 +100,39 @@ class VexpensesTest extends BaseTestCase
             ], true)
             ->assertJsonStructure(['errors'])
             ->assertUnauthorized();
+    }
+
+    /**
+     * Retorna sucesso ao listar os membros do VExpenses
+     */
+    public function testReturnSuccessWhenListAllMembers()
+    {
+        factory(ExternalToken::class)->create([
+            'user_id' => $this->user->id
+        ]);
+
+        $mockAllMembersResponse = $this->vexpensesProvider
+            ->getMockReturnAllMembers();
+
+        $this->addMockMethod(
+            'sendRequest',
+            new ServiceResponse(
+                true,
+                '',
+                $mockAllMembersResponse->response
+            )
+        );
+
+        $this->applyMock(VexpensesService::class);
+
+        $this->get(route('vexpenses.team-members'))
+            ->assertHeader('content-type', 'application/json')
+            ->assertStatus(200)
+            ->assertJson([
+                'success' => true,
+                'request' => route('vexpenses.team-members'),
+                'method'  => 'GET',
+                'code'    => 200,
+            ], true);
     }
 }

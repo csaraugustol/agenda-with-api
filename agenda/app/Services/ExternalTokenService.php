@@ -4,6 +4,7 @@ namespace App\Services;
 
 use Throwable;
 use Carbon\Carbon;
+use App\Services\Responses\InternalError;
 use App\Services\Responses\ServiceResponse;
 use App\Services\Contracts\UserServiceInterface;
 use App\Repositories\Contracts\ExternalTokenRepository;
@@ -119,6 +120,46 @@ class ExternalTokenService extends BaseService implements ExternalTokenServiceIn
             true,
             'Tokens deletados com sucesso!',
             null
+        );
+    }
+
+    /**
+     * Retorna Token de validação para acesso a integração
+     *
+     * @param string $userId
+     * @param string $system
+     *
+     * @return ServiceResponse
+     */
+    public function findByToken(string $userId, string $system): ServiceResponse
+    {
+        try {
+            $externalToken = $this->externalTokenRepository->findByToken(
+                $userId,
+                $system
+            );
+
+            if (is_null($externalToken)) {
+                return new ServiceResponse(
+                    true,
+                    'O External Token não foi localizado.',
+                    null,
+                    [
+                        new InternalError(
+                            'O External Token não foi localizado.',
+                            28
+                        )
+                    ]
+                );
+            }
+        } catch (Throwable $throwable) {
+            return $this->defaultErrorReturn($throwable, compact('userId', 'system'));
+        }
+
+        return new ServiceResponse(
+            true,
+            'Token retornado com sucesso.',
+            $externalToken
         );
     }
 }

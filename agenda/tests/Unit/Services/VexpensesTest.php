@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\ExternalToken;
 use App\Services\VexpensesService;
 use App\Services\Responses\ServiceResponse;
+use Tests\Mocks\Providers\VexpensesProvider;
 
 class VexpensesTest extends BaseTestCase
 {
@@ -14,11 +15,17 @@ class VexpensesTest extends BaseTestCase
      */
     protected $vexpensesService;
 
+    /**
+     * @var VexpensesProvider
+     */
+    protected $vexpensesProvider;
+
     public function setUp(): void
     {
         parent::setUp();
 
         $this->vexpensesService = app(VexpensesService::class);
+        $this->vexpensesProvider = app(VexpensesProvider::class);
     }
 
     /**
@@ -52,5 +59,28 @@ class VexpensesTest extends BaseTestCase
         $this->assertNotTrue($createAccessTokenResponse->success);
         $this->assertNull($createAccessTokenResponse->data);
         $this->assertHasInternalError($createAccessTokenResponse, 3);
+    }
+
+    public function testReturSuccessWhenListMembers()
+    {
+        $user = factory(User::class)->create();
+
+        factory(ExternalToken::class)->create([
+            'user_id' => $user->id,
+        ]);
+
+        $mockMembersResponse = $this->vexpensesProvider->getMockReturnAllMembers();
+
+        $service = app(VexpensesService::class);
+
+        $this->vexpensesProvider->setMockRequest(
+            $service,
+            $mockMembersResponse->status_code,
+            $mockMembersResponse->response,
+        );
+
+        $listMembersResponse = $this->vexpensesService->findAllTeamMembers($user->id);
+
+        dd($listMembersResponse);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Services;
 
 use Throwable;
 use GuzzleHttp\Client;
+use App\Models\Contact;
 use App\Models\ExternalToken;
 use App\Services\Responses\InternalError;
 use GuzzleHttp\Exception\RequestException;
@@ -35,13 +36,14 @@ class VexpensesService extends BaseService implements VexpensesServiceInterface
      * Envio de Requisição para a API VExpenses
      *
      * @param string $route
+     * @param string $userId
      *
      * @return ServiceResponse
      */
-    public function sendRequest(string $route): ServiceResponse
+    public function sendRequest(string $route, string $userId): ServiceResponse
     {
         try {
-            $externalToken = $this->getToken();
+            $externalToken = $this->getToken($userId);
 
             if (is_null($externalToken)) {
                 return new ServiceResponse(
@@ -59,7 +61,7 @@ class VexpensesService extends BaseService implements VexpensesServiceInterface
 
             $options = [
                 'headers' => [
-                    'Authorization' => $externalToken->token,
+                    'Authorization' =>  $externalToken->token,
                 ]
             ];
 
@@ -172,26 +174,64 @@ class VexpensesService extends BaseService implements VexpensesServiceInterface
     }
 
     /**
-     * Retorna ExternalToken para validar o token
+     * Retorna ExternalToken para validar o acesso a integração
      *
      * @return string
      */
-    private function getToken(): ?ExternalToken
+    private function getToken(string $userId): ?ExternalToken
     {
-        return user()->externalTokens()->where('system', 'VEXPENSES')->first();
+        try {
+            $findExternalTokenResponse = app(ExternalTokenServiceInterface::class)->findByToken(
+                $userId,
+                'VEXPENSES'
+            );
+
+            if (!$findExternalTokenResponse->success || is_null($findExternalTokenResponse->data)) {
+                return new ServiceResponse(
+                    false,
+                    $findExternalTokenResponse->message,
+                    null,
+                    $findExternalTokenResponse->internalErrors
+                );
+            }
+        } catch (Throwable $throwable) {
+            return $this->defaultErrorReturn($throwable, compact('userId'));
+        }
+
+        return $findExternalTokenResponse->data;
+    }
+
+    /**
+     * Verifica se o contato já etá integrado na agenda
+     *
+     * @return bool
+     */
+    private function getIsIntegrated(string $externalId): ?Contact
+    {
+        return user()->contacts()->where('external_id', $externalId)->first();
     }
 
     /**
      * Retorna todos os membros de equipe do Vexpenses
      *
-     * @param string $route
+     * @param string $userId
      *
      * @return ServiceResponse
      */
-    public function findAllTeamMembers(string $route): ServiceResponse
+    public function findAllTeamMembers(string $userId): ServiceResponse
     {
         try {
-            $findMembersResponse = $this->sendRequest($route);
+            $findUserResponse = app(UserServiceInterface::class)->find($userId);
+            if (!$findUserResponse->success && is_null($findUserResponse->data)) {
+                return new ServiceResponse(
+                    false,
+                    $findUserResponse->message,
+                    null,
+                    $findUserResponse->internalErrors
+                );
+            }
+
+            $findMembersResponse = $this->sendRequest('team-members', $userId);
 
             if (!$findMembersResponse->success || is_null($findMembersResponse->data)) {
                 return new ServiceResponse(
@@ -204,33 +244,41 @@ class VexpensesService extends BaseService implements VexpensesServiceInterface
 
             $allMembers = collect($findMembersResponse->data);
 
-            //Filtragem para verificar se o phone1 é vazio
-            $firstFilterMembers = $allMembers->filter(function ($member) {
-                if ($member->phone1 !== "") {
-                    return $member;
-                }
-            });
-
-            //Filtragem para verificar se o phone1 é null
-            $secondaryFilterMembers = $firstFilterMembers->filter(function ($member) {
-                if (!is_null($member->phone1)) {
+            $filterResult = $allMembers->filter(function ($member) {
+                if (
+                    !is_null($member->phone1) && $member->phone1 !== ''
+                    || !is_null($member->phone2) && $member->phone2 !== ''
+                ) {
                     return $member;
                 }
             });
 
             //Retorna os dados relevantes do membro
-            $members = $secondaryFilterMembers->map(function ($member) {
-                    return (object) [
-                        'id'          => $member->id,
-                        'external_id' => $member->external_id,
-                        'name'        => $member->name,
-                        'email'       => $member->email,
-                        'phone1'      => $member->phone1,
-                        'phone2'      => $member->phone2,
-                    ];
+            $members = $filterResult->map(function ($member) {
+
+                $phones = collect();
+
+                if ($member->phone1) {
+                    $phones->push($member->phone1);
+                }
+
+                if ($member->phone2) {
+                    $phones->push($member->phone2);
+                }
+
+                //Verifica se o membro já possui integração com algum contato
+                $contact = $this->getIsIntegrated($member->id);
+
+                return (object) [
+                    'external_id' => $member->id,
+                    'integrated'  => is_null($contact) ? false : true,
+                    'name'        => $member->name,
+                    'email'       => $member->email,
+                    'phones'      => $phones
+                ];
             });
         } catch (Throwable $throwable) {
-            return $this->defaultErrorReturn($throwable, compact('route'));
+            return $this->defaultErrorReturn($throwable);
         }
 
         return new ServiceResponse(

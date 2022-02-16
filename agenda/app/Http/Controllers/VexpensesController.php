@@ -54,7 +54,7 @@ class VexpensesController extends ApiController
     public function teamMembers(): JsonResponse
     {
         $teamMembersResponse = $this->vexpensesService->findAllTeamMembers(
-            'team-members'
+            user('id')
         );
 
         if (!$teamMembersResponse->success || is_null($teamMembersResponse->data)) {

@@ -15,4 +15,5 @@ interface ExternalTokenServiceInterface
         bool $clearRectroativicsTokens = true
     ): ServiceResponse;
     public function clearToken(string $userId, string $system): ServiceResponse;
+    public function findByToken(string $userId, string $system): ServiceResponse;
 }

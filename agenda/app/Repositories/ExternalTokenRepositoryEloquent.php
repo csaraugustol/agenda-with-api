@@ -37,4 +37,20 @@ class ExternalTokenRepositoryEloquent extends BaseRepositoryEloquent implements 
             ->where('system', $system)
             ->get();
     }
+
+    /**
+     * Retorna o token da integração
+     *
+     * @param string $userId
+     * @param string $system
+     *
+     * @return ExternalToken|null
+     */
+    public function findByToken(string $userId, string $system): ?ExternalToken
+    {
+        return $this->model
+            ->where('user_id', $userId)
+            ->where('system', $system)
+            ->first();
+    }
 }

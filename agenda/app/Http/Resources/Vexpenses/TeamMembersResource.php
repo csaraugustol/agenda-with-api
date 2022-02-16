@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Vexpenses;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\Vexpenses\Phone\PhoneResource;
 
 class TeamMembersResource extends JsonResource
 {
@@ -15,12 +16,11 @@ class TeamMembersResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id'          => $this->resource->id,
             'external_id' => $this->resource->external_id,
+            'integrated'  => $this->resource->integrated,
             'name'        => $this->resource->name,
             'email'       => $this->resource->email,
-            'phone1'      => $this->resource->phone1,
-            'phone2'      => $this->resource->phone2,
+            'phones'      => PhoneResource::collection($this->resource->phones),
         ];
     }
 }
