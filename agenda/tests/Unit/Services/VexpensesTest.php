@@ -4,14 +4,16 @@ namespace Tests\Unit\Services;
 
 use App\Models\User;
 use App\Models\ExternalToken;
+use App\Models\AuthenticateToken;
 use App\Services\VexpensesService;
 use App\Services\Responses\ServiceResponse;
 use Tests\Mocks\Providers\VexpensesProvider;
+use App\Services\Contracts\VexpensesServiceInterface;
 
 class VexpensesTest extends BaseTestCase
 {
     /**
-     * @var VexpensesService
+     * @var VexpensesServiceInterface
      */
     protected $vexpensesService;
 
@@ -24,7 +26,7 @@ class VexpensesTest extends BaseTestCase
     {
         parent::setUp();
 
-        $this->vexpensesService = app(VexpensesService::class);
+        $this->vexpensesService = app(VexpensesServiceInterface::class);
         $this->vexpensesProvider = app(VexpensesProvider::class);
     }
 
@@ -61,6 +63,9 @@ class VexpensesTest extends BaseTestCase
         $this->assertHasInternalError($createAccessTokenResponse, 3);
     }
 
+    /**
+     * Retorna sucesso ao listar membros da API
+     */
     public function testReturSuccessWhenListMembers()
     {
         $user = factory(User::class)->create();
@@ -69,15 +74,22 @@ class VexpensesTest extends BaseTestCase
             'user_id' => $user->id,
         ]);
 
+        factory(AuthenticateToken::class)->create([
+            'user_id' => $user->id,
+        ]);
+
         $mockMembersResponse = $this->vexpensesProvider->getMockReturnAllMembers();
 
-        $service = app(VexpensesService::class);
-
-        $this->vexpensesProvider->setMockRequest(
-            $service,
-            $mockMembersResponse->status_code,
-            $mockMembersResponse->response,
+        $this->addMockMethod(
+            'sendRequest',
+            new ServiceResponse(
+                true,
+                '',
+                $mockMembersResponse->response
+            )
         );
+
+        $this->applyMock(VexpensesService::class);
 
         $listMembersResponse = $this->vexpensesService->findAllTeamMembers($user->id);
 
