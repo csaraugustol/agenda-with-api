@@ -4,8 +4,8 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use App\Models\ExternalToken;
-use App\Services\Responses\ServiceResponse;
 use App\Services\VexpensesService;
+use App\Services\Responses\ServiceResponse;
 use Tests\Mocks\Providers\VexpensesProvider;
 
 class VexpensesTest extends BaseTestCase

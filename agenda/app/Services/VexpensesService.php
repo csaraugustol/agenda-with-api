@@ -61,7 +61,7 @@ class VexpensesService extends BaseService implements VexpensesServiceInterface
 
             $options = [
                 'headers' => [
-                    'Authorization' =>  $externalToken->token,
+                    'Authorization' => $externalToken->token,
                 ]
             ];
 
