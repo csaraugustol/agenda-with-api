@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use App\Models\ExternalToken;
+use App\Services\Contracts\VexpensesServiceInterface;
 use App\Services\VexpensesService;
 use App\Services\Responses\ServiceResponse;
 use Tests\Mocks\Providers\VexpensesProvider;
@@ -111,19 +112,13 @@ class VexpensesTest extends BaseTestCase
             'user_id' => $this->user->id
         ]);
 
-        $mockAllMembersResponse = $this->vexpensesProvider
-            ->getMockReturnAllMembers();
+        $mockMembersResponse = $this->vexpensesProvider->getMockReturnAllMembers();
 
-        $this->addMockMethod(
-            'sendRequest',
-            new ServiceResponse(
-                true,
-                '',
-                $mockAllMembersResponse->response
-            )
+        $this->vexpensesProvider->setMockRequest(
+            app(VexpensesServiceInterface::class),
+            $mockMembersResponse->status_code,
+            $mockMembersResponse->response,
         );
-
-        $this->applyMock(VexpensesService::class);
 
         $this->get(route('vexpenses.team-members'))
             ->assertHeader('content-type', 'application/json')

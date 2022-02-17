@@ -253,4 +253,54 @@ class ContactService extends BaseService implements ContactServiceInterface
             null
         );
     }
+
+    /**
+     * Busca por um contato que possui external_id
+     *
+     * @param string $userId
+     * @param string $externalId
+     *
+     * @return ServiceResponse
+     */
+    public function findByContactWithExternalId(string $userId, string $externalId): ServiceResponse
+    {
+        try {
+            $findUserResponse = app(UserServiceInterface::class)->find($userId);
+            if (!$findUserResponse->success || is_null($findUserResponse->data)) {
+                return new ServiceResponse(
+                    false,
+                    $findUserResponse->message,
+                    null,
+                    $findUserResponse->internalErrors
+                );
+            }
+
+            $contact = $this->contactRepository->findByContactWithExternalId(
+                $userId,
+                $externalId
+            );
+
+            if (is_null($contact)) {
+                return new ServiceResponse(
+                    true,
+                    'O contato com um id externo não foi localizado.',
+                    null,
+                    [
+                        new InternalError(
+                            'O contato com um id externo não foi localizado.',
+                            29
+                        )
+                    ]
+                );
+            }
+        } catch (Throwable $throwable) {
+            return $this->defaultErrorReturn($throwable, compact('userId', 'externalId'));
+        }
+
+        return new ServiceResponse(
+            true,
+            "Contato localizado com sucesso!",
+            $contact
+        );
+    }
 }

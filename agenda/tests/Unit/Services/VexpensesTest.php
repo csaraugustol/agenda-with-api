@@ -74,25 +74,52 @@ class VexpensesTest extends BaseTestCase
             'user_id' => $user->id,
         ]);
 
-        factory(AuthenticateToken::class)->create([
-            'user_id' => $user->id,
-        ]);
-
         $mockMembersResponse = $this->vexpensesProvider->getMockReturnAllMembers();
 
-        $this->addMockMethod(
-            'sendRequest',
-            new ServiceResponse(
-                true,
-                '',
-                $mockMembersResponse->response
-            )
+        $this->vexpensesProvider->setMockRequest(
+            $this->vexpensesService,
+            $mockMembersResponse->status_code,
+            $mockMembersResponse->response,
         );
-
-        $this->applyMock(VexpensesService::class);
 
         $listMembersResponse = $this->vexpensesService->findAllTeamMembers($user->id);
 
-        dd($listMembersResponse);
+        $this->assertInstanceOf(ServiceResponse::class, $listMembersResponse);
+        $this->assertTrue($listMembersResponse->success);
+        $this->assertNotNull($listMembersResponse->data);
+        $this->assertEquals(
+            $listMembersResponse->data->first()->name,
+            $mockMembersResponse->response->data[0]->name
+        );
+    }
+
+    /**
+     * Retorna erro ao tentar uma resposta da API sem token
+     */
+    public function testReturErrorWhenUserDoesntHasExternalToken()
+    {
+        $user = factory(User::class)->create();
+
+        $listMembersResponse = $this->vexpensesService->findAllTeamMembers($user->id);
+
+        $this->assertInstanceOf(ServiceResponse::class, $listMembersResponse);
+        $this->assertFalse($listMembersResponse->success);
+        $this->assertNull($listMembersResponse->data);
+        $this->assertHasInternalError($listMembersResponse, 24);
+    }
+
+    /**
+     * Retorna erro ao tentar acessar a APÌ com um usuário que não existe
+     */
+    public function testReturErrorWhenUserDoesntExists()
+    {
+        $listMembersResponse = $this->vexpensesService->findAllTeamMembers(
+            $this->faker->uuid
+        );
+
+        $this->assertInstanceOf(ServiceResponse::class, $listMembersResponse);
+        $this->assertNotTrue($listMembersResponse->success);
+        $this->assertNull($listMembersResponse->data);
+        $this->assertHasInternalError($listMembersResponse, 3);
     }
 }

@@ -10,6 +10,7 @@ use App\Services\Responses\InternalError;
 use GuzzleHttp\Exception\RequestException;
 use App\Services\Responses\ServiceResponse;
 use App\Services\Contracts\UserServiceInterface;
+use App\Services\Contracts\ContactServiceInterface;
 use App\Services\Contracts\VexpensesServiceInterface;
 use App\Services\Contracts\ExternalTokenServiceInterface;
 
@@ -67,7 +68,7 @@ class VexpensesService extends BaseService implements VexpensesServiceInterface
 
             $response = $this->client->get($route, $options);
 
-            $body = json_decode((string) $response->getBody());
+            $body = json_decode((string) $response->getBody())->data;
         } catch (RequestException $requestError) {
             $responseCode = $requestError->getCode();
 
@@ -115,7 +116,7 @@ class VexpensesService extends BaseService implements VexpensesServiceInterface
         return new ServiceResponse(
             true,
             'Requisição realiza com sucesso.',
-            $body->data
+            $body
         );
     }
 
@@ -180,35 +181,25 @@ class VexpensesService extends BaseService implements VexpensesServiceInterface
      */
     private function getToken(string $userId): ?ExternalToken
     {
-        try {
-            $findExternalTokenResponse = app(ExternalTokenServiceInterface::class)->findByToken(
-                $userId,
-                'VEXPENSES'
-            );
-
-            if (!$findExternalTokenResponse->success || is_null($findExternalTokenResponse->data)) {
-                return new ServiceResponse(
-                    false,
-                    $findExternalTokenResponse->message,
-                    null,
-                    $findExternalTokenResponse->internalErrors
-                );
-            }
-        } catch (Throwable $throwable) {
-            return $this->defaultErrorReturn($throwable, compact('userId'));
-        }
+        $findExternalTokenResponse = app(ExternalTokenServiceInterface::class)->findByToken(
+            $userId,
+            'VEXPENSES'
+        );
 
         return $findExternalTokenResponse->data;
     }
 
     /**
-     * Verifica se o contato já etá integrado na agenda
+     * Verifica se o contato já está integrado na agenda
      *
      * @return bool
      */
-    private function getIsIntegrated(string $externalId): ?Contact
+    private function getIsIntegrated(string $userId, string $externalId): ?Contact
     {
-        return user()->contacts()->where('external_id', $externalId)->first();
+        $findExternalTokenResponse = app(ContactServiceInterface::class)
+            ->findByContactWithExternalId($userId, $externalId);
+
+        return $findExternalTokenResponse->data;
     }
 
     /**
@@ -222,7 +213,7 @@ class VexpensesService extends BaseService implements VexpensesServiceInterface
     {
         try {
             $findUserResponse = app(UserServiceInterface::class)->find($userId);
-            if (!$findUserResponse->success && is_null($findUserResponse->data)) {
+            if (!$findUserResponse->success || is_null($findUserResponse->data)) {
                 return new ServiceResponse(
                     false,
                     $findUserResponse->message,
@@ -254,7 +245,7 @@ class VexpensesService extends BaseService implements VexpensesServiceInterface
             });
 
             //Retorna os dados relevantes do membro
-            $members = $filterResult->map(function ($member) {
+            $members = $filterResult->map(function ($member) use ($userId) {
 
                 $phones = collect();
 
@@ -267,7 +258,7 @@ class VexpensesService extends BaseService implements VexpensesServiceInterface
                 }
 
                 //Verifica se o membro já possui integração com algum contato
-                $contact = $this->getIsIntegrated($member->id);
+                $contact = $this->getIsIntegrated($userId, $member->id);
 
                 return (object) [
                     'external_id' => $member->id,
