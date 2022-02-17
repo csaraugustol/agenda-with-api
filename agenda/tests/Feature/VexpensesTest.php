@@ -174,4 +174,28 @@ class VexpensesTest extends BaseTestCase
             ->assertJsonStructure(['errors'])
             ->assertUnauthorized();
     }
+
+    /**
+     * Retorna erro quando tenta acessar a lista de membros da API sem informar
+     * o ExternalToken da integração
+     */
+    public function testReturnErrorWhenTryListAllMembersAndDoesntExistsExternalToken()
+    {
+        $this->get(route('vexpenses.team-members'))
+            ->assertHeader('content-type', 'application/json')
+            ->assertStatus(200)
+            ->assertJson([
+                'success' => false,
+                'request' => route('vexpenses.team-members'),
+                'method'  => 'GET',
+                'code'    => 200,
+                'data'    => null,
+                'errors'  => [
+                    [
+                        'code' => 24
+                    ],
+                ],
+            ], true)
+            ->assertJsonStructure(['errors']);
+    }
 }
