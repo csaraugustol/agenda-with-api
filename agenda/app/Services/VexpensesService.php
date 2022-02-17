@@ -68,7 +68,7 @@ class VexpensesService extends BaseService implements VexpensesServiceInterface
 
             $response = $this->client->get($route, $options);
 
-            $body = json_decode((string) $response->getBody())->data;
+            $body = json_decode((string) $response->getBody());
         } catch (RequestException $requestError) {
             $responseCode = $requestError->getCode();
 
@@ -116,7 +116,7 @@ class VexpensesService extends BaseService implements VexpensesServiceInterface
         return new ServiceResponse(
             true,
             'Requisição realiza com sucesso.',
-            $body
+            $body->data
         );
     }
 
@@ -269,7 +269,7 @@ class VexpensesService extends BaseService implements VexpensesServiceInterface
                 ];
             });
         } catch (Throwable $throwable) {
-            return $this->defaultErrorReturn($throwable);
+            return $this->defaultErrorReturn($throwable, compact('userId'));
         }
 
         return new ServiceResponse(

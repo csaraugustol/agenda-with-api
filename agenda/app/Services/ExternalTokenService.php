@@ -45,7 +45,7 @@ class ExternalTokenService extends BaseService implements ExternalTokenServiceIn
     ): ServiceResponse {
         try {
             $findUserResponse = app(UserServiceInterface::class)->find($userId);
-            if (!$findUserResponse->success && is_null($findUserResponse->data)) {
+            if (!$findUserResponse->success || is_null($findUserResponse->data)) {
                 return new ServiceResponse(
                     false,
                     $findUserResponse->message,
@@ -134,6 +134,16 @@ class ExternalTokenService extends BaseService implements ExternalTokenServiceIn
     public function findByToken(string $userId, string $system): ServiceResponse
     {
         try {
+            $findUserResponse = app(UserServiceInterface::class)->find($userId);
+            if (!$findUserResponse->success || is_null($findUserResponse->data)) {
+                return new ServiceResponse(
+                    false,
+                    $findUserResponse->message,
+                    null,
+                    $findUserResponse->internalErrors
+                );
+            }
+
             $externalToken = $this->externalTokenRepository->findByToken(
                 $userId,
                 $system

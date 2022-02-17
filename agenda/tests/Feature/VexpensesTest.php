@@ -3,8 +3,6 @@
 namespace Tests\Feature;
 
 use App\Models\User;
-use App\Models\ExternalToken;
-use App\Services\Contracts\VexpensesServiceInterface;
 use App\Services\VexpensesService;
 use App\Services\Responses\ServiceResponse;
 use Tests\Mocks\Providers\VexpensesProvider;
@@ -84,13 +82,13 @@ class VexpensesTest extends BaseTestCase
     {
         $this->withHeaders(['Authorization' => $this->generateUnauthorizedToken()]);
 
-        $this->get(route('vexpenses.access-token'))
+        $this->postJson(route('vexpenses.access-token'))
             ->assertHeader('content-type', 'application/json')
             ->assertStatus(401)
             ->assertJson([
                 'success' => false,
                 'request' => route('vexpenses.access-token'),
-                'method'  => 'GET',
+                'method'  => 'POST',
                 'code'    => 401,
                 'data'    => null,
                 'errors'  => [
@@ -108,17 +106,21 @@ class VexpensesTest extends BaseTestCase
      */
     public function testReturnSuccessWhenListAllMembers()
     {
-        factory(ExternalToken::class)->create([
-            'user_id' => $this->user->id
-        ]);
+        $mockMembersResponse = $this->vexpensesProvider
+            ->getMockReturnAllMembersWithRouteResponse();
 
-        $mockMembersResponse = $this->vexpensesProvider->getMockReturnAllMembers();
-
-        $this->vexpensesProvider->setMockRequest(
-            app(VexpensesServiceInterface::class),
-            $mockMembersResponse->status_code,
-            $mockMembersResponse->response,
+        $this->addMockMethod(
+            'sendRequest',
+            new ServiceResponse(
+                true,
+                '',
+                $mockMembersResponse->response
+            )
         );
+
+        $this->applyMock(VexpensesService::class);
+
+        $member = $mockMembersResponse->response[0];
 
         $this->get(route('vexpenses.team-members'))
             ->assertHeader('content-type', 'application/json')
@@ -128,6 +130,62 @@ class VexpensesTest extends BaseTestCase
                 'request' => route('vexpenses.team-members'),
                 'method'  => 'GET',
                 'code'    => 200,
+                'data'    => [
+                    [
+                        'external_id' => $member->id,
+                        'integrated'  => false,
+                        'name'        => $member->name,
+                        'email'       => $member->email,
+                        'phones'      => [
+                            [
+                                'phone_number' => $member->phone1
+                            ],
+                            [
+                                'phone_number' => $member->phone2
+                            ]
+                        ],
+                    ]
+                ],
             ], true);
+    }
+
+    /**
+     * Retorna erro ao tentar acessar a API com um usuário não autorizado
+     */
+    public function testReturnErrorWhenUserDoesntUnauthorized()
+    {
+        $this->withHeaders(['Authorization' => $this->generateUnauthorizedToken()]);
+
+        $mockMembersResponse = $this->vexpensesProvider
+            ->getMockReturnAllMembersWithRouteResponse();
+
+        $this->addMockMethod(
+            'sendRequest',
+            new ServiceResponse(
+                true,
+                '',
+                $mockMembersResponse->response
+            )
+        );
+
+        $this->applyMock(VexpensesService::class);
+
+        $this->get(route('vexpenses.team-members'))
+            ->assertHeader('content-type', 'application/json')
+            ->assertStatus(401)
+            ->assertJson([
+                'success' => false,
+                'request' => route('vexpenses.team-members'),
+                'method'  => 'GET',
+                'code'    => 401,
+                'data'    => null,
+                'errors'  => [
+                    [
+                        'code' => 6
+                    ],
+                ],
+            ], true)
+            ->assertJsonStructure(['errors'])
+            ->assertUnauthorized();
     }
 }

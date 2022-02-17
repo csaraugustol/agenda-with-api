@@ -4,8 +4,6 @@ namespace Tests\Unit\Services;
 
 use App\Models\User;
 use App\Models\ExternalToken;
-use App\Models\AuthenticateToken;
-use App\Services\VexpensesService;
 use App\Services\Responses\ServiceResponse;
 use Tests\Mocks\Providers\VexpensesProvider;
 use App\Services\Contracts\VexpensesServiceInterface;
