@@ -4,7 +4,6 @@ namespace App\Services;
 
 use Throwable;
 use GuzzleHttp\Client;
-use App\Models\Contact;
 use App\Models\ExternalToken;
 use App\Services\Responses\InternalError;
 use GuzzleHttp\Exception\RequestException;
@@ -181,23 +180,10 @@ class VexpensesService extends BaseService implements VexpensesServiceInterface
      */
     private function getToken(string $userId): ?ExternalToken
     {
-        $findExternalTokenResponse = app(ExternalTokenServiceInterface::class)->findByToken(
+        $findExternalTokenResponse = app(ExternalTokenServiceInterface::class)->find(
             $userId,
             'VEXPENSES'
         );
-
-        return $findExternalTokenResponse->data;
-    }
-
-    /**
-     * Verifica se o contato já está integrado na agenda
-     *
-     * @return bool
-     */
-    private function getIsIntegrated(string $userId, string $externalId): ?Contact
-    {
-        $findExternalTokenResponse = app(ContactServiceInterface::class)
-            ->findByContactWithExternalId($userId, $externalId);
 
         return $findExternalTokenResponse->data;
     }
@@ -235,17 +221,13 @@ class VexpensesService extends BaseService implements VexpensesServiceInterface
 
             $allMembers = collect($findMembersResponse->data);
 
-            $filterResult = $allMembers->filter(function ($member) {
-                if (
-                    !is_null($member->phone1) && $member->phone1 !== ''
-                    || !is_null($member->phone2) && $member->phone2 !== ''
-                ) {
-                    return $member;
-                }
+            $filter = $allMembers->filter(function ($member) {
+                return (!is_null($member->phone1) && $member->phone1 !== '')
+                    || (!is_null($member->phone2) && $member->phone2 !== '' && $member->phone2 !== '(');
             });
 
             //Retorna os dados relevantes do membro
-            $members = $filterResult->map(function ($member) use ($userId) {
+            $members = $filter->map(function ($member) use ($userId) {
 
                 $phones = collect();
 
@@ -258,11 +240,12 @@ class VexpensesService extends BaseService implements VexpensesServiceInterface
                 }
 
                 //Verifica se o membro já possui integração com algum contato
-                $contact = $this->getIsIntegrated($userId, $member->id);
+                $findExternalTokenResponse = app(ContactServiceInterface::class)
+                    ->findContactByExternalId($userId, $member->id);
 
                 return (object) [
                     'external_id' => $member->id,
-                    'integrated'  => is_null($contact) ? false : true,
+                    'integrated'  => is_null($findExternalTokenResponse->data) ? false : true,
                     'name'        => $member->name,
                     'email'       => $member->email,
                     'phones'      => $phones

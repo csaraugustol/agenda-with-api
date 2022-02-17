@@ -46,7 +46,7 @@ class ExternalTokenRepositoryEloquent extends BaseRepositoryEloquent implements 
      *
      * @return ExternalToken|null
      */
-    public function findByToken(string $userId, string $system): ?ExternalToken
+    public function findByExternalTokenOfUser(string $userId, string $system): ?ExternalToken
     {
         return $this->model
             ->where('user_id', $userId)

@@ -73,7 +73,7 @@ class ContactRepositoryEloquent extends BaseRepositoryEloquent implements Contac
      *
      * @return Contact|null
      */
-    public function findByContactWithExternalId(string $userId, string $externalId): ?Contact
+    public function findContactByExternalId(string $userId, string $externalId): ?Contact
     {
         return $this->model
             ->where('user_id', $userId)

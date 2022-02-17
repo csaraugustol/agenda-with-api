@@ -131,7 +131,7 @@ class ExternalTokenService extends BaseService implements ExternalTokenServiceIn
      *
      * @return ServiceResponse
      */
-    public function findByToken(string $userId, string $system): ServiceResponse
+    public function find(string $userId, string $system): ServiceResponse
     {
         try {
             $findUserResponse = app(UserServiceInterface::class)->find($userId);
@@ -144,7 +144,7 @@ class ExternalTokenService extends BaseService implements ExternalTokenServiceIn
                 );
             }
 
-            $externalToken = $this->externalTokenRepository->findByToken(
+            $externalToken = $this->externalTokenRepository->findByExternalTokenOfUser(
                 $userId,
                 $system
             );

@@ -262,7 +262,7 @@ class ContactService extends BaseService implements ContactServiceInterface
      *
      * @return ServiceResponse
      */
-    public function findByContactWithExternalId(string $userId, string $externalId): ServiceResponse
+    public function findContactByExternalId(string $userId, string $externalId): ServiceResponse
     {
         try {
             $findUserResponse = app(UserServiceInterface::class)->find($userId);
@@ -275,7 +275,7 @@ class ContactService extends BaseService implements ContactServiceInterface
                 );
             }
 
-            $contact = $this->contactRepository->findByContactWithExternalId(
+            $contact = $this->contactRepository->findContactByExternalId(
                 $userId,
                 $externalId
             );

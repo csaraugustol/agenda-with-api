@@ -107,20 +107,20 @@ class VexpensesTest extends BaseTestCase
     public function testReturnSuccessWhenListAllMembers()
     {
         $mockMembersResponse = $this->vexpensesProvider
-            ->getMockReturnAllMembersWithRouteResponse();
+            ->getMockReturnAllMembers();
 
         $this->addMockMethod(
             'sendRequest',
             new ServiceResponse(
                 true,
                 '',
-                $mockMembersResponse->response
+                $mockMembersResponse->response->data
             )
         );
 
         $this->applyMock(VexpensesService::class);
 
-        $member = $mockMembersResponse->response[0];
+        $member = $mockMembersResponse->response->data[0];
 
         $this->get(route('vexpenses.team-members'))
             ->assertHeader('content-type', 'application/json')
@@ -155,20 +155,6 @@ class VexpensesTest extends BaseTestCase
     public function testReturnErrorWhenUserDoesntUnauthorized()
     {
         $this->withHeaders(['Authorization' => $this->generateUnauthorizedToken()]);
-
-        $mockMembersResponse = $this->vexpensesProvider
-            ->getMockReturnAllMembersWithRouteResponse();
-
-        $this->addMockMethod(
-            'sendRequest',
-            new ServiceResponse(
-                true,
-                '',
-                $mockMembersResponse->response
-            )
-        );
-
-        $this->applyMock(VexpensesService::class);
 
         $this->get(route('vexpenses.team-members'))
             ->assertHeader('content-type', 'application/json')
