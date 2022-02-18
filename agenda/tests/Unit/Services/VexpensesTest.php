@@ -208,7 +208,7 @@ class VexpensesTest extends BaseTestCase
     }
 
     /**
-     * Retorna sucesso ao lista um membro que não possui integração
+     * Retorna sucesso ao lista um membro que já possui alguma integração
      */
     public function testReturSuccessWhenListMemberWithIntegration()
     {
@@ -216,6 +216,7 @@ class VexpensesTest extends BaseTestCase
         $user = factory(User::class)->create();
 
         $contact = factory(Contact::class)->create([
+            'user_id'     => $user->id,
             'external_id' => $externalId,
         ]);
 
@@ -237,6 +238,6 @@ class VexpensesTest extends BaseTestCase
         $this->assertInstanceOf(ServiceResponse::class, $listMembersResponse);
         $this->assertTrue($listMembersResponse->success);
         $this->assertNotNull($listMembersResponse->data);
-        $this->assertEquals($listMembersResponse->data->first()->external_id, $contact->external_id);
+        $this->assertTrue($listMembersResponse->data->first()->integrated);
     }
 }
