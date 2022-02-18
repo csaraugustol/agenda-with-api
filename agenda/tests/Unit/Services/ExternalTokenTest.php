@@ -112,7 +112,7 @@ class ExternalTokenTest extends BaseTestCase
             'user_id' => $user->id
         ]);
 
-        $findTokenResponse = $this->externalTokenService->findByToken(
+        $findTokenResponse = $this->externalTokenService->find(
             $user->id,
             $externalToken->system
         );
@@ -130,7 +130,7 @@ class ExternalTokenTest extends BaseTestCase
     {
         $user = factory(User::class)->create();
 
-        $findTokenResponse = $this->externalTokenService->findByToken(
+        $findTokenResponse = $this->externalTokenService->find(
             $user->id,
             $this->faker->uuid
         );
@@ -148,7 +148,7 @@ class ExternalTokenTest extends BaseTestCase
     {
         $externalToken = factory(ExternalToken::class)->create();
 
-        $findTokenResponse = $this->externalTokenService->findByToken(
+        $findTokenResponse = $this->externalTokenService->find(
             $this->faker->uuid,
             $externalToken->system
         );

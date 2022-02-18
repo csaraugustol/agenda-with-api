@@ -2,13 +2,12 @@
 
 namespace Tests\Unit\Services;
 
-use App\Models\Contact;
 use App\Models\User;
+use App\Models\Contact;
 use App\Models\ExternalToken;
 use App\Services\Responses\ServiceResponse;
 use Tests\Mocks\Providers\VexpensesProvider;
 use App\Services\Contracts\VexpensesServiceInterface;
-use App\Services\VexpensesService;
 
 class VexpensesTest extends BaseTestCase
 {
