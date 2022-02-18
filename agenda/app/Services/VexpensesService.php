@@ -222,7 +222,7 @@ class VexpensesService extends BaseService implements VexpensesServiceInterface
             $allMembers = collect($findMembersResponse->data);
 
             $filter = $allMembers->filter(function ($member) {
-                return (!is_null($member->phone1) && $member->phone1 !== '')
+                return (!is_null($member->phone1) && $member->phone1 !== '' && $member->phone2 !== '(')
                     || (!is_null($member->phone2) && $member->phone2 !== '' && $member->phone2 !== '(');
             });
 
