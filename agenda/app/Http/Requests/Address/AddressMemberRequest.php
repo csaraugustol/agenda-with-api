@@ -1,14 +1,13 @@
 <?php
 
-namespace App\Http\Requests\Contact;
+namespace App\Http\Requests\Address;
 
-use App\Rules\UniqueContactName;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Http\Requests\Traits\SanitizesInput;
 
-class StoreRequest extends FormRequest
+class AddressMemberRequest extends FormRequest
 {
-    use SanitizesInput;
+    //use SanitizesInput;
 
     /**
      * Determine if the user is authorized to make this request.
@@ -29,9 +28,6 @@ class StoreRequest extends FormRequest
     {
         return [
             'after' => [
-                'name'     => 'cast:string',
-                'tags'     => 'cast:array',
-                'phones'   => 'cast:array',
                 'adresses' => 'cast:array',
             ],
         ];
@@ -45,14 +41,6 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'                    => [
-                'required',
-                new UniqueContactName()
-            ],
-            'tags'                    => 'sometimes|array',
-            'tags.*.id'               => 'sometimes|uuid',
-            'phones'                  => 'required|array|min:1',
-            'phones.*.phone_number'   => 'required|string',
             'adresses'                => 'required|array|min:1',
             'adresses.*.street_name'  => 'required|string',
             'adresses.*.number'       => 'required|numeric',
@@ -73,11 +61,6 @@ class StoreRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required'                    => 'O campo NOME é obrigatório',
-            'tags.*.id.uuid'                   => 'O campo ID da tag deve ser do tipo uuid',
-            'phones.required'                  => 'É necessário informar o TELEFONE DO CONTATO',
-            'phones.min'                       => 'É necessário informar pelo menos um telefone',
-            'phones.*.phone_number.required'   => 'O campo NÚMERO DO TELEFONE é obrigatório',
             'adresses.required'                => 'É necessário informar o ENDEREÇO DO CONTATO',
             'adresses.min'                     => 'É necessário informar pelo menos um endereço',
             'adresses.*.street_name.required'  => 'O campo NOME DA RUA é obrigatório',

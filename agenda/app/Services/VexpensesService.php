@@ -264,14 +264,15 @@ class VexpensesService extends BaseService implements VexpensesServiceInterface
     }
 
     /**
-     * Retorna dados de um membro de equipe do VExpenses para criar um contato
+     * Cria um contato a partir de um mebro do VExpenses
      *
      * @param string $userId
-     * @param string $externalId
+     * @param int $externalId
+     * @param array $addresses
      *
      * @return ServiceResponse
      */
-    public function findTeamMember(string $userId, string $externalId): ServiceResponse
+    public function store(string $userId, int $externalId, array $addresses): ServiceResponse
     {
         try {
             $findContactResponse = app(ContactServiceInterface::class)->findContactByExternalId(
@@ -293,16 +294,6 @@ class VexpensesService extends BaseService implements VexpensesServiceInterface
                 );
             }
 
-            $findUserResponse = app(UserServiceInterface::class)->find($userId);
-            if (!$findUserResponse->success || is_null($findUserResponse->data)) {
-                return new ServiceResponse(
-                    false,
-                    $findUserResponse->message,
-                    null,
-                    $findUserResponse->internalErrors
-                );
-            }
-
             $findMemberResponse = $this->sendRequest('team-members/' . $externalId, $userId);
 
             if (!$findMemberResponse->success || is_null($findMemberResponse->data)) {
@@ -317,46 +308,24 @@ class VexpensesService extends BaseService implements VexpensesServiceInterface
             //Data recebe o objeto membro
             $data = $findMemberResponse->data;
 
-            $phones = collect();
+            $phones = [];
 
             if ($data->phone1) {
-                $phones->push($data->phone1);
+                array_push($phones, ['phone_number' => $data->phone1]);
             }
 
             if ($data->phone2) {
-                $phones->push($data->phone2);
+                array_push($phones, ['phone_number' => $data->phone2]);
             }
 
-            $member = (object) [
-                'external_id' => $data->id,
-                'integrated'  => false,
-                'name'        => $data->name,
-                'email'       => $data->email,
-                'phones'      => $phones
-            ];
-        } catch (Throwable $throwable) {
-            return $this->defaultErrorReturn($throwable, compact('userId', 'externalId'));
-        }
-
-        return new ServiceResponse(
-            true,
-            'Membro retornado com sucesso.',
-            $member
-        );
-    }
-
-    /**
-     * Cria um contato a partir de um mebro do VExpenses
-     *
-     * @param CreateCompleteContactsServiceParams $params
-     *
-     * @return ServiceResponse
-     */
-    public function store(CreateCompleteContactsServiceParams $params): ServiceResponse
-    {
-        try {
-            $findExternalTokenResponse = app(ContactServiceInterface::class)
-                ->findContactByExternalId($params->user_id, $params->external_id);
+            $params = new CreateCompleteContactsServiceParams(
+                $data->name,
+                $userId,
+                $phones,
+                $addresses,
+                [],
+                $externalId
+            );
 
             $createContactResponse = app(ContactServiceInterface::class)->store($params);
             if (!$createContactResponse->success || is_null($createContactResponse->data)) {

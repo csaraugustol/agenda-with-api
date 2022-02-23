@@ -2,16 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Contact\StoreRequest;
 use Illuminate\Http\JsonResponse;
 use App\Http\Responses\DefaultResponse;
-use App\Http\Resources\Vexpenses\VexpensesResource;
+use App\Http\Requests\Address\AddressMemberRequest;
 use App\Http\Requests\Vexpenses\AccessTokenRequest;
-use App\Http\Resources\Contact\ContactDetailsResource;
+use App\Http\Resources\Vexpenses\VexpensesResource;
 use App\Services\Contracts\VexpensesServiceInterface;
+use App\Http\Resources\Contact\ContactDetailsResource;
 use App\Http\Resources\Vexpenses\TeamMembersCollectionResource;
-use App\Http\Resources\Vexpenses\TeamMembersResource;
-use App\Services\Params\Contact\CreateCompleteContactsServiceParams;
 
 class VexpensesController extends ApiController
 {
@@ -71,48 +69,21 @@ class VexpensesController extends ApiController
     }
 
     /**
-     * Retorna um membro do VExpenses
-     *
-     * GET /vexpenses/team-members/{id}
-     *
-     * @return JsonResponse
-     */
-    public function teamMember(string $externalId): JsonResponse
-    {
-        $teamMembersResponse = $this->vexpensesService->findTeamMember(
-            user('id'),
-            $externalId
-        );
-
-        if (!$teamMembersResponse->success || is_null($teamMembersResponse->data)) {
-            return $this->errorResponseFromService($teamMembersResponse);
-        }
-
-        return $this->response(new DefaultResponse(
-            new TeamMembersResource($teamMembersResponse->data)
-        ));
-    }
-
-    /**
      * Cria um contato com o membro do VExpenses
      *
      * POST /vexpenses/team-members/{id}
      *
+     * @param AddressMemberRequest $request
+     * @param string $externalId
+
      * @return JsonResponse
      */
-    public function storeContactWithMember(StoreRequest $request, string $externalId): JsonResponse
+    public function storeContactWithMember(AddressMemberRequest $request, string $externalId): JsonResponse
     {
-        $completeContactParams = new CreateCompleteContactsServiceParams(
-            $request->name,
-            user('id'),
-            $request->phones,
-            $request->adresses,
-            $request->tags,
-            $externalId
-        );
-
         $createMemberContactResponse = $this->vexpensesService->store(
-            $completeContactParams
+            user('id'),
+            $externalId,
+            $request->adresses,
         );
 
         if (!$createMemberContactResponse->success || is_null($createMemberContactResponse->data)) {
