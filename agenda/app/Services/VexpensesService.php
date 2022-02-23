@@ -275,6 +275,16 @@ class VexpensesService extends BaseService implements VexpensesServiceInterface
     public function store(string $userId, int $externalId, array $addresses): ServiceResponse
     {
         try {
+            $findUserResponse = app(UserServiceInterface::class)->find($userId);
+            if (!$findUserResponse->success || is_null($findUserResponse->data)) {
+                return new ServiceResponse(
+                    false,
+                    $findUserResponse->message,
+                    null,
+                    $findUserResponse->internalErrors
+                );
+            }
+
             $findContactResponse = app(ContactServiceInterface::class)->findContactByExternalId(
                 $userId,
                 $externalId
@@ -282,12 +292,12 @@ class VexpensesService extends BaseService implements VexpensesServiceInterface
 
             if (!is_null($findContactResponse->data)) {
                 return new ServiceResponse(
-                    true,
-                    'Já existe um contato com esse membro.',
+                    false,
+                    'Não é possível criar contato. O membro já está cadastrado.',
                     null,
                     [
                         new InternalError(
-                            'Já existe um contato com esse membro.',
+                            'Não é possível criar contato. O membro já está cadastrado.',
                             30
                         )
                     ]
@@ -295,7 +305,7 @@ class VexpensesService extends BaseService implements VexpensesServiceInterface
             }
 
             $findMemberResponse = $this->sendRequest('team-members/' . $externalId, $userId);
-
+            //dd($findMemberResponse->data);
             if (!$findMemberResponse->success || is_null($findMemberResponse->data)) {
                 return new ServiceResponse(
                     false,
@@ -339,12 +349,12 @@ class VexpensesService extends BaseService implements VexpensesServiceInterface
 
             $member = $createContactResponse->data;
         } catch (Throwable $throwable) {
-            return $this->defaultErrorReturn($throwable, compact('params'));
+            return $this->defaultErrorReturn($throwable, compact('userId', 'externalId', 'addresses'));
         }
 
         return new ServiceResponse(
             true,
-            'Membro retornado com sucesso.',
+            'Contato com o membro, criado com sucesso.',
             $member
         );
     }

@@ -130,7 +130,7 @@ Route::group(['middleware' => ['api.token.user']], function () {
             'uses' => 'VexpensesController@teamMembers'
         ]);
         Route::post('/team-members/{externalId}', [
-            'as'   => 'team-members',
+            'as'   => 'team-members/{externalId}',
             'uses' => 'VexpensesController@storeContactWithMember'
         ]);
     });
