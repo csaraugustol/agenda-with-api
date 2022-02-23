@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\AuthenticateToken;
 use Carbon\Carbon;
 use App\Models\ChangePassword;
 
@@ -304,6 +305,40 @@ class UserTest extends BaseTestCase
                     'email' => $user->email,
                 ],
             ], true);
+    }
+
+    /**
+     * Retorna erro ao tentar acessar qualquer endpoint que precisa de autorização
+     * com o token expirado
+     */
+    public function testShowErrorWhenAccessAnyEndPointAndTokenHasExpires()
+    {
+        $generateUser = $this->generateUserAndToken();
+
+        $authenticateToken = factory(AuthenticateToken::class)->create([
+            'user_id'    => $generateUser->user->id,
+            'expires_at' => Carbon::now()->subMinutes(5)
+        ]);
+
+        $this->withHeaders(['Authorization' => 'Bearer ' . $authenticateToken->token]);
+
+        $this->get(route('users.show'))
+            ->assertHeader('content-type', 'application/json')
+            ->assertStatus(401)
+            ->assertJson([
+                'success' => false,
+                'request' => route('users.show'),
+                'method'  => 'GET',
+                'code'    => 401,
+                'data'    => null,
+                'errors'  => [
+                    [
+                        'code' => 7
+                    ],
+                ],
+            ], true)
+            ->assertJsonStructure(['errors'])
+            ->assertUnauthorized();
     }
 
     /**
@@ -646,5 +681,37 @@ class UserTest extends BaseTestCase
             ->assertJsonFragment([
                 'code' => 19
             ]);
+    }
+
+    /**
+     * Retorna erro ao atualizar a senha do usuário quando o token de permissão
+     * não foi infomardo
+     */
+    public function testChangePasswordReturnErrorWhenDoesntWasInformedToken()
+    {
+        $generateUserAndToken = $this->generateUserAndToken();
+
+        $this->withHeaders(['Authorization' => $generateUserAndToken->token]);
+
+        $newPassword = $this->faker->password;
+
+        $body = [
+            'current_password'      => $generateUserAndToken->password,
+            'new_password'          => $newPassword,
+            'confirm_new_password'  => $newPassword,
+            'token_update_password' => '',
+        ];
+
+        $this->postJson(route('users.change-password'), $body)
+            ->assertHeader('content-type', 'application/json')
+            ->assertStatus(422)
+            ->assertJson([
+                'success' => false,
+                'request' => route('users.change-password'),
+                'method'  => 'POST',
+                'code'    => 422,
+                'data'    => [],
+            ], true)
+            ->assertJsonStructure(['message']);
     }
 }

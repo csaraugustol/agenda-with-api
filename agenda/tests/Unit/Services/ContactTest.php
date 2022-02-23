@@ -4,7 +4,6 @@ namespace Tests\Unit\Services;
 
 use App\Models\Tag;
 use App\Models\User;
-use App\Models\Phone;
 use App\Models\Contact;
 use App\Services\Responses\ServiceResponse;
 use Illuminate\Database\Eloquent\Collection;
@@ -319,6 +318,28 @@ class ContactTest extends BaseTestCase
         $this->assertNotNull($newContactResponse->data->user);
         $this->assertEquals($tagContact->tag_id, $tag->id);
     }
+
+    /**
+     * Erro ao tentar criar um contato para um usuário que não existe
+     */
+    public function testReturnErrorWhenTryCreateContactAndUserDoesntExists()
+    {
+        $newContactResponse = $this->contactService->store(
+            new CreateCompleteContactsServiceParams(
+                $this->faker->name,
+                $this->faker->uuid,
+                [],
+                [],
+                []
+            )
+        );
+
+        $this->assertInstanceOf(ServiceResponse::class, $newContactResponse);
+        $this->assertFalse($newContactResponse->success);
+        $this->assertNull($newContactResponse->data);
+        $this->assertHasInternalError($newContactResponse, 3);
+    }
+
 
     /**
      * Testa o método Store na ContactService retornando erro ao realizar uma

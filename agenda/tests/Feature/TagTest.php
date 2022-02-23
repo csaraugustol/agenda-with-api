@@ -100,6 +100,36 @@ class TagTest extends BaseTestCase
     }
 
     /**
+     * Retorna erro ao tentar criar uma tag com o nome de uma tag já existente
+     * para o usuário
+     */
+    public function testReturnErrorWhenTryCreateNewTagWhenDescriptionExistsInOtherTag()
+    {
+        $description = $this->faker->word;
+
+        factory(Tag::class)->create([
+            'description' => $description,
+            'user_id'     => $this->user->id,
+        ]);
+
+        $body = [
+            'description' => $description,
+        ];
+
+        $this->postJson(route('tags.store'), $body)
+            ->assertHeader('content-type', 'application/json')
+            ->assertStatus(422)
+            ->assertJson([
+                'success' => false,
+                'request' => route('tags.store'),
+                'method'  => 'POST',
+                'code'    => 422,
+                'data'    => null,
+            ], true)
+            ->assertJsonStructure(['errors']);
+    }
+
+    /**
      * Retorna erro ao tentar criar uma tag para o usuário sem autenticação
      */
     public function testReturnErrorWhenCreateNewTagAndUserIsUnauthorized()

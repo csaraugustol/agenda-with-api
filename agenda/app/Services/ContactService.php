@@ -116,6 +116,16 @@ class ContactService extends BaseService implements ContactServiceInterface
     {
         DB::beginTransaction();
         try {
+            $findUserResponse = app(UserServiceInterface::class)->find($params->user_id);
+            if (!$findUserResponse->success || is_null($findUserResponse->data)) {
+                return new ServiceResponse(
+                    false,
+                    $findUserResponse->message,
+                    null,
+                    $findUserResponse->internalErrors
+                );
+            }
+
             $contact = $this->contactRepository->create([
                 'name'    => $params->name,
                 'user_id' => $params->user_id

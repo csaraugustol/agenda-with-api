@@ -51,6 +51,78 @@ class TagContactTest extends BaseTestCase
     }
 
     /**
+     * Testa o método Attach na service TagContactService retornando sucesso ao
+     * vincular uma tag e um contato pertencentes ao usuário, onde o vínculo dessa
+     * tag e do contato já existiam, assim, gerando apenas a restauração do vínculo
+     */
+    public function testReturnSuccessWhenAttachTagContactThatAttachWasDeletedAndRestored()
+    {
+        $user = factory(User::class)->create();
+
+        $tag = factory(Tag::class)->create([
+            'user_id' => $user->id
+        ]);
+
+        $contact = factory(Contact::class)->create([
+            'user_id' => $user->id
+        ]);
+
+        $tagContact = factory(TagContact::class)->create([
+            'tag_id'     => $tag->id,
+            'contact_id' => $contact->id
+        ]);
+
+        //Armazena o id do vínculo antes de deletar
+        $tagContactId = $tagContact->id;
+
+        $tagContact->delete();
+
+        $attachTagContactResponse = $this->tagContactService->attach(
+            $tag->id,
+            $contact->id,
+            $user->id
+        );
+
+        $this->assertInstanceOf(ServiceResponse::class, $attachTagContactResponse);
+        $this->assertTrue($attachTagContactResponse->success);
+        $this->assertNotNull($attachTagContactResponse->data);
+        $this->assertEquals($attachTagContactResponse->data->id, $tagContactId);
+    }
+
+    /**
+     * Testa o método Attach na service TagContactService retornando sucesso ao
+     * tentar vincular uma tag e um contato que já possuem vinculo
+     */
+    public function testReturnSuccessWhenAttachTagContactWhereExistsAttach()
+    {
+        $user = factory(User::class)->create();
+
+        $tag = factory(Tag::class)->create([
+            'user_id' => $user->id
+        ]);
+
+        $contact = factory(Contact::class)->create([
+            'user_id' => $user->id
+        ]);
+
+        $tagContact = factory(TagContact::class)->create([
+            'tag_id'     => $tag->id,
+            'contact_id' => $contact->id
+        ]);
+
+        $attachTagContactResponse = $this->tagContactService->attach(
+            $tag->id,
+            $contact->id,
+            $user->id
+        );
+
+        $this->assertInstanceOf(ServiceResponse::class, $attachTagContactResponse);
+        $this->assertTrue($attachTagContactResponse->success);
+        $this->assertNotNull($attachTagContactResponse->data);
+        $this->assertEquals($attachTagContactResponse->data->id, $tagContact->id);
+    }
+
+    /**
      * Testa o método Attach na service TagContactService retornando erro ao
      * tentar realizar um vínculo com uma tag que não existe
      */
