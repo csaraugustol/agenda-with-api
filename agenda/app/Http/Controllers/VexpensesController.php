@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Contact\StoreRequest;
 use Illuminate\Http\JsonResponse;
 use App\Http\Responses\DefaultResponse;
 use App\Http\Resources\Vexpenses\VexpensesResource;
 use App\Http\Requests\Vexpenses\AccessTokenRequest;
 use App\Services\Contracts\VexpensesServiceInterface;
 use App\Http\Resources\Vexpenses\TeamMembersCollectionResource;
+use App\Http\Resources\Vexpenses\TeamMembersResource;
 
 class VexpensesController extends ApiController
 {
@@ -64,5 +66,40 @@ class VexpensesController extends ApiController
         return $this->response(new DefaultResponse(
             new TeamMembersCollectionResource($teamMembersResponse->data)
         ));
+    }
+
+    /**
+     * Retorna um membro do VExpenses
+     *
+     * GET /vexpenses/team-members/{id}
+     *
+     * @return JsonResponse
+     */
+    public function teamMember(string $externalId): JsonResponse
+    {
+        $teamMembersResponse = $this->vexpensesService->findTeamMember(
+            user('id'),
+            $externalId
+        );
+
+        if (!$teamMembersResponse->success || is_null($teamMembersResponse->data)) {
+            return $this->errorResponseFromService($teamMembersResponse);
+        }
+
+        return $this->response(new DefaultResponse(
+            new TeamMembersResource($teamMembersResponse->data)
+        ));
+    }
+
+    /**
+     * Cria um contato com o membro do VExpenses
+     *
+     * POST /vexpenses/team-members/{id}
+     *
+     * @return JsonResponse
+     */
+    public function storeContactWithMember(StoreRequest $request, string $externalId): JsonResponse
+    {
+        //
     }
 }

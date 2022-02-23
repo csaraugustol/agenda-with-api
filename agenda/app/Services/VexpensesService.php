@@ -261,4 +261,71 @@ class VexpensesService extends BaseService implements VexpensesServiceInterface
             $members
         );
     }
+
+    /**
+     * Retorna dados de um membro de equipe do VExpenses
+     *
+     * @param string $userId
+     * @param string $externalId
+     *
+     * @return ServiceResponse
+     */
+    public function findTeamMember(string $userId, string $externalId): ServiceResponse
+    {
+        try {
+            $findUserResponse = app(UserServiceInterface::class)->find($userId);
+            if (!$findUserResponse->success || is_null($findUserResponse->data)) {
+                return new ServiceResponse(
+                    false,
+                    $findUserResponse->message,
+                    null,
+                    $findUserResponse->internalErrors
+                );
+            }
+
+            $findMemberResponse = $this->sendRequest('team-members/' . $externalId, $userId);
+
+            if (!$findMemberResponse->success || is_null($findMemberResponse->data)) {
+                return new ServiceResponse(
+                    false,
+                    $findMemberResponse->message,
+                    null,
+                    $findMemberResponse->internalErrors
+                );
+            }
+
+            //Data recebe o objeto membro
+            $data = $findMemberResponse->data;
+
+            //Verifica se o membro já possui integração com algum contato
+            $findExternalTokenResponse = app(ContactServiceInterface::class)
+                ->findContactByExternalId($userId, $data->id);
+
+            $phones = collect();
+
+            if ($data->phone1) {
+                $phones->push($data->phone1);
+            }
+
+            if ($data->phone2) {
+                $phones->push($data->phone2);
+            }
+
+            $member = (object) [
+                'external_id' => $data->id,
+                'integrated'  => is_null($findExternalTokenResponse->data) ? false : true,
+                'name'        => $data->name,
+                'email'       => $data->email,
+                'phones'      => $phones
+            ];
+        } catch (Throwable $throwable) {
+            return $this->defaultErrorReturn($throwable, compact('userId', 'externalId'));
+        }
+
+        return new ServiceResponse(
+            true,
+            'Membro retornado com sucesso.',
+            $member
+        );
+    }
 }

@@ -11,4 +11,6 @@ interface VexpensesServiceInterface
     public function findAllTeamMembers(string $userId): ServiceResponse;
     public function sendRequest(string $route, string $userId): ServiceResponse;
     public function tokenToAccess(string $token, string $userId): ServiceResponse;
+    public function storeContact(string $userId, string $externalId): ServiceResponse;
+    public function findTeamMember(string $userId, string $externalId): ServiceResponse;
 }
