@@ -101,4 +101,61 @@ class ExternalTokenTest extends BaseTestCase
         $this->assertNull($clearTokenResponse->data);
         $this->assertHasInternalError($clearTokenResponse, 3);
     }
+
+    /**
+     * Retorna sucesso ao procurar um ExternalToken
+     */
+    public function testSuccessWhenFindToken()
+    {
+        $user = factory(User::class)->create();
+        $externalToken = factory(ExternalToken::class)->create([
+            'user_id' => $user->id
+        ]);
+
+        $findTokenResponse = $this->externalTokenService->find(
+            $user->id,
+            $externalToken->system
+        );
+
+        $this->assertInstanceOf(ServiceResponse::class, $findTokenResponse);
+        $this->assertTrue($findTokenResponse->success);
+        $this->assertNotNull($findTokenResponse->data);
+        $this->assertEquals($findTokenResponse->data->system, $externalToken->system);
+    }
+
+    /**
+     * Retorna erro ao procurar um ExternalToken que não existe
+     */
+    public function testReturnErrorWhenTokenDoesntExists()
+    {
+        $user = factory(User::class)->create();
+
+        $findTokenResponse = $this->externalTokenService->find(
+            $user->id,
+            $this->faker->uuid
+        );
+
+        $this->assertInstanceOf(ServiceResponse::class, $findTokenResponse);
+        $this->assertTrue($findTokenResponse->success);
+        $this->assertNull($findTokenResponse->data);
+        $this->assertHasInternalError($findTokenResponse, 28);
+    }
+
+    /**
+     * Retorna erro ao procurar um ExternalToken para um usuário que não existe
+     */
+    public function testReturnErrorWhenFindExternalTokenAndUserDoesntExists()
+    {
+        $externalToken = factory(ExternalToken::class)->create();
+
+        $findTokenResponse = $this->externalTokenService->find(
+            $this->faker->uuid,
+            $externalToken->system
+        );
+
+        $this->assertInstanceOf(ServiceResponse::class, $findTokenResponse);
+        $this->assertFalse($findTokenResponse->success);
+        $this->assertNull($findTokenResponse->data);
+        $this->assertHasInternalError($findTokenResponse, 3);
+    }
 }

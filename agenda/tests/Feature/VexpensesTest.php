@@ -3,6 +3,9 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use App\Services\VexpensesService;
+use App\Services\Responses\ServiceResponse;
+use Tests\Mocks\Providers\VexpensesProvider;
 
 class VexpensesTest extends BaseTestCase
 {
@@ -12,6 +15,11 @@ class VexpensesTest extends BaseTestCase
      */
     protected $user;
 
+    /**
+     * @var VexpensesProvider
+     */
+    protected $vexpensesProvider;
+
     public function setUp(): void
     {
         parent::setUp();
@@ -20,6 +28,7 @@ class VexpensesTest extends BaseTestCase
 
         $this->user = $tokenResponse->user;
         $this->withHeaders(['Authorization' => $tokenResponse->token]);
+        $this->vexpensesProvider = app(VexpensesProvider::class);
     }
 
     /**
@@ -73,12 +82,86 @@ class VexpensesTest extends BaseTestCase
     {
         $this->withHeaders(['Authorization' => $this->generateUnauthorizedToken()]);
 
-        $this->get(route('vexpenses.access-token'))
+        $this->postJson(route('vexpenses.access-token'))
             ->assertHeader('content-type', 'application/json')
             ->assertStatus(401)
             ->assertJson([
                 'success' => false,
                 'request' => route('vexpenses.access-token'),
+                'method'  => 'POST',
+                'code'    => 401,
+                'data'    => null,
+                'errors'  => [
+                    [
+                        'code' => 6
+                    ],
+                ],
+            ], true)
+            ->assertJsonStructure(['errors'])
+            ->assertUnauthorized();
+    }
+
+    /**
+     * Retorna sucesso ao listar os membros do VExpenses
+     */
+    public function testReturnSuccessWhenListAllMembers()
+    {
+        $mockMembersResponse = $this->vexpensesProvider
+            ->getMockReturnAllMembers();
+
+        $this->addMockMethod(
+            'sendRequest',
+            new ServiceResponse(
+                true,
+                '',
+                $mockMembersResponse->response->data
+            )
+        );
+
+        $this->applyMock(VexpensesService::class);
+
+        $member = $mockMembersResponse->response->data[0];
+
+        $this->get(route('vexpenses.team-members'))
+            ->assertHeader('content-type', 'application/json')
+            ->assertStatus(200)
+            ->assertJson([
+                'success' => true,
+                'request' => route('vexpenses.team-members'),
+                'method'  => 'GET',
+                'code'    => 200,
+                'data'    => [
+                    [
+                        'external_id' => $member->id,
+                        'integrated'  => false,
+                        'name'        => $member->name,
+                        'email'       => $member->email,
+                        'phones'      => [
+                            [
+                                'phone_number' => $member->phone1
+                            ],
+                            [
+                                'phone_number' => $member->phone2
+                            ]
+                        ],
+                    ]
+                ],
+            ], true);
+    }
+
+    /**
+     * Retorna erro ao tentar acessar a API com um usuário não autorizado
+     */
+    public function testReturnErrorWhenUserDoesntUnauthorized()
+    {
+        $this->withHeaders(['Authorization' => $this->generateUnauthorizedToken()]);
+
+        $this->get(route('vexpenses.team-members'))
+            ->assertHeader('content-type', 'application/json')
+            ->assertStatus(401)
+            ->assertJson([
+                'success' => false,
+                'request' => route('vexpenses.team-members'),
                 'method'  => 'GET',
                 'code'    => 401,
                 'data'    => null,
@@ -90,5 +173,29 @@ class VexpensesTest extends BaseTestCase
             ], true)
             ->assertJsonStructure(['errors'])
             ->assertUnauthorized();
+    }
+
+    /**
+     * Retorna erro quando tenta acessar a lista de membros da API sem informar
+     * o ExternalToken da integração
+     */
+    public function testReturnErrorWhenTryListAllMembersAndDoesntExistsExternalToken()
+    {
+        $this->get(route('vexpenses.team-members'))
+            ->assertHeader('content-type', 'application/json')
+            ->assertStatus(200)
+            ->assertJson([
+                'success' => false,
+                'request' => route('vexpenses.team-members'),
+                'method'  => 'GET',
+                'code'    => 200,
+                'data'    => null,
+                'errors'  => [
+                    [
+                        'code' => 24
+                    ],
+                ],
+            ], true)
+            ->assertJsonStructure(['errors']);
     }
 }

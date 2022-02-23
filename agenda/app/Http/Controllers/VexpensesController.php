@@ -7,6 +7,7 @@ use App\Http\Responses\DefaultResponse;
 use App\Http\Resources\Vexpenses\VexpensesResource;
 use App\Http\Requests\Vexpenses\AccessTokenRequest;
 use App\Services\Contracts\VexpensesServiceInterface;
+use App\Http\Resources\Vexpenses\TeamMembersCollectionResource;
 
 class VexpensesController extends ApiController
 {
@@ -40,6 +41,28 @@ class VexpensesController extends ApiController
 
         return $this->response(new DefaultResponse(
             new VexpensesResource($accessResponse->data)
+        ));
+    }
+
+    /**
+     * Retorna todos os membros do VExpenses
+     *
+     * GET /vexpenses/team-members
+     *
+     * @return JsonResponse
+     */
+    public function teamMembers(): JsonResponse
+    {
+        $teamMembersResponse = $this->vexpensesService->findAllTeamMembers(
+            user('id')
+        );
+
+        if (!$teamMembersResponse->success || is_null($teamMembersResponse->data)) {
+            return $this->errorResponseFromService($teamMembersResponse);
+        }
+
+        return $this->response(new DefaultResponse(
+            new TeamMembersCollectionResource($teamMembersResponse->data)
         ));
     }
 }

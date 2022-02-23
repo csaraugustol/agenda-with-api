@@ -64,4 +64,20 @@ class ContactRepositoryEloquent extends BaseRepositoryEloquent implements Contac
             ->where('user_id', $userId)
             ->first();
     }
+
+    /**
+     * Retorna um contato que possui external_id
+     *
+     * @param string $userId
+     * @param string $externalId
+     *
+     * @return Contact|null
+     */
+    public function findContactByExternalId(string $userId, string $externalId): ?Contact
+    {
+        return $this->model
+            ->where('user_id', $userId)
+            ->where('external_id', $externalId)
+            ->first();
+    }
 }

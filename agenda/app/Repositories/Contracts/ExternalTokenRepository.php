@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Contracts;
 
+use App\Models\ExternalToken;
 use Illuminate\Database\Eloquent\Collection;
 
 /**
@@ -11,5 +12,6 @@ use Illuminate\Database\Eloquent\Collection;
 interface ExternalTokenRepository extends BaseRepositoryInterface
 {
     public function model();
+    public function findByExternalTokenOfUser(string $userId, string $system): ?ExternalToken;
     public function returnAllExternalTokens(string $userId, string $system): Collection;
 }

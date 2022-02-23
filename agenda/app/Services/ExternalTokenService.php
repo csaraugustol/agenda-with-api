@@ -4,6 +4,7 @@ namespace App\Services;
 
 use Throwable;
 use Carbon\Carbon;
+use App\Services\Responses\InternalError;
 use App\Services\Responses\ServiceResponse;
 use App\Services\Contracts\UserServiceInterface;
 use App\Repositories\Contracts\ExternalTokenRepository;
@@ -44,7 +45,7 @@ class ExternalTokenService extends BaseService implements ExternalTokenServiceIn
     ): ServiceResponse {
         try {
             $findUserResponse = app(UserServiceInterface::class)->find($userId);
-            if (!$findUserResponse->success && is_null($findUserResponse->data)) {
+            if (!$findUserResponse->success || is_null($findUserResponse->data)) {
                 return new ServiceResponse(
                     false,
                     $findUserResponse->message,
@@ -119,6 +120,56 @@ class ExternalTokenService extends BaseService implements ExternalTokenServiceIn
             true,
             'Tokens deletados com sucesso!',
             null
+        );
+    }
+
+    /**
+     * Retorna Token de validação para acesso a integração
+     *
+     * @param string $userId
+     * @param string $system
+     *
+     * @return ServiceResponse
+     */
+    public function find(string $userId, string $system): ServiceResponse
+    {
+        try {
+            $findUserResponse = app(UserServiceInterface::class)->find($userId);
+            if (!$findUserResponse->success || is_null($findUserResponse->data)) {
+                return new ServiceResponse(
+                    false,
+                    $findUserResponse->message,
+                    null,
+                    $findUserResponse->internalErrors
+                );
+            }
+
+            $externalToken = $this->externalTokenRepository->findByExternalTokenOfUser(
+                $userId,
+                $system
+            );
+
+            if (is_null($externalToken)) {
+                return new ServiceResponse(
+                    true,
+                    'O External Token não foi localizado.',
+                    null,
+                    [
+                        new InternalError(
+                            'O External Token não foi localizado.',
+                            28
+                        )
+                    ]
+                );
+            }
+        } catch (Throwable $throwable) {
+            return $this->defaultErrorReturn($throwable, compact('userId', 'system'));
+        }
+
+        return new ServiceResponse(
+            true,
+            'Token retornado com sucesso.',
+            $externalToken
         );
     }
 }

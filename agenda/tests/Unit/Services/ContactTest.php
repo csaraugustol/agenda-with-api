@@ -575,4 +575,75 @@ class ContactTest extends BaseTestCase
         $this->assertNull($updateContactResponse->data);
         $this->assertHasInternalError($updateContactResponse, 14);
     }
+
+    /**
+     * Retorna sucesso ao buscar um contato que possui pelo external_id
+     */
+    public function testeReturnSuccessWhenFindContactByExternalId()
+    {
+        $externalId = $this->faker->numberBetween(1, 100);
+        $user = factory(User::class)->create();
+
+        factory(Contact::class)->create([
+            'user_id'     => $user->id,
+            'external_id' => $externalId,
+        ]);
+
+        $findContactResponse = $this->contactService->findContactByExternalId(
+            $user->id,
+            $externalId
+        );
+
+        $this->assertInstanceOf(ServiceResponse::class, $findContactResponse);
+        $this->assertTrue($findContactResponse->success);
+        $this->assertIsBool($findContactResponse->success);
+        $this->assertNotNull($findContactResponse->data);
+        $this->assertEquals($findContactResponse->data->external_id, $externalId);
+    }
+
+    /**
+     * Retorna erro ao tentar buscar um contato pelo external_id e o usuário não
+     * existe
+     */
+    public function testeReturnErrorWhenFindContactByExternalIdAndUserDoesntExists()
+    {
+        $externalId = $this->faker->numberBetween(1, 100);
+
+        factory(Contact::class)->create([
+            'external_id' => $externalId,
+        ]);
+
+        $findContactResponse = $this->contactService->findContactByExternalId(
+            $this->faker->uuid,
+            $externalId
+        );
+
+        $this->assertInstanceOf(ServiceResponse::class, $findContactResponse);
+        $this->assertFalse($findContactResponse->success);
+        $this->assertNull($findContactResponse->data);
+        $this->assertHasInternalError($findContactResponse, 3);
+    }
+
+    /**
+     * Retorna erro ao tentar buscar um contato pelo external_id e o contato não
+     * possui um external_id
+     */
+    public function testeReturnErrorWhenFindContactByExternalIdAndContactDoesntHasExternalId()
+    {
+        $user = factory(User::class)->create();
+
+        factory(Contact::class)->create([
+            'user_id'     => $user->id,
+        ]);
+
+        $findContactResponse = $this->contactService->findContactByExternalId(
+            $user->id,
+            $this->faker->uuid
+        );
+
+        $this->assertInstanceOf(ServiceResponse::class, $findContactResponse);
+        $this->assertTrue($findContactResponse->success);
+        $this->assertNull($findContactResponse->data);
+        $this->assertHasInternalError($findContactResponse, 29);
+    }
 }
