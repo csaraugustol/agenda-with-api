@@ -12,6 +12,7 @@ use App\Services\Contracts\UserServiceInterface;
 use App\Services\Contracts\ContactServiceInterface;
 use App\Services\Contracts\VexpensesServiceInterface;
 use App\Services\Contracts\ExternalTokenServiceInterface;
+use App\Services\Params\Contact\CreateCompleteContactsServiceParams;
 
 class VexpensesService extends BaseService implements VexpensesServiceInterface
 {
@@ -320,6 +321,38 @@ class VexpensesService extends BaseService implements VexpensesServiceInterface
             ];
         } catch (Throwable $throwable) {
             return $this->defaultErrorReturn($throwable, compact('userId', 'externalId'));
+        }
+
+        return new ServiceResponse(
+            true,
+            'Membro retornado com sucesso.',
+            $member
+        );
+    }
+
+    /**
+     * Cria um contato a partir de um mebro do VExpenses
+     *
+     * @param CreateCompleteContactsServiceParams $params
+     *
+     * @return ServiceResponse
+     */
+    public function store(CreateCompleteContactsServiceParams $params): ServiceResponse
+    {
+        try {
+            $createContactResponse = app(ContactServiceInterface::class)->store($params);
+            if (!$createContactResponse->success || is_null($createContactResponse->data)) {
+                return new ServiceResponse(
+                    false,
+                    $createContactResponse->message,
+                    null,
+                    $createContactResponse->internalErrors
+                );
+            }
+
+            $member = $createContactResponse->data;
+        } catch (Throwable $throwable) {
+            return $this->defaultErrorReturn($throwable, compact('params'));
         }
 
         return new ServiceResponse(
