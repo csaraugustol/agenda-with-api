@@ -264,7 +264,7 @@ class VexpensesService extends BaseService implements VexpensesServiceInterface
     }
 
     /**
-     * Retorna dados de um membro de equipe do VExpenses
+     * Retorna dados de um membro de equipe do VExpenses para criar um contato
      *
      * @param string $userId
      * @param string $externalId
@@ -274,6 +274,25 @@ class VexpensesService extends BaseService implements VexpensesServiceInterface
     public function findTeamMember(string $userId, string $externalId): ServiceResponse
     {
         try {
+            $findContactResponse = app(ContactServiceInterface::class)->findContactByExternalId(
+                $userId,
+                $externalId
+            );
+
+            if (!is_null($findContactResponse->data)) {
+                return new ServiceResponse(
+                    true,
+                    'Já existe um contato com esse membro.',
+                    null,
+                    [
+                        new InternalError(
+                            'Já existe um contato com esse membro.',
+                            30
+                        )
+                    ]
+                );
+            }
+
             $findUserResponse = app(UserServiceInterface::class)->find($userId);
             if (!$findUserResponse->success || is_null($findUserResponse->data)) {
                 return new ServiceResponse(
@@ -298,10 +317,6 @@ class VexpensesService extends BaseService implements VexpensesServiceInterface
             //Data recebe o objeto membro
             $data = $findMemberResponse->data;
 
-            //Verifica se o membro já possui integração com algum contato
-            $findExternalTokenResponse = app(ContactServiceInterface::class)
-                ->findContactByExternalId($userId, $data->id);
-
             $phones = collect();
 
             if ($data->phone1) {
@@ -314,7 +329,7 @@ class VexpensesService extends BaseService implements VexpensesServiceInterface
 
             $member = (object) [
                 'external_id' => $data->id,
-                'integrated'  => is_null($findExternalTokenResponse->data) ? false : true,
+                'integrated'  => false,
                 'name'        => $data->name,
                 'email'       => $data->email,
                 'phones'      => $phones
@@ -340,6 +355,9 @@ class VexpensesService extends BaseService implements VexpensesServiceInterface
     public function store(CreateCompleteContactsServiceParams $params): ServiceResponse
     {
         try {
+            $findExternalTokenResponse = app(ContactServiceInterface::class)
+                ->findContactByExternalId($params->user_id, $params->external_id);
+
             $createContactResponse = app(ContactServiceInterface::class)->store($params);
             if (!$createContactResponse->success || is_null($createContactResponse->data)) {
                 return new ServiceResponse(
