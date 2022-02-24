@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use App\Models\Contact;
 use App\Services\VexpensesService;
 use App\Services\Responses\ServiceResponse;
 use Tests\Mocks\Providers\VexpensesProvider;
@@ -188,6 +189,272 @@ class VexpensesTest extends BaseTestCase
                 'success' => false,
                 'request' => route('vexpenses.team-members'),
                 'method'  => 'GET',
+                'code'    => 200,
+                'data'    => null,
+                'errors'  => [
+                    [
+                        'code' => 24
+                    ],
+                ],
+            ], true)
+            ->assertJsonStructure(['errors']);
+    }
+
+    /**
+     * Retorna sucesso ao criar um contato com o membro do VExpenses
+     */
+    public function testReturnSuccessWhenCreateContactWithMember()
+    {
+        $externalId = $this->faker->numberBetween(1, 100);
+
+        $mockMembersResponse = $this->vexpensesProvider
+            ->getMockReturnAllMembers($externalId);
+
+        $mockData = $mockMembersResponse->response->data[0];
+
+        $this->addMockMethod(
+            'sendRequest',
+            new ServiceResponse(
+                true,
+                '',
+                $mockData
+            )
+        );
+
+        $this->applyMock(VexpensesService::class);
+
+        $body = [
+            'adresses' => [
+                [
+                    'street_name'  => $this->faker->streetName,
+                    'number'       => $this->faker->buildingNumber,
+                    'complement'   => $this->faker->secondaryAddress,
+                    'neighborhood' => $this->faker->streetSuffix,
+                    'city'         => $this->faker->city,
+                    'state'        => $this->faker->stateAbbr,
+                    'postal_code'  => $this->faker->regexify('[0-9]{5}-[0-9]{3}'),
+                    'country'      => $this->faker->country,
+                ],
+            ],
+        ];
+
+        $response =  $this->postJson(route('vexpenses.store', $externalId), $body);
+
+        $contact = $this->user->contacts->first();
+
+        $response->assertHeader('content-type', 'application/json')
+            ->assertStatus(200)
+            ->assertJson([
+                'success' => true,
+                'request' => route('vexpenses.store', $externalId),
+                'method'  => 'POST',
+                'code'    => 200,
+                'data'    => [
+                    'id'          => $contact->id,
+                    'user_id'     => $this->user->id,
+                    'external_id' => $contact->external_id,
+                    'name'        => $contact->name,
+                    'phones'      => [
+                        [
+                            'id'           => $contact->phones->first()->id,
+                            'phone_number' => $contact->phones->first()->phone_number
+                        ],
+                        [
+                            'id'           => $contact->phones[1]->id,
+                            'phone_number' => $contact->phones[1]->phone_number
+                        ],
+                    ],
+                    'adresses' => [
+                        [
+                            'id'           => $contact->adresses->first()->id,
+                            'street_name'  => $contact->adresses->first()->street_name,
+                            'number'       => $contact->adresses->first()->number,
+                            'complement'   => $contact->adresses->first()->complement,
+                            'neighborhood' => $contact->adresses->first()->neighborhood,
+                            'city'         => $contact->adresses->first()->city,
+                            'state'        => $contact->adresses->first()->state,
+                            'postal_code'  => $contact->adresses->first()->postal_code,
+                            'country'      => $contact->adresses->first()->country
+                        ],
+                    ],
+                ]
+            ], true);
+    }
+
+    /**
+     * Retorna erro ao tentar criar um contato com um membro do VExpenses que já
+     * está vinculado aos contatos
+     */
+    public function testReturnErrorWhenTryCreateContactWithMemberAndHasContactWithMember()
+    {
+        $externalId = $this->faker->numberBetween(1, 100);
+
+        factory(Contact::class)->create([
+            'user_id'     => $this->user->id,
+            'external_id' => $externalId
+        ]);
+
+        $body = [
+            'adresses' => [
+                [
+                    'street_name'  => $this->faker->streetName,
+                    'number'       => $this->faker->buildingNumber,
+                    'complement'   => $this->faker->secondaryAddress,
+                    'neighborhood' => $this->faker->streetSuffix,
+                    'city'         => $this->faker->city,
+                    'state'        => $this->faker->stateAbbr,
+                    'postal_code'  => $this->faker->regexify('[0-9]{5}-[0-9]{3}'),
+                    'country'      => $this->faker->country,
+                ],
+            ],
+        ];
+
+        $this->postJson(route('vexpenses.store', $externalId), $body)
+            ->assertHeader('content-type', 'application/json')
+            ->assertStatus(200)
+            ->assertJson([
+                'success' => false,
+                'request' => route('vexpenses.store', $externalId),
+                'method'  => 'POST',
+                'code'    => 200,
+                'data'    => null,
+                'errors'  => [
+                    [
+                        'code' => 30
+                    ]
+                ]
+            ], true)
+            ->assertJsonStructure(['errors']);
+    }
+
+    /**
+     * Retorna erro ao tentar criar um contato com um membro do VExpenses onde seu
+     * endereço não é informado
+     */
+    public function testReturnErrorWhenTryCreateContactWithMemberWithoutAddress()
+    {
+        $externalId = $this->faker->numberBetween(1, 100);
+
+        $this->postJson(route('vexpenses.store', $externalId), [])
+            ->assertHeader('content-type', 'application/json')
+            ->assertStatus(422)
+            ->assertJson([
+                'success' => false,
+                'request' => route('vexpenses.store', $externalId),
+                'method'  => 'POST',
+                'code'    => 422,
+                'data'    => null,
+            ], true)
+            ->assertJsonStructure(['errors']);
+    }
+
+    /**
+     * Retorna erro ao tentar criar um contato com um membro do VExpenses onde o
+     * usuário não tem autorização
+     */
+    public function testReturnErrorWhenTryCreateContactWithMemberAndUserIsUnauthorized()
+    {
+        $this->withHeaders(['Authorization' => $this->generateUnauthorizedToken()]);
+
+        $externalId = $this->faker->numberBetween(1, 100);
+
+        $this->postJson(route('vexpenses.store', $externalId), [])
+            ->assertHeader('content-type', 'application/json')
+            ->assertStatus(401)
+            ->assertJson([
+                'success' => false,
+                'request' => route('vexpenses.store', $externalId),
+                'method'  => 'POST',
+                'code'    => 401,
+                'data'    => null,
+                'errors'  => [
+                    [
+                        'code' => 6
+                    ],
+                ],
+            ], true)
+            ->assertJsonStructure(['errors']);
+    }
+
+    /**
+     * Retorna erro ao tentar criar um contato com um membro do VExpenses onde os
+     * dados retornados da API são nulos
+     */
+    public function testReturnErrorWhenMemberResponseOfVexpensesIsNull()
+    {
+        $externalId = $this->faker->numberBetween(7000, 9000);
+
+        $mockMembersResponse = $this->vexpensesProvider->getMockReturnNull();
+
+        $this->addMockMethod(
+            'sendRequest',
+            new ServiceResponse(
+                false,
+                '',
+                $mockMembersResponse->response->data
+            )
+        );
+
+        $this->applyMock(VexpensesService::class);
+
+        $body = [
+            'adresses' => [
+                [
+                    'street_name'  => $this->faker->streetName,
+                    'number'       => $this->faker->buildingNumber,
+                    'complement'   => $this->faker->secondaryAddress,
+                    'neighborhood' => $this->faker->streetSuffix,
+                    'city'         => $this->faker->city,
+                    'state'        => $this->faker->stateAbbr,
+                    'postal_code'  => $this->faker->regexify('[0-9]{5}-[0-9]{3}'),
+                    'country'      => $this->faker->country,
+                ],
+            ],
+        ];
+
+        $this->postJson(route('vexpenses.store', $externalId), $body)
+            ->assertHeader('content-type', 'application/json')
+            ->assertStatus(500)
+            ->assertJson([
+                'success' => false,
+                'request' => route('vexpenses.store', $externalId),
+                'method'  => 'POST',
+                'code'    => 500,
+                'data'    => null,
+            ], true)
+            ->assertJsonStructure(['errors']);
+    }
+
+    /**
+     * Retorna erro ao tentar criar um contato com um membro do VExpenses onde o
+     * o usuário não possui um token de integração
+     */
+    public function testReturnErrorWhenTryCreateContactWithoutTokenIntegration()
+    {
+        $externalId = $this->faker->numberBetween(7000, 9000);
+
+        $body = [
+            'adresses' => [
+                [
+                    'street_name'  => $this->faker->streetName,
+                    'number'       => $this->faker->buildingNumber,
+                    'complement'   => $this->faker->secondaryAddress,
+                    'neighborhood' => $this->faker->streetSuffix,
+                    'city'         => $this->faker->city,
+                    'state'        => $this->faker->stateAbbr,
+                    'postal_code'  => $this->faker->regexify('[0-9]{5}-[0-9]{3}'),
+                    'country'      => $this->faker->country,
+                ],
+            ],
+        ];
+
+        $this->postJson(route('vexpenses.store', $externalId), $body)
+            ->assertHeader('content-type', 'application/json')
+            ->assertStatus(200)
+            ->assertJson([
+                'success' => false,
+                'request' => route('vexpenses.store', $externalId),
+                'method'  => 'POST',
                 'code'    => 200,
                 'data'    => null,
                 'errors'  => [

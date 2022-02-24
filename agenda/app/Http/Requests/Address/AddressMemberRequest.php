@@ -7,7 +7,7 @@ use App\Http\Requests\Traits\SanitizesInput;
 
 class AddressMemberRequest extends FormRequest
 {
-    //use SanitizesInput;
+    use SanitizesInput;
 
     /**
      * Determine if the user is authorized to make this request.

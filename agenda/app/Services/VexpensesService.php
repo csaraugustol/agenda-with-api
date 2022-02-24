@@ -305,7 +305,6 @@ class VexpensesService extends BaseService implements VexpensesServiceInterface
             }
 
             $findMemberResponse = $this->sendRequest('team-members/' . $externalId, $userId);
-            //dd($findMemberResponse->data);
             if (!$findMemberResponse->success || is_null($findMemberResponse->data)) {
                 return new ServiceResponse(
                     false,
