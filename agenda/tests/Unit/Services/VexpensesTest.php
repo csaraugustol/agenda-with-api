@@ -303,8 +303,8 @@ class VexpensesTest extends BaseTestCase
     }
 
     /**
-     * Retorna erro quando tentar criar um contato com um membro que já possui
-     * um contato vínculado ao usuário
+     * Retorna erro quando tentar criar um contato com um membro que já está
+     * integrado a agenda do usuário
      */
     public function testReturnErrorWhenTryCreateAContactWithMemberThatExistsIntegration()
     {

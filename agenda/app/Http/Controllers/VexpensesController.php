@@ -71,7 +71,7 @@ class VexpensesController extends ApiController
     /**
      * Cria um contato com o membro do VExpenses
      *
-     * POST /vexpenses/team-members/{id}
+     * POST /vexpenses/{id}
      *
      * @param AddressMemberRequest $request
      * @param string $externalId

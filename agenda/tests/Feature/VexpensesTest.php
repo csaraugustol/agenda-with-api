@@ -283,7 +283,7 @@ class VexpensesTest extends BaseTestCase
 
     /**
      * Retorna erro ao tentar criar um contato com um membro do VExpenses que já
-     * está vinculado aos contatos
+     * está integrado a agenda do usuário
      */
     public function testReturnErrorWhenTryCreateContactWithMemberAndHasContactWithMember()
     {
@@ -382,7 +382,7 @@ class VexpensesTest extends BaseTestCase
      */
     public function testReturnErrorWhenMemberResponseOfVexpensesIsNull()
     {
-        $externalId = $this->faker->numberBetween(7000, 9000);
+        $externalId = $this->faker->numberBetween(1, 99);
 
         $mockMembersResponse = $this->vexpensesProvider->getMockReturnNull();
 
@@ -431,7 +431,7 @@ class VexpensesTest extends BaseTestCase
      */
     public function testReturnErrorWhenTryCreateContactWithoutTokenIntegration()
     {
-        $externalId = $this->faker->numberBetween(7000, 9000);
+        $externalId = $this->faker->numberBetween(1, 99);
 
         $body = [
             'adresses' => [
