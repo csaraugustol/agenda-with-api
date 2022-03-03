@@ -86,6 +86,20 @@ class VexpensesService extends BaseService implements VexpensesServiceInterface
                 );
             }
 
+            if ($responseCode === 404) {
+                return new ServiceResponse(
+                    false,
+                    'Nenhum resultado encontrado para esta requisição.',
+                    null,
+                    [
+                        new InternalError(
+                            'Nenhum resultado encontrado para esta requisição.',
+                            33
+                        )
+                    ]
+                );
+            }
+
             if ($responseCode === 405) {
                 return new ServiceResponse(
                     false,
@@ -325,6 +339,20 @@ class VexpensesService extends BaseService implements VexpensesServiceInterface
 
             if ($data->phone2) {
                 array_push($phones, ['phone_number' => $data->phone2]);
+            }
+
+            if (empty($phones)) {
+                return new ServiceResponse(
+                    false,
+                    'Não é possível criar contato sem informar ao menos um telefone.',
+                    null,
+                    [
+                        new InternalError(
+                            'Não é possível criar contato sem informar ao menos um telefone.',
+                            31
+                        )
+                    ]
+                );
             }
 
             $params = new CreateCompleteContactsServiceParams(

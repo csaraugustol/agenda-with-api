@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\User;
 use App\Models\Contact;
 use App\Services\VexpensesService;
+use App\Services\Responses\InternalError;
 use App\Services\Responses\ServiceResponse;
 use Tests\Mocks\Providers\VexpensesProvider;
 
@@ -328,6 +329,63 @@ class VexpensesTest extends BaseTestCase
     }
 
     /**
+     * Retorna erro ao tentar criar um contato com um membro do VExpenses que não
+     * possui ao menos um telefone vínculado a ele
+     */
+    public function testReturnErrorWhenTryCreateContactAndMemberIsWithoutPhone()
+    {
+        $externalId = $this->faker->numberBetween(1, 100);
+
+        $mockMembersResponse = $this->vexpensesProvider
+            ->getMockReturnMemberWithPhoneAndOtherMemberWithoutPhone($externalId);
+
+        $mockData = $mockMembersResponse->response->data[1];
+
+        $this->addMockMethod(
+            'sendRequest',
+            new ServiceResponse(
+                true,
+                '',
+                $mockData
+            )
+        );
+
+        $this->applyMock(VexpensesService::class);
+
+        $body = [
+            'adresses' => [
+                [
+                    'street_name'  => $this->faker->streetName,
+                    'number'       => $this->faker->buildingNumber,
+                    'complement'   => $this->faker->secondaryAddress,
+                    'neighborhood' => $this->faker->streetSuffix,
+                    'city'         => $this->faker->city,
+                    'state'        => $this->faker->stateAbbr,
+                    'postal_code'  => $this->faker->regexify('[0-9]{5}-[0-9]{3}'),
+                    'country'      => $this->faker->country,
+                ],
+            ],
+        ];
+
+        $this->postJson(route('vexpenses.store', $externalId), $body)
+            ->assertHeader('content-type', 'application/json')
+            ->assertStatus(200)
+            ->assertJson([
+                'success' => false,
+                'request' => route('vexpenses.store', $externalId),
+                'method'  => 'POST',
+                'code'    => 200,
+                'data'    => null,
+                'errors'  => [
+                    [
+                        'code' => 31
+                    ]
+                ]
+            ], true)
+            ->assertJsonStructure(['errors']);
+    }
+
+    /**
      * Retorna erro ao tentar criar um contato com um membro do VExpenses onde seu
      * endereço não é informado
      */
@@ -391,7 +449,13 @@ class VexpensesTest extends BaseTestCase
             new ServiceResponse(
                 false,
                 '',
-                $mockMembersResponse->response->data
+                $mockMembersResponse->response->data,
+                [
+                    new InternalError(
+                        $mockMembersResponse->response->message,
+                        $mockMembersResponse->response->code,
+                    )
+                ]
             )
         );
 
@@ -414,13 +478,19 @@ class VexpensesTest extends BaseTestCase
 
         $this->postJson(route('vexpenses.store', $externalId), $body)
             ->assertHeader('content-type', 'application/json')
-            ->assertStatus(500)
+            ->assertStatus(200)
             ->assertJson([
                 'success' => false,
                 'request' => route('vexpenses.store', $externalId),
                 'method'  => 'POST',
-                'code'    => 500,
+                'code'    => 200,
                 'data'    => null,
+                'errors'  => [
+                    [
+                        'code'    => $mockMembersResponse->response->code,
+                        'message' => $mockMembersResponse->response->message,
+                    ],
+                ],
             ], true)
             ->assertJsonStructure(['errors']);
     }

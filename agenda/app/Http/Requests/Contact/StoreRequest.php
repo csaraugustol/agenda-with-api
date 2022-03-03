@@ -29,10 +29,10 @@ class StoreRequest extends FormRequest
     {
         return [
             'after' => [
-                'name'     => 'cast:string',
-                'tags'     => 'cast:array',
-                'phones'   => 'cast:array',
-                'adresses' => 'cast:array',
+                'name'       => 'cast:string',
+                '*.tags'     => 'cast:array',
+                '*.phones'   => 'cast:array',
+                '*.adresses' => 'cast:array',
             ],
         ];
     }

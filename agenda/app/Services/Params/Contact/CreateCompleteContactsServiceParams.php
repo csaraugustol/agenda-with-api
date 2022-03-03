@@ -20,7 +20,7 @@ class CreateCompleteContactsServiceParams extends BaseServiceParams
      * @param string      $user_id
      * @param array       $phones
      * @param array       $adresses
-     * @param array|null  $tags
+     * @param array       $tags
      * @param string|null $external_id
      */
     public function __construct(
@@ -28,7 +28,7 @@ class CreateCompleteContactsServiceParams extends BaseServiceParams
         string $user_id,
         array $phones,
         array $adresses,
-        ?array $tags,
+        array $tags = [],
         string $external_id = null
     ) {
         parent::__construct();

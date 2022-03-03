@@ -137,9 +137,11 @@ class VexpensesProvider extends BaseProvider
     public function getMockReturnNull(): object
     {
         return (object) [
-            'status_code' => 200,
-            'response'    => (object)[
+            'status_code' => 404,
+            'response'    => (object) [
                 'data'    => null,
+                'message' => 'Nenhum resultado encontrado para esta requisição.',
+                'code'    => 33,
             ]
         ];
     }

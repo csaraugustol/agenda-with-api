@@ -284,6 +284,37 @@ class VexpensesTest extends BaseTestCase
     }
 
     /**
+     * Retorna erro ao tentar criar um contato com o membro do VExpenses que não
+     * possui ao menos um número de telefone
+     */
+    public function testErrorWhenTryCreateAContactWithoutPhone()
+    {
+        $externalId = $this->faker->numberBetween(1, 999);
+
+        $user = factory(User::class)->create();
+
+        factory(ExternalToken::class)->create([
+            'user_id' => $user->id,
+        ]);
+
+        $mockMembersResponse = $this->vexpensesProvider
+            ->getMockReturnMemberWithPhoneAndOtherMemberWithoutPhone($externalId);
+
+        $this->vexpensesProvider->setMockRequest(
+            $this->vexpensesService,
+            $mockMembersResponse->status_code,
+            ['data' => $mockMembersResponse->response->data[1]],
+        );
+
+        $creatContactMember = $this->vexpensesService->store($user->id, $externalId, []);
+
+        $this->assertInstanceOf(ServiceResponse::class, $creatContactMember);
+        $this->assertFalse($creatContactMember->success);
+        $this->assertNull($creatContactMember->data);
+        $this->assertHasInternalError($creatContactMember, 31);
+    }
+
+    /**
      * Retorna erro quando tenta criar um contato com um membro mas o usuário
      * não existe
      */

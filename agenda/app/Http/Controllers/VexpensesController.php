@@ -4,11 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use App\Http\Responses\DefaultResponse;
-use App\Http\Requests\Address\AddressMemberRequest;
 use App\Http\Requests\Vexpenses\AccessTokenRequest;
 use App\Http\Resources\Vexpenses\VexpensesResource;
 use App\Services\Contracts\VexpensesServiceInterface;
 use App\Http\Resources\Contact\ContactDetailsResource;
+use App\Http\Requests\Address\StoreVexpensesMemberRequest;
 use App\Http\Resources\Vexpenses\TeamMembersCollectionResource;
 
 class VexpensesController extends ApiController
@@ -73,12 +73,12 @@ class VexpensesController extends ApiController
      *
      * POST /vexpenses/{id}
      *
-     * @param AddressMemberRequest $request
+     * @param StoreVexpensesMemberRequest $request
      * @param string $externalId
 
      * @return JsonResponse
      */
-    public function storeContactWithMember(AddressMemberRequest $request, string $externalId): JsonResponse
+    public function storeContactWithMember(StoreVexpensesMemberRequest $request, string $externalId): JsonResponse
     {
         $createMemberContactResponse = $this->vexpensesService->store(
             user('id'),

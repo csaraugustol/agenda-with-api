@@ -5,7 +5,7 @@ namespace App\Http\Requests\Address;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Http\Requests\Traits\SanitizesInput;
 
-class AddressMemberRequest extends FormRequest
+class StoreVexpensesMemberRequest extends FormRequest
 {
     use SanitizesInput;
 
@@ -28,7 +28,7 @@ class AddressMemberRequest extends FormRequest
     {
         return [
             'after' => [
-                'adresses' => 'cast:array',
+                '*.adresses' => 'cast:array',
             ],
         ];
     }
