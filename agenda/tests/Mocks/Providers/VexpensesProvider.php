@@ -128,4 +128,21 @@ class VexpensesProvider extends BaseProvider
             ]
         ];
     }
+
+    /**
+     * Mock de uma reposta de dados da API null
+     *
+     * @return object
+     */
+    public function getMockReturnNull(): object
+    {
+        return (object) [
+            'status_code' => 404,
+            'response'    => (object) [
+                'data'    => null,
+                'message' => 'Nenhum resultado encontrado para esta requisição.',
+                'code'    => 33,
+            ]
+        ];
+    }
 }

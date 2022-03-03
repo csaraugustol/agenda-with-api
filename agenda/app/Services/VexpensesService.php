@@ -12,6 +12,7 @@ use App\Services\Contracts\UserServiceInterface;
 use App\Services\Contracts\ContactServiceInterface;
 use App\Services\Contracts\VexpensesServiceInterface;
 use App\Services\Contracts\ExternalTokenServiceInterface;
+use App\Services\Params\Contact\CreateCompleteContactsServiceParams;
 
 class VexpensesService extends BaseService implements VexpensesServiceInterface
 {
@@ -80,6 +81,20 @@ class VexpensesService extends BaseService implements VexpensesServiceInterface
                         new InternalError(
                             'O token é inválido!',
                             25
+                        )
+                    ]
+                );
+            }
+
+            if ($responseCode === 404) {
+                return new ServiceResponse(
+                    false,
+                    'Nenhum resultado encontrado para esta requisição.',
+                    null,
+                    [
+                        new InternalError(
+                            'Nenhum resultado encontrado para esta requisição.',
+                            33
                         )
                     ]
                 );
@@ -259,6 +274,115 @@ class VexpensesService extends BaseService implements VexpensesServiceInterface
             true,
             'Membros retornados com sucesso.',
             $members
+        );
+    }
+
+    /**
+     * Cria um contato a partir de um mebro do VExpenses
+     *
+     * @param string $userId
+     * @param int $externalId
+     * @param array $addresses
+     *
+     * @return ServiceResponse
+     */
+    public function store(string $userId, int $externalId, array $addresses): ServiceResponse
+    {
+        try {
+            $findUserResponse = app(UserServiceInterface::class)->find($userId);
+            if (!$findUserResponse->success || is_null($findUserResponse->data)) {
+                return new ServiceResponse(
+                    false,
+                    $findUserResponse->message,
+                    null,
+                    $findUserResponse->internalErrors
+                );
+            }
+
+            $findContactResponse = app(ContactServiceInterface::class)->findContactByExternalId(
+                $userId,
+                $externalId
+            );
+
+            if (!is_null($findContactResponse->data)) {
+                return new ServiceResponse(
+                    false,
+                    'Não é possível criar contato. O membro já está cadastrado.',
+                    null,
+                    [
+                        new InternalError(
+                            'Não é possível criar contato. O membro já está cadastrado.',
+                            30
+                        )
+                    ]
+                );
+            }
+
+            $findMemberResponse = $this->sendRequest('team-members/' . $externalId, $userId);
+            if (!$findMemberResponse->success || is_null($findMemberResponse->data)) {
+                return new ServiceResponse(
+                    false,
+                    $findMemberResponse->message,
+                    null,
+                    $findMemberResponse->internalErrors
+                );
+            }
+
+            //Data recebe o objeto membro
+            $data = $findMemberResponse->data;
+
+            $phones = [];
+
+            if ($data->phone1) {
+                array_push($phones, ['phone_number' => $data->phone1]);
+            }
+
+            if ($data->phone2) {
+                array_push($phones, ['phone_number' => $data->phone2]);
+            }
+
+            if (empty($phones)) {
+                return new ServiceResponse(
+                    false,
+                    'Não é possível criar contato sem informar ao menos um telefone.',
+                    null,
+                    [
+                        new InternalError(
+                            'Não é possível criar contato sem informar ao menos um telefone.',
+                            31
+                        )
+                    ]
+                );
+            }
+
+            $params = new CreateCompleteContactsServiceParams(
+                $data->name,
+                $userId,
+                $phones,
+                $addresses,
+                [],
+                $externalId
+            );
+
+            $createContactResponse = app(ContactServiceInterface::class)->store($params);
+            if (!$createContactResponse->success || is_null($createContactResponse->data)) {
+                return new ServiceResponse(
+                    false,
+                    $createContactResponse->message,
+                    null,
+                    $createContactResponse->internalErrors
+                );
+            }
+
+            $member = $createContactResponse->data;
+        } catch (Throwable $throwable) {
+            return $this->defaultErrorReturn($throwable, compact('userId', 'externalId', 'addresses'));
+        }
+
+        return new ServiceResponse(
+            true,
+            'Contato com o membro, criado com sucesso.',
+            $member
         );
     }
 }

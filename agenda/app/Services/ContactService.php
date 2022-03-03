@@ -117,8 +117,9 @@ class ContactService extends BaseService implements ContactServiceInterface
         DB::beginTransaction();
         try {
             $contact = $this->contactRepository->create([
-                'name'    => $params->name,
-                'user_id' => $params->user_id
+                'name'        => $params->name,
+                'user_id'     => $params->user_id,
+                'external_id' => $params->external_id
             ]);
 
             //Cria o telefone relacionado ao contato
