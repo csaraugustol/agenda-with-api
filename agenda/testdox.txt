@@ -1,0 +1,3 @@
+External Token (Tests\Integration\Models\ExternalToken)
+ [x] Method set type attribute when type system doesnt is v expenses
+

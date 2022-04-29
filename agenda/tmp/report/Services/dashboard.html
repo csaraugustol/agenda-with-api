@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <title>Dashboard for /home/vexpenses/Documentos/agenda-with-api/agenda/app/Services</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="../_css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <link href="../_css/nv.d3.min.css" rel="stylesheet" type="text/css">
+  <link href="../_css/style.css" rel="stylesheet" type="text/css">
+  <link href="../_css/custom.css" rel="stylesheet" type="text/css">
+ </head>
+ <body>
+  <header>
+   <div class="container-fluid">
+    <div class="row">
+     <div class="col-md-12">
+      <nav aria-label="breadcrumb">
+       <ol class="breadcrumb">
+         <li class="breadcrumb-item"><a href="../index.html">/home/vexpenses/Documentos/agenda-with-api/agenda/app</a></li>
+         <li class="breadcrumb-item"><a href="index.html">Services</a></li>
+         <li class="breadcrumb-item active">(Dashboard)</li>
+
+       </ol>
+      </nav>
+     </div>
+    </div>
+   </div>
+  </header>
+  <div class="container-fluid">
+   <div class="row">
+    <div class="col-md-12">
+     <h2>Classes</h2>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Coverage Distribution</h3>
+     <div id="classCoverageDistribution" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Complexity</h3>
+     <div id="classComplexity" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Insufficient Coverage</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Class</th>
+         <th class="text-right">Coverage</th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="BaseService.php.html#11">App\Services\BaseService</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Responses/ServiceResponse.php.html#8">App\Services\Responses\ServiceResponse</a></td><td class="text-right">46%</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Project Risks</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Class</th>
+         <th class="text-right"><abbr title="Change Risk Anti-Patterns (CRAP) Index">CRAP</abbr></th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="Responses/ServiceResponse.php.html#8">App\Services\Responses\ServiceResponse</a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="BaseService.php.html#11">App\Services\BaseService</a></td><td class="text-right">6</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-12">
+     <h2>Methods</h2>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Coverage Distribution</h3>
+     <div id="methodCoverageDistribution" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Complexity</h3>
+     <div id="methodComplexity" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Insufficient Coverage</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Method</th>
+         <th class="text-right">Coverage</th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="BaseService.php.html#21"><abbr title="App\Services\BaseService::defaultErrorReturn">defaultErrorReturn</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Responses/ServiceResponse.php.html#58"><abbr title="App\Services\Responses\ServiceResponse::toArray">toArray</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="VexpensesService.php.html#44"><abbr title="App\Services\VexpensesService::sendRequest">sendRequest</abbr></a></td><td class="text-right">32%</td></tr>
+       <tr><td><a href="ViaCepService.php.html#37"><abbr title="App\Services\ViaCepService::sendRequestViaCep">sendRequestViaCep</abbr></a></td><td class="text-right">65%</td></tr>
+       <tr><td><a href="AddressService.php.html#72"><abbr title="App\Services\AddressService::store">store</abbr></a></td><td class="text-right">66%</td></tr>
+       <tr><td><a href="ContactService.php.html#43"><abbr title="App\Services\ContactService::findAllWithFilter">findAllWithFilter</abbr></a></td><td class="text-right">66%</td></tr>
+       <tr><td><a href="PhoneService.php.html#69"><abbr title="App\Services\PhoneService::store">store</abbr></a></td><td class="text-right">66%</td></tr>
+       <tr><td><a href="TagService.php.html#71"><abbr title="App\Services\TagService::store">store</abbr></a></td><td class="text-right">66%</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Project Risks</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Method</th>
+         <th class="text-right"><abbr title="Change Risk Anti-Patterns (CRAP) Index">CRAP</abbr></th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="VexpensesService.php.html#44"><abbr title="App\Services\VexpensesService::sendRequest">sendRequest</abbr></a></td><td class="text-right">17</td></tr>
+       <tr><td><a href="BaseService.php.html#21"><abbr title="App\Services\BaseService::defaultErrorReturn">defaultErrorReturn</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="ViaCepService.php.html#37"><abbr title="App\Services\ViaCepService::sendRequestViaCep">sendRequestViaCep</abbr></a></td><td class="text-right">4</td></tr>
+       <tr><td><a href="AddressService.php.html#72"><abbr title="App\Services\AddressService::store">store</abbr></a></td><td class="text-right">2</td></tr>
+       <tr><td><a href="ContactService.php.html#43"><abbr title="App\Services\ContactService::findAllWithFilter">findAllWithFilter</abbr></a></td><td class="text-right">2</td></tr>
+       <tr><td><a href="PhoneService.php.html#69"><abbr title="App\Services\PhoneService::store">store</abbr></a></td><td class="text-right">2</td></tr>
+       <tr><td><a href="TagService.php.html#71"><abbr title="App\Services\TagService::store">store</abbr></a></td><td class="text-right">2</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+   </div>
+   <footer>
+    <hr/>
+    <p>
+     <small>Generated by <a href="https://github.com/sebastianbergmann/php-code-coverage" target="_top">php-code-coverage 9.2.9</a> using <a href="https://secure.php.net/" target="_top">PHP 7.3.33-1+ubuntu20.04.1+deb.sury.org+1</a> and <a href="https://phpunit.de/">PHPUnit 9.5.11</a> at Fri Apr 29 14:46:08 UTC 2022.</small>
+    </p>
+   </footer>
+  </div>
+  <script src="../_js/jquery.min.js" type="text/javascript"></script>
+  <script src="../_js/d3.min.js" type="text/javascript"></script>
+  <script src="../_js/nv.d3.min.js" type="text/javascript"></script>
+  <script type="text/javascript">
+$(document).ready(function() {
+  nv.addGraph(function() {
+    var chart = nv.models.multiBarChart();
+    chart.tooltips(false)
+      .showControls(false)
+      .showLegend(false)
+      .reduceXTicks(false)
+      .staggerLabels(true)
+      .yAxis.tickFormat(d3.format('d'));
+
+    d3.select('#classCoverageDistribution svg')
+      .datum(getCoverageDistributionData([1,0,0,0,0,1,0,0,2,9,0,7], "Class Coverage"))
+      .transition().duration(500).call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  nv.addGraph(function() {
+    var chart = nv.models.multiBarChart();
+    chart.tooltips(false)
+      .showControls(false)
+      .showLegend(false)
+      .reduceXTicks(false)
+      .staggerLabels(true)
+      .yAxis.tickFormat(d3.format('d'));
+
+    d3.select('#methodCoverageDistribution svg')
+      .datum(getCoverageDistributionData([2,0,0,0,1,0,0,5,2,28,9,23], "Method Coverage"))
+      .transition().duration(500).call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  function getCoverageDistributionData(data, label) {
+    var labels = [
+      '0%',
+      '0-10%',
+      '10-20%',
+      '20-30%',
+      '30-40%',
+      '40-50%',
+      '50-60%',
+      '60-70%',
+      '70-80%',
+      '80-90%',
+      '90-100%',
+      '100%'
+    ];
+    var values = [];
+    $.each(labels, function(key) {
+      values.push({x: labels[key], y: data[key]});
+    });
+
+    return [
+      {
+        key: label,
+        values: values,
+        color: "#4572A7"
+      }
+    ];
+  }
+  nv.addGraph(function() {
+    var chart = nv.models.scatterChart()
+      .showDistX(true)
+      .showDistY(true)
+      .showLegend(false)
+      .forceX([0, 100]);
+    chart.tooltipContent(function(graph) {
+      return '<p>' + graph.point.class + '</p>';
+    });
+
+    chart.xAxis.axisLabel('Code Coverage (in percent)');
+    chart.yAxis.axisLabel('Cyclomatic Complexity');
+
+    d3.select('#classComplexity svg')
+      .datum(getComplexityData([[88.37209302325581,20,"<a href=\"AddressService.php.html#14\">App\\Services\\AddressService<\/a>"],[86.79245283018868,15,"<a href=\"AuthenticateTokenService.php.html#14\">App\\Services\\AuthenticateTokenService<\/a>"],[0,2,"<a href=\"BaseService.php.html#11\">App\\Services\\BaseService<\/a>"],[89.0625,17,"<a href=\"ChangePasswordService.php.html#14\">App\\Services\\ChangePasswordService<\/a>"],[86.88524590163934,29,"<a href=\"ContactService.php.html#19\">App\\Services\\ContactService<\/a>"],[86.15384615384616,18,"<a href=\"ExternalTokenService.php.html#13\">App\\Services\\ExternalTokenService<\/a>"],[100,1,"<a href=\"Params\/Address\/CreateAddressServiceParams.php.html#7\">App\\Services\\Params\\Address\\CreateAddressServiceParams<\/a>"],[100,5,"<a href=\"Params\/BaseServiceParams.php.html#7\">App\\Services\\Params\\BaseServiceParams<\/a>"],[100,1,"<a href=\"Params\/Contact\/CreateCompleteContactsServiceParams.php.html#7\">App\\Services\\Params\\Contact\\CreateCompleteContactsServiceParams<\/a>"],[100,1,"<a href=\"Params\/Phone\/CreatePhoneServiceParams.php.html#7\">App\\Services\\Params\\Phone\\CreatePhoneServiceParams<\/a>"],[100,1,"<a href=\"Params\/Tag\/CreateTagServiceParams.php.html#7\">App\\Services\\Params\\Tag\\CreateTagServiceParams<\/a>"],[100,1,"<a href=\"Params\/User\/RegisterUserServiceParams.php.html#7\">App\\Services\\Params\\User\\RegisterUserServiceParams<\/a>"],[84,14,"<a href=\"PhoneService.php.html#12\">App\\Services\\PhoneService<\/a>"],[100,2,"<a href=\"Responses\/InternalError.php.html#5\">App\\Services\\Responses\\InternalError<\/a>"],[46.15384615384615,4,"<a href=\"Responses\/ServiceResponse.php.html#8\">App\\Services\\Responses\\ServiceResponse<\/a>"],[86.58536585365853,20,"<a href=\"TagContactService.php.html#13\">App\\Services\\TagContactService<\/a>"],[84.12698412698413,18,"<a href=\"TagService.php.html#13\">App\\Services\\TagService<\/a>"],[84.39716312056737,33,"<a href=\"UserService.php.html#15\">App\\Services\\UserService<\/a>"],[73.37278106508876,40,"<a href=\"VexpensesService.php.html#17\">App\\Services\\VexpensesService<\/a>"],[71.42857142857143,6,"<a href=\"ViaCepService.php.html#11\">App\\Services\\ViaCepService<\/a>"]], 'Class Complexity'))
+      .transition()
+      .duration(500)
+      .call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  nv.addGraph(function() {
+    var chart = nv.models.scatterChart()
+      .showDistX(true)
+      .showDistY(true)
+      .showLegend(false)
+      .forceX([0, 100]);
+    chart.tooltipContent(function(graph) {
+      return '<p>' + graph.point.class + '</p>';
+    });
+
+    chart.xAxis.axisLabel('Code Coverage (in percent)');
+    chart.yAxis.axisLabel('Method Complexity');
+
+    d3.select('#methodComplexity svg')
+      .datum(getComplexityData([[100,1,"<a href=\"AddressService.php.html#24\">App\\Services\\AddressService::__construct<\/a>"],[85.71428571428571,3,"<a href=\"AddressService.php.html#36\">App\\Services\\AddressService::find<\/a>"],[66.66666666666666,2,"<a href=\"AddressService.php.html#72\">App\\Services\\AddressService::store<\/a>"],[92,5,"<a href=\"AddressService.php.html#95\">App\\Services\\AddressService::update<\/a>"],[92,5,"<a href=\"AddressService.php.html#149\">App\\Services\\AddressService::delete<\/a>"],[85.71428571428571,4,"<a href=\"AddressService.php.html#200\">App\\Services\\AddressService::findByPostalCode<\/a>"],[100,1,"<a href=\"AuthenticateTokenService.php.html#24\">App\\Services\\AuthenticateTokenService::__construct<\/a>"],[84.21052631578947,5,"<a href=\"AuthenticateTokenService.php.html#36\">App\\Services\\AuthenticateTokenService::storeToken<\/a>"],[88.88888888888889,6,"<a href=\"AuthenticateTokenService.php.html#79\">App\\Services\\AuthenticateTokenService::clearToken<\/a>"],[85.71428571428571,3,"<a href=\"AuthenticateTokenService.php.html#119\">App\\Services\\AuthenticateTokenService::findToken<\/a>"],[0,2,"<a href=\"BaseService.php.html#21\">App\\Services\\BaseService::defaultErrorReturn<\/a>"],[100,1,"<a href=\"ChangePasswordService.php.html#24\">App\\Services\\ChangePasswordService::__construct<\/a>"],[85,5,"<a href=\"ChangePasswordService.php.html#36\">App\\Services\\ChangePasswordService::newToken<\/a>"],[89.47368421052632,6,"<a href=\"ChangePasswordService.php.html#81\">App\\Services\\ChangePasswordService::clearToken<\/a>"],[91.30434782608695,5,"<a href=\"ChangePasswordService.php.html#124\">App\\Services\\ChangePasswordService::findByToken<\/a>"],[100,1,"<a href=\"ContactService.php.html#29\">App\\Services\\ContactService::__construct<\/a>"],[66.66666666666666,2,"<a href=\"ContactService.php.html#43\">App\\Services\\ContactService::findAllWithFilter<\/a>"],[90.9090909090909,5,"<a href=\"ContactService.php.html#66\">App\\Services\\ContactService::find<\/a>"],[85.71428571428571,8,"<a href=\"ContactService.php.html#115\">App\\Services\\ContactService::store<\/a>"],[85.71428571428571,4,"<a href=\"ContactService.php.html#196\">App\\Services\\ContactService::update<\/a>"],[85.71428571428571,4,"<a href=\"ContactService.php.html#232\">App\\Services\\ContactService::delete<\/a>"],[90.9090909090909,5,"<a href=\"ContactService.php.html#266\">App\\Services\\ContactService::findContactByExternalId<\/a>"],[100,1,"<a href=\"ExternalTokenService.php.html#23\">App\\Services\\ExternalTokenService::__construct<\/a>"],[78.26086956521739,6,"<a href=\"ExternalTokenService.php.html#39\">App\\Services\\ExternalTokenService::storeToken<\/a>"],[88.88888888888889,6,"<a href=\"ExternalTokenService.php.html#93\">App\\Services\\ExternalTokenService::clearToken<\/a>"],[90.9090909090909,5,"<a href=\"ExternalTokenService.php.html#134\">App\\Services\\ExternalTokenService::find<\/a>"],[100,1,"<a href=\"Params\/Address\/CreateAddressServiceParams.php.html#32\">App\\Services\\Params\\Address\\CreateAddressServiceParams::__construct<\/a>"],[100,4,"<a href=\"Params\/BaseServiceParams.php.html#12\">App\\Services\\Params\\BaseServiceParams::__construct<\/a>"],[100,1,"<a href=\"Params\/BaseServiceParams.php.html#39\">App\\Services\\Params\\BaseServiceParams::toArray<\/a>"],[100,1,"<a href=\"Params\/Contact\/CreateCompleteContactsServiceParams.php.html#26\">App\\Services\\Params\\Contact\\CreateCompleteContactsServiceParams::__construct<\/a>"],[100,1,"<a href=\"Params\/Phone\/CreatePhoneServiceParams.php.html#18\">App\\Services\\Params\\Phone\\CreatePhoneServiceParams::__construct<\/a>"],[100,1,"<a href=\"Params\/Tag\/CreateTagServiceParams.php.html#18\">App\\Services\\Params\\Tag\\CreateTagServiceParams::__construct<\/a>"],[100,1,"<a href=\"Params\/User\/RegisterUserServiceParams.php.html#20\">App\\Services\\Params\\User\\RegisterUserServiceParams::__construct<\/a>"],[100,1,"<a href=\"PhoneService.php.html#22\">App\\Services\\PhoneService::__construct<\/a>"],[85.71428571428571,3,"<a href=\"PhoneService.php.html#34\">App\\Services\\PhoneService::find<\/a>"],[66.66666666666666,2,"<a href=\"PhoneService.php.html#69\">App\\Services\\PhoneService::store<\/a>"],[85.71428571428571,4,"<a href=\"PhoneService.php.html#92\">App\\Services\\PhoneService::update<\/a>"],[85.71428571428571,4,"<a href=\"PhoneService.php.html#127\">App\\Services\\PhoneService::delete<\/a>"],[100,1,"<a href=\"Responses\/InternalError.php.html#23\">App\\Services\\Responses\\InternalError::__construct<\/a>"],[100,1,"<a href=\"Responses\/InternalError.php.html#36\">App\\Services\\Responses\\InternalError::toArray<\/a>"],[85.71428571428571,3,"<a href=\"Responses\/ServiceResponse.php.html#37\">App\\Services\\Responses\\ServiceResponse::__construct<\/a>"],[0,1,"<a href=\"Responses\/ServiceResponse.php.html#58\">App\\Services\\Responses\\ServiceResponse::toArray<\/a>"],[100,1,"<a href=\"TagContactService.php.html#23\">App\\Services\\TagContactService::__construct<\/a>"],[80.43478260869566,10,"<a href=\"TagContactService.php.html#37\">App\\Services\\TagContactService::attach<\/a>"],[94.11764705882352,9,"<a href=\"TagContactService.php.html#133\">App\\Services\\TagContactService::detach<\/a>"],[100,1,"<a href=\"TagService.php.html#23\">App\\Services\\TagService::__construct<\/a>"],[85.71428571428571,3,"<a href=\"TagService.php.html#36\">App\\Services\\TagService::find<\/a>"],[66.66666666666666,2,"<a href=\"TagService.php.html#71\">App\\Services\\TagService::store<\/a>"],[85.71428571428571,4,"<a href=\"TagService.php.html#94\">App\\Services\\TagService::update<\/a>"],[85.71428571428571,4,"<a href=\"TagService.php.html#130\">App\\Services\\TagService::delete<\/a>"],[84.61538461538461,4,"<a href=\"TagService.php.html#162\">App\\Services\\TagService::findAll<\/a>"],[100,1,"<a href=\"UserService.php.html#25\">App\\Services\\UserService::__construct<\/a>"],[80,2,"<a href=\"UserService.php.html#37\">App\\Services\\UserService::register<\/a>"],[76.47058823529412,7,"<a href=\"UserService.php.html#67\">App\\Services\\UserService::login<\/a>"],[88.23529411764706,5,"<a href=\"UserService.php.html#136\">App\\Services\\UserService::logout<\/a>"],[85.71428571428571,3,"<a href=\"UserService.php.html#173\">App\\Services\\UserService::findByEmail<\/a>"],[88.23529411764706,4,"<a href=\"UserService.php.html#210\">App\\Services\\UserService::update<\/a>"],[85.71428571428571,3,"<a href=\"UserService.php.html#251\">App\\Services\\UserService::find<\/a>"],[80,3,"<a href=\"UserService.php.html#287\">App\\Services\\UserService::tokenToChangePassword<\/a>"],[91.30434782608695,5,"<a href=\"UserService.php.html#318\">App\\Services\\UserService::changePassword<\/a>"],[100,1,"<a href=\"VexpensesService.php.html#24\">App\\Services\\VexpensesService::__construct<\/a>"],[32.6530612244898,6,"<a href=\"VexpensesService.php.html#44\">App\\Services\\VexpensesService::sendRequest<\/a>"],[100,1,"<a href=\"VexpensesService.php.html#144\">App\\Services\\VexpensesService::setClient<\/a>"],[83.33333333333334,5,"<a href=\"VexpensesService.php.html#157\">App\\Services\\VexpensesService::tokenToAccess<\/a>"],[100,1,"<a href=\"VexpensesService.php.html#196\">App\\Services\\VexpensesService::getToken<\/a>"],[94.73684210526315,14,"<a href=\"VexpensesService.php.html#213\">App\\Services\\VexpensesService::findAllTeamMembers<\/a>"],[87.03703703703704,12,"<a href=\"VexpensesService.php.html#289\">App\\Services\\VexpensesService::store<\/a>"],[100,1,"<a href=\"ViaCepService.php.html#18\">App\\Services\\ViaCepService::__construct<\/a>"],[65.51724137931035,4,"<a href=\"ViaCepService.php.html#37\">App\\Services\\ViaCepService::sendRequestViaCep<\/a>"],[100,1,"<a href=\"ViaCepService.php.html#99\">App\\Services\\ViaCepService::setClient<\/a>"]], 'Method Complexity'))
+      .transition()
+      .duration(500)
+      .call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  function getComplexityData(data, label) {
+    var values = [];
+    $.each(data, function(key) {
+      var value = Math.round(data[key][0]*100) / 100;
+      values.push({
+        x: value,
+        y: data[key][1],
+        class: data[key][2],
+        size: 0.05,
+        shape: 'diamond'
+      });
+    });
+
+    return [
+      {
+        key: label,
+        values: values,
+        color: "#4572A7"
+      }
+    ];
+  }
+});
+  </script>
+ </body>
+</html>

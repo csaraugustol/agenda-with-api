@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <title>Dashboard for /home/vexpenses/Documentos/agenda-with-api/agenda/app</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="_css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <link href="_css/nv.d3.min.css" rel="stylesheet" type="text/css">
+  <link href="_css/style.css" rel="stylesheet" type="text/css">
+  <link href="_css/custom.css" rel="stylesheet" type="text/css">
+ </head>
+ <body>
+  <header>
+   <div class="container-fluid">
+    <div class="row">
+     <div class="col-md-12">
+      <nav aria-label="breadcrumb">
+       <ol class="breadcrumb">
+         <li class="breadcrumb-item"><a href="index.html">/home/vexpenses/Documentos/agenda-with-api/agenda/app</a></li>
+         <li class="breadcrumb-item active">(Dashboard)</li>
+
+       </ol>
+      </nav>
+     </div>
+    </div>
+   </div>
+  </header>
+  <div class="container-fluid">
+   <div class="row">
+    <div class="col-md-12">
+     <h2>Classes</h2>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Coverage Distribution</h3>
+     <div id="classCoverageDistribution" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Complexity</h3>
+     <div id="classComplexity" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Insufficient Coverage</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Class</th>
+         <th class="text-right">Coverage</th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="Exceptions/PolicyException.php.html#11">App\Exceptions\PolicyException</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Middleware/Authenticate.php.html#7">App\Http\Middleware\Authenticate</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Middleware/RedirectIfAuthenticated.php.html#9">App\Http\Middleware\RedirectIfAuthenticated</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Middleware/TrustHosts.php.html#7">App\Http\Middleware\TrustHosts</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Providers/BroadcastServiceProvider.php.html#8">App\Providers\BroadcastServiceProvider</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Services/BaseService.php.html#11">App\Services\BaseService</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Traits/ResponseHelpers.php.html#8">App\Traits\ResponseHelpers</a></td><td class="text-right">25%</td></tr>
+       <tr><td><a href="Services/Responses/ServiceResponse.php.html#8">App\Services\Responses\ServiceResponse</a></td><td class="text-right">46%</td></tr>
+       <tr><td><a href="Http/Responses/DefaultResponse.php.html#10">App\Http\Responses\DefaultResponse</a></td><td class="text-right">60%</td></tr>
+       <tr><td><a href="Http/Controllers/ApiController.php.html#12">App\Http\Controllers\ApiController</a></td><td class="text-right">63%</td></tr>
+       <tr><td><a href="Http/Requests/Contact/IndexRequest.php.html#7">App\Http\Requests\Contact\IndexRequest</a></td><td class="text-right">66%</td></tr>
+       <tr><td><a href="Http/Requests/Tag/IndexRequest.php.html#7">App\Http\Requests\Tag\IndexRequest</a></td><td class="text-right">66%</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Project Risks</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Class</th>
+         <th class="text-right"><abbr title="Change Risk Anti-Patterns (CRAP) Index">CRAP</abbr></th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="Http/Responses/DefaultResponse.php.html#10">App\Http\Responses\DefaultResponse</a></td><td class="text-right">18</td></tr>
+       <tr><td><a href="Services/Responses/ServiceResponse.php.html#8">App\Services\Responses\ServiceResponse</a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Http/Middleware/Authenticate.php.html#7">App\Http\Middleware\Authenticate</a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Http/Middleware/RedirectIfAuthenticated.php.html#9">App\Http\Middleware\RedirectIfAuthenticated</a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Services/BaseService.php.html#11">App\Services\BaseService</a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Http/Controllers/ApiController.php.html#12">App\Http\Controllers\ApiController</a></td><td class="text-right">4</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-12">
+     <h2>Methods</h2>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Coverage Distribution</h3>
+     <div id="methodCoverageDistribution" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Complexity</h3>
+     <div id="methodComplexity" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Insufficient Coverage</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Method</th>
+         <th class="text-right">Coverage</th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="Console/Kernel.php.html#25"><abbr title="App\Console\Kernel::schedule">schedule</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Requests/User/RegisterRequest.php.html#24"><abbr title="App\Http\Requests\User\RegisterRequest::filters">filters</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Traits/ResponseHelpers.php.html#40"><abbr title="App\Traits\ResponseHelpers::sendError">sendError</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Traits/ResponseHelpers.php.html#18"><abbr title="App\Traits\ResponseHelpers::sendResponse">sendResponse</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Requests/Traits/SanitizesInput.php.html#93"><abbr title="App\Http\Requests\Traits\SanitizesInput::filters">filters</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Services/Responses/ServiceResponse.php.html#58"><abbr title="App\Services\Responses\ServiceResponse::toArray">toArray</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Services/BaseService.php.html#21"><abbr title="App\Services\BaseService::defaultErrorReturn">defaultErrorReturn</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Rules/UniqueUserTag.php.html#33"><abbr title="App\Rules\UniqueUserTag::message">message</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Responses/DefaultResponse.php.html#87"><abbr title="App\Http\Responses\DefaultResponse::formatPaginatedData">formatPaginatedData</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Requests/User/UpdateRequest.php.html#24"><abbr title="App\Http\Requests\User\UpdateRequest::filters">filters</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Providers/BroadcastServiceProvider.php.html#15"><abbr title="App\Providers\BroadcastServiceProvider::boot">boot</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Requests/User/LoginRequest.php.html#24"><abbr title="App\Http\Requests\User\LoginRequest::filters">filters</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Requests/Tag/IndexRequest.php.html#24"><abbr title="App\Http\Requests\Tag\IndexRequest::filters">filters</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Exceptions/PolicyException.php.html#13"><abbr title="App\Exceptions\PolicyException::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Middleware/Authenticate.php.html#15"><abbr title="App\Http\Middleware\Authenticate::redirectTo">redirectTo</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Middleware/RedirectIfAuthenticated.php.html#19"><abbr title="App\Http\Middleware\RedirectIfAuthenticated::handle">handle</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Traits/ResponseHelpers.php.html#62"><abbr title="App\Traits\ResponseHelpers::sendData">sendData</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Middleware/TrustHosts.php.html#14"><abbr title="App\Http\Middleware\TrustHosts::hosts">hosts</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Requests/Contact/IndexRequest.php.html#24"><abbr title="App\Http\Requests\Contact\IndexRequest::filters">filters</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Requests/Tag/AttachOrDetachRequest.php.html#27"><abbr title="App\Http\Requests\Tag\AttachOrDetachRequest::filters">filters</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Exceptions/Handler.php.html#56"><abbr title="App\Exceptions\Handler::render">render</abbr></a></td><td class="text-right">25%</td></tr>
+       <tr><td><a href="Services/VexpensesService.php.html#44"><abbr title="App\Services\VexpensesService::sendRequest">sendRequest</abbr></a></td><td class="text-right">32%</td></tr>
+       <tr><td><a href="Http/Controllers/ApiController.php.html#36"><abbr title="App\Http\Controllers\ApiController::errorResponseFromService">errorResponseFromService</abbr></a></td><td class="text-right">60%</td></tr>
+       <tr><td><a href="Services/ViaCepService.php.html#37"><abbr title="App\Services\ViaCepService::sendRequestViaCep">sendRequestViaCep</abbr></a></td><td class="text-right">65%</td></tr>
+       <tr><td><a href="Services/ContactService.php.html#43"><abbr title="App\Services\ContactService::findAllWithFilter">findAllWithFilter</abbr></a></td><td class="text-right">66%</td></tr>
+       <tr><td><a href="Services/AddressService.php.html#72"><abbr title="App\Services\AddressService::store">store</abbr></a></td><td class="text-right">66%</td></tr>
+       <tr><td><a href="Services/TagService.php.html#71"><abbr title="App\Services\TagService::store">store</abbr></a></td><td class="text-right">66%</td></tr>
+       <tr><td><a href="Services/PhoneService.php.html#69"><abbr title="App\Services\PhoneService::store">store</abbr></a></td><td class="text-right">66%</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Project Risks</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Method</th>
+         <th class="text-right"><abbr title="Change Risk Anti-Patterns (CRAP) Index">CRAP</abbr></th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="Services/VexpensesService.php.html#44"><abbr title="App\Services\VexpensesService::sendRequest">sendRequest</abbr></a></td><td class="text-right">17</td></tr>
+       <tr><td><a href="Http/Responses/DefaultResponse.php.html#87"><abbr title="App\Http\Responses\DefaultResponse::formatPaginatedData">formatPaginatedData</abbr></a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="Http/Middleware/Authenticate.php.html#15"><abbr title="App\Http\Middleware\Authenticate::redirectTo">redirectTo</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Http/Middleware/RedirectIfAuthenticated.php.html#19"><abbr title="App\Http\Middleware\RedirectIfAuthenticated::handle">handle</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Services/BaseService.php.html#21"><abbr title="App\Services\BaseService::defaultErrorReturn">defaultErrorReturn</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Services/ViaCepService.php.html#37"><abbr title="App\Services\ViaCepService::sendRequestViaCep">sendRequestViaCep</abbr></a></td><td class="text-right">4</td></tr>
+       <tr><td><a href="Exceptions/Handler.php.html#56"><abbr title="App\Exceptions\Handler::render">render</abbr></a></td><td class="text-right">3</td></tr>
+       <tr><td><a href="Http/Controllers/ApiController.php.html#36"><abbr title="App\Http\Controllers\ApiController::errorResponseFromService">errorResponseFromService</abbr></a></td><td class="text-right">3</td></tr>
+       <tr><td><a href="Services/AddressService.php.html#72"><abbr title="App\Services\AddressService::store">store</abbr></a></td><td class="text-right">2</td></tr>
+       <tr><td><a href="Services/ContactService.php.html#43"><abbr title="App\Services\ContactService::findAllWithFilter">findAllWithFilter</abbr></a></td><td class="text-right">2</td></tr>
+       <tr><td><a href="Services/PhoneService.php.html#69"><abbr title="App\Services\PhoneService::store">store</abbr></a></td><td class="text-right">2</td></tr>
+       <tr><td><a href="Services/TagService.php.html#71"><abbr title="App\Services\TagService::store">store</abbr></a></td><td class="text-right">2</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+   </div>
+   <footer>
+    <hr/>
+    <p>
+     <small>Generated by <a href="https://github.com/sebastianbergmann/php-code-coverage" target="_top">php-code-coverage 9.2.9</a> using <a href="https://secure.php.net/" target="_top">PHP 7.3.33-1+ubuntu20.04.1+deb.sury.org+1</a> and <a href="https://phpunit.de/">PHPUnit 9.5.11</a> at Fri Apr 29 14:46:08 UTC 2022.</small>
+    </p>
+   </footer>
+  </div>
+  <script src="_js/jquery.min.js" type="text/javascript"></script>
+  <script src="_js/d3.min.js" type="text/javascript"></script>
+  <script src="_js/nv.d3.min.js" type="text/javascript"></script>
+  <script type="text/javascript">
+$(document).ready(function() {
+  nv.addGraph(function() {
+    var chart = nv.models.multiBarChart();
+    chart.tooltips(false)
+      .showControls(false)
+      .showLegend(false)
+      .reduceXTicks(false)
+      .staggerLabels(true)
+      .yAxis.tickFormat(d3.format('d'));
+
+    d3.select('#classCoverageDistribution svg')
+      .datum(getCoverageDistributionData([6,0,0,1,0,1,0,4,9,14,5,65], "Class Coverage"))
+      .transition().duration(500).call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  nv.addGraph(function() {
+    var chart = nv.models.multiBarChart();
+    chart.tooltips(false)
+      .showControls(false)
+      .showLegend(false)
+      .reduceXTicks(false)
+      .staggerLabels(true)
+      .yAxis.tickFormat(d3.format('d'));
+
+    d3.select('#methodCoverageDistribution svg')
+      .datum(getCoverageDistributionData([20,0,0,1,1,0,0,6,5,41,12,175], "Method Coverage"))
+      .transition().duration(500).call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  function getCoverageDistributionData(data, label) {
+    var labels = [
+      '0%',
+      '0-10%',
+      '10-20%',
+      '20-30%',
+      '30-40%',
+      '40-50%',
+      '50-60%',
+      '60-70%',
+      '70-80%',
+      '80-90%',
+      '90-100%',
+      '100%'
+    ];
+    var values = [];
+    $.each(labels, function(key) {
+      values.push({x: labels[key], y: data[key]});
+    });
+
+    return [
+      {
+        key: label,
+        values: values,
+        color: "#4572A7"
+      }
+    ];
+  }
+  nv.addGraph(function() {
+    var chart = nv.models.scatterChart()
+      .showDistX(true)
+      .showDistY(true)
+      .showLegend(false)
+      .forceX([0, 100]);
+    chart.tooltipContent(function(graph) {
+      return '<p>' + graph.point.class + '</p>';
+    });
+
+    chart.xAxis.axisLabel('Code Coverage (in percent)');
+    chart.yAxis.axisLabel('Cyclomatic Complexity');
+
+    d3.select('#classComplexity svg')
+      .datum(getComplexityData([[75,2,"<a href=\"Console\/Kernel.php.html#8\">App\\Console\\Kernel<\/a>"],[70,6,"<a href=\"Exceptions\/Handler.php.html#13\">App\\Exceptions\\Handler<\/a>"],[0,1,"<a href=\"Exceptions\/PolicyException.php.html#11\">App\\Exceptions\\PolicyException<\/a>"],[100,9,"<a href=\"Http\/Controllers\/AddressController.php.html#12\">App\\Http\\Controllers\\AddressController<\/a>"],[63.63636363636363,4,"<a href=\"Http\/Controllers\/ApiController.php.html#12\">App\\Http\\Controllers\\ApiController<\/a>"],[92.3076923076923,14,"<a href=\"Http\/Controllers\/ContactController.php.html#15\">App\\Http\\Controllers\\ContactController<\/a>"],[100,0,"<a href=\"Http\/Controllers\/Controller.php.html#10\">App\\Http\\Controllers\\Controller<\/a>"],[95.45454545454545,17,"<a href=\"Http\/Controllers\/TagController.php.html#18\">App\\Http\\Controllers\\TagController<\/a>"],[86.95652173913044,21,"<a href=\"Http\/Controllers\/UserController.php.html#17\">App\\Http\\Controllers\\UserController<\/a>"],[95.45454545454545,10,"<a href=\"Http\/Controllers\/VexpensesController.php.html#14\">App\\Http\\Controllers\\VexpensesController<\/a>"],[100,0,"<a href=\"Http\/Kernel.php.html#7\">App\\Http\\Kernel<\/a>"],[75,5,"<a href=\"Http\/Middleware\/ApiAuthenticate.php.html#11\">App\\Http\\Middleware\\ApiAuthenticate<\/a>"],[0,2,"<a href=\"Http\/Middleware\/Authenticate.php.html#7\">App\\Http\\Middleware\\Authenticate<\/a>"],[83.33333333333334,6,"<a href=\"Http\/Middleware\/AuthenticateUpdatePassword.php.html#11\">App\\Http\\Middleware\\AuthenticateUpdatePassword<\/a>"],[100,0,"<a href=\"Http\/Middleware\/CheckForMaintenanceMode.php.html#7\">App\\Http\\Middleware\\CheckForMaintenanceMode<\/a>"],[100,0,"<a href=\"Http\/Middleware\/EncryptCookies.php.html#7\">App\\Http\\Middleware\\EncryptCookies<\/a>"],[0,2,"<a href=\"Http\/Middleware\/RedirectIfAuthenticated.php.html#9\">App\\Http\\Middleware\\RedirectIfAuthenticated<\/a>"],[100,0,"<a href=\"Http\/Middleware\/TrimStrings.php.html#7\">App\\Http\\Middleware\\TrimStrings<\/a>"],[0,1,"<a href=\"Http\/Middleware\/TrustHosts.php.html#7\">App\\Http\\Middleware\\TrustHosts<\/a>"],[100,0,"<a href=\"Http\/Middleware\/TrustProxies.php.html#8\">App\\Http\\Middleware\\TrustProxies<\/a>"],[100,0,"<a href=\"Http\/Middleware\/VerifyCsrfToken.php.html#7\">App\\Http\\Middleware\\VerifyCsrfToken<\/a>"],[100,4,"<a href=\"Http\/Requests\/Address\/StoreVexpensesMemberRequest.php.html#8\">App\\Http\\Requests\\Address\\StoreVexpensesMemberRequest<\/a>"],[100,4,"<a href=\"Http\/Requests\/Address\/UpdateRequest.php.html#8\">App\\Http\\Requests\\Address\\UpdateRequest<\/a>"],[100,4,"<a href=\"Http\/Requests\/ChangePassword\/UpdatePasswordRequest.php.html#8\">App\\Http\\Requests\\ChangePassword\\UpdatePasswordRequest<\/a>"],[66.66666666666666,3,"<a href=\"Http\/Requests\/Contact\/IndexRequest.php.html#7\">App\\Http\\Requests\\Contact\\IndexRequest<\/a>"],[100,4,"<a href=\"Http\/Requests\/Contact\/StoreRequest.php.html#9\">App\\Http\\Requests\\Contact\\StoreRequest<\/a>"],[100,4,"<a href=\"Http\/Requests\/Contact\/UpdateRequest.php.html#9\">App\\Http\\Requests\\Contact\\UpdateRequest<\/a>"],[75,4,"<a href=\"Http\/Requests\/Tag\/AttachOrDetachRequest.php.html#8\">App\\Http\\Requests\\Tag\\AttachOrDetachRequest<\/a>"],[66.66666666666666,3,"<a href=\"Http\/Requests\/Tag\/IndexRequest.php.html#7\">App\\Http\\Requests\\Tag\\IndexRequest<\/a>"],[100,4,"<a href=\"Http\/Requests\/Tag\/StoreRequest.php.html#9\">App\\Http\\Requests\\Tag\\StoreRequest<\/a>"],[100,3,"<a href=\"Http\/Requests\/Tag\/UpdateRequest.php.html#9\">App\\Http\\Requests\\Tag\\UpdateRequest<\/a>"],[75,4,"<a href=\"Http\/Requests\/User\/LoginRequest.php.html#7\">App\\Http\\Requests\\User\\LoginRequest<\/a>"],[75,4,"<a href=\"Http\/Requests\/User\/RegisterRequest.php.html#7\">App\\Http\\Requests\\User\\RegisterRequest<\/a>"],[75,4,"<a href=\"Http\/Requests\/User\/UpdateRequest.php.html#7\">App\\Http\\Requests\\User\\UpdateRequest<\/a>"],[100,4,"<a href=\"Http\/Requests\/Vexpenses\/AccessTokenRequest.php.html#8\">App\\Http\\Requests\\Vexpenses\\AccessTokenRequest<\/a>"],[100,1,"<a href=\"Http\/Resources\/Address\/AddressResource.php.html#7\">App\\Http\\Resources\\Address\\AddressResource<\/a>"],[100,1,"<a href=\"Http\/Resources\/Address\/AddressViaCepResource.php.html#7\">App\\Http\\Resources\\Address\\AddressViaCepResource<\/a>"],[100,1,"<a href=\"Http\/Resources\/AuthenticateToken\/AuthenticateTokenResource.php.html#7\">App\\Http\\Resources\\AuthenticateToken\\AuthenticateTokenResource<\/a>"],[100,1,"<a href=\"Http\/Resources\/BaseCollectionResource.php.html#7\">App\\Http\\Resources\\BaseCollectionResource<\/a>"],[100,0,"<a href=\"Http\/Resources\/Contact\/ContactCollectionResource.php.html#7\">App\\Http\\Resources\\Contact\\ContactCollectionResource<\/a>"],[100,4,"<a href=\"Http\/Resources\/Contact\/ContactDetailsResource.php.html#10\">App\\Http\\Resources\\Contact\\ContactDetailsResource<\/a>"],[100,2,"<a href=\"Http\/Resources\/Contact\/ContactIndexResource.php.html#7\">App\\Http\\Resources\\Contact\\ContactIndexResource<\/a>"],[100,1,"<a href=\"Http\/Resources\/Phone\/PhoneResource.php.html#7\">App\\Http\\Resources\\Phone\\PhoneResource<\/a>"],[100,0,"<a href=\"Http\/Resources\/Tag\/TagCollectionResource.php.html#7\">App\\Http\\Resources\\Tag\\TagCollectionResource<\/a>"],[100,1,"<a href=\"Http\/Resources\/Tag\/TagResource.php.html#7\">App\\Http\\Resources\\Tag\\TagResource<\/a>"],[100,1,"<a href=\"Http\/Resources\/TagContact\/TagContactIndexResource.php.html#7\">App\\Http\\Resources\\TagContact\\TagContactIndexResource<\/a>"],[100,1,"<a href=\"Http\/Resources\/User\/ChangePasswordResource.php.html#7\">App\\Http\\Resources\\User\\ChangePasswordResource<\/a>"],[100,1,"<a href=\"Http\/Resources\/User\/UserResource.php.html#7\">App\\Http\\Resources\\User\\UserResource<\/a>"],[100,1,"<a href=\"Http\/Resources\/Vexpenses\/Phone\/PhoneResource.php.html#7\">App\\Http\\Resources\\Vexpenses\\Phone\\PhoneResource<\/a>"],[100,0,"<a href=\"Http\/Resources\/Vexpenses\/TeamMembersCollectionResource.php.html#8\">App\\Http\\Resources\\Vexpenses\\TeamMembersCollectionResource<\/a>"],[100,1,"<a href=\"Http\/Resources\/Vexpenses\/TeamMembersResource.php.html#8\">App\\Http\\Resources\\Vexpenses\\TeamMembersResource<\/a>"],[100,1,"<a href=\"Http\/Resources\/Vexpenses\/VexpensesResource.php.html#7\">App\\Http\\Resources\\Vexpenses\\VexpensesResource<\/a>"],[60.71428571428571,11,"<a href=\"Http\/Responses\/DefaultResponse.php.html#10\">App\\Http\\Responses\\DefaultResponse<\/a>"],[100,1,"<a href=\"Models\/Address.php.html#9\">App\\Models\\Address<\/a>"],[100,1,"<a href=\"Models\/AuthenticateToken.php.html#9\">App\\Models\\AuthenticateToken<\/a>"],[100,1,"<a href=\"Models\/ChangePassword.php.html#9\">App\\Models\\ChangePassword<\/a>"],[100,5,"<a href=\"Models\/Contact.php.html#10\">App\\Models\\Contact<\/a>"],[100,3,"<a href=\"Models\/ExternalToken.php.html#10\">App\\Models\\ExternalToken<\/a>"],[100,1,"<a href=\"Models\/Phone.php.html#9\">App\\Models\\Phone<\/a>"],[100,2,"<a href=\"Models\/Tag.php.html#10\">App\\Models\\Tag<\/a>"],[100,2,"<a href=\"Models\/TagContact.php.html#9\">App\\Models\\TagContact<\/a>"],[100,5,"<a href=\"Models\/User.php.html#9\">App\\Models\\User<\/a>"],[100,2,"<a href=\"Providers\/AppServiceProvider.php.html#7\">App\\Providers\\AppServiceProvider<\/a>"],[100,1,"<a href=\"Providers\/AuthServiceProvider.php.html#8\">App\\Providers\\AuthServiceProvider<\/a>"],[0,1,"<a href=\"Providers\/BroadcastServiceProvider.php.html#8\">App\\Providers\\BroadcastServiceProvider<\/a>"],[100,1,"<a href=\"Providers\/EventServiceProvider.php.html#10\">App\\Providers\\EventServiceProvider<\/a>"],[100,3,"<a href=\"Providers\/HelperServiceProvider.php.html#7\">App\\Providers\\HelperServiceProvider<\/a>"],[93.75,3,"<a href=\"Providers\/RepositoryServiceProvider.php.html#7\">App\\Providers\\RepositoryServiceProvider<\/a>"],[100,4,"<a href=\"Providers\/RouteServiceProvider.php.html#8\">App\\Providers\\RouteServiceProvider<\/a>"],[95,3,"<a href=\"Providers\/ServiceServiceProvider.php.html#7\">App\\Providers\\ServiceServiceProvider<\/a>"],[100,1,"<a href=\"Repositories\/AddressRepositoryEloquent.php.html#12\">App\\Repositories\\AddressRepositoryEloquent<\/a>"],[100,3,"<a href=\"Repositories\/AuthenticateTokenRepositoryEloquent.php.html#13\">App\\Repositories\\AuthenticateTokenRepositoryEloquent<\/a>"],[100,2,"<a href=\"Repositories\/BaseRepositoryEloquent.php.html#14\">App\\Repositories\\BaseRepositoryEloquent<\/a>"],[100,3,"<a href=\"Repositories\/ChangePasswordRepositoryEloquent.php.html#13\">App\\Repositories\\ChangePasswordRepositoryEloquent<\/a>"],[100,5,"<a href=\"Repositories\/ContactRepositoryEloquent.php.html#13\">App\\Repositories\\ContactRepositoryEloquent<\/a>"],[100,3,"<a href=\"Repositories\/ExternalTokenRepositoryEloquent.php.html#13\">App\\Repositories\\ExternalTokenRepositoryEloquent<\/a>"],[100,1,"<a href=\"Repositories\/PhoneRepositoryEloquent.php.html#12\">App\\Repositories\\PhoneRepositoryEloquent<\/a>"],[100,3,"<a href=\"Repositories\/TagContactRepositoryEloquent.php.html#12\">App\\Repositories\\TagContactRepositoryEloquent<\/a>"],[100,4,"<a href=\"Repositories\/TagRepositoryEloquent.php.html#13\">App\\Repositories\\TagRepositoryEloquent<\/a>"],[100,2,"<a href=\"Repositories\/UserRepositoryEloquent.php.html#12\">App\\Repositories\\UserRepositoryEloquent<\/a>"],[100,2,"<a href=\"Rules\/UniqueContactName.php.html#8\">App\\Rules\\UniqueContactName<\/a>"],[83.33333333333334,2,"<a href=\"Rules\/UniqueUserTag.php.html#8\">App\\Rules\\UniqueUserTag<\/a>"],[88.37209302325581,20,"<a href=\"Services\/AddressService.php.html#14\">App\\Services\\AddressService<\/a>"],[86.79245283018868,15,"<a href=\"Services\/AuthenticateTokenService.php.html#14\">App\\Services\\AuthenticateTokenService<\/a>"],[0,2,"<a href=\"Services\/BaseService.php.html#11\">App\\Services\\BaseService<\/a>"],[89.0625,17,"<a href=\"Services\/ChangePasswordService.php.html#14\">App\\Services\\ChangePasswordService<\/a>"],[86.88524590163934,29,"<a href=\"Services\/ContactService.php.html#19\">App\\Services\\ContactService<\/a>"],[86.15384615384616,18,"<a href=\"Services\/ExternalTokenService.php.html#13\">App\\Services\\ExternalTokenService<\/a>"],[100,1,"<a href=\"Services\/Params\/Address\/CreateAddressServiceParams.php.html#7\">App\\Services\\Params\\Address\\CreateAddressServiceParams<\/a>"],[100,5,"<a href=\"Services\/Params\/BaseServiceParams.php.html#7\">App\\Services\\Params\\BaseServiceParams<\/a>"],[100,1,"<a href=\"Services\/Params\/Contact\/CreateCompleteContactsServiceParams.php.html#7\">App\\Services\\Params\\Contact\\CreateCompleteContactsServiceParams<\/a>"],[100,1,"<a href=\"Services\/Params\/Phone\/CreatePhoneServiceParams.php.html#7\">App\\Services\\Params\\Phone\\CreatePhoneServiceParams<\/a>"],[100,1,"<a href=\"Services\/Params\/Tag\/CreateTagServiceParams.php.html#7\">App\\Services\\Params\\Tag\\CreateTagServiceParams<\/a>"],[100,1,"<a href=\"Services\/Params\/User\/RegisterUserServiceParams.php.html#7\">App\\Services\\Params\\User\\RegisterUserServiceParams<\/a>"],[84,14,"<a href=\"Services\/PhoneService.php.html#12\">App\\Services\\PhoneService<\/a>"],[100,2,"<a href=\"Services\/Responses\/InternalError.php.html#5\">App\\Services\\Responses\\InternalError<\/a>"],[46.15384615384615,4,"<a href=\"Services\/Responses\/ServiceResponse.php.html#8\">App\\Services\\Responses\\ServiceResponse<\/a>"],[86.58536585365853,20,"<a href=\"Services\/TagContactService.php.html#13\">App\\Services\\TagContactService<\/a>"],[84.12698412698413,18,"<a href=\"Services\/TagService.php.html#13\">App\\Services\\TagService<\/a>"],[84.39716312056737,33,"<a href=\"Services\/UserService.php.html#15\">App\\Services\\UserService<\/a>"],[73.37278106508876,40,"<a href=\"Services\/VexpensesService.php.html#17\">App\\Services\\VexpensesService<\/a>"],[71.42857142857143,6,"<a href=\"Services\/ViaCepService.php.html#11\">App\\Services\\ViaCepService<\/a>"],[86.95652173913044,12,"<a href=\"Http\/Requests\/Traits\/SanitizesInput.php.html#8\">App\\Http\\Requests\\Traits\\SanitizesInput<\/a>"],[88.88888888888889,4,"<a href=\"Models\/Traits\/UuidAsPrimaryKey.php.html#7\">App\\Models\\Traits\\UuidAsPrimaryKey<\/a>"],[25,4,"<a href=\"Traits\/ResponseHelpers.php.html#8\">App\\Traits\\ResponseHelpers<\/a>"]], 'Class Complexity'))
+      .transition()
+      .duration(500)
+      .call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  nv.addGraph(function() {
+    var chart = nv.models.scatterChart()
+      .showDistX(true)
+      .showDistY(true)
+      .showLegend(false)
+      .forceX([0, 100]);
+    chart.tooltipContent(function(graph) {
+      return '<p>' + graph.point.class + '</p>';
+    });
+
+    chart.xAxis.axisLabel('Code Coverage (in percent)');
+    chart.yAxis.axisLabel('Method Complexity');
+
+    d3.select('#methodComplexity svg')
+      .datum(getComplexityData([[0,1,"<a href=\"Console\/Kernel.php.html#25\">App\\Console\\Kernel::schedule<\/a>"],[100,1,"<a href=\"Console\/Kernel.php.html#35\">App\\Console\\Kernel::commands<\/a>"],[100,1,"<a href=\"Exceptions\/Handler.php.html#42\">App\\Exceptions\\Handler::report<\/a>"],[25,2,"<a href=\"Exceptions\/Handler.php.html#56\">App\\Exceptions\\Handler::render<\/a>"],[100,3,"<a href=\"Exceptions\/Handler.php.html#79\">App\\Exceptions\\Handler::invalidJson<\/a>"],[0,1,"<a href=\"Exceptions\/PolicyException.php.html#13\">App\\Exceptions\\PolicyException::__construct<\/a>"],[100,1,"<a href=\"Http\/Controllers\/AddressController.php.html#22\">App\\Http\\Controllers\\AddressController::__construct<\/a>"],[100,3,"<a href=\"Http\/Controllers\/AddressController.php.html#37\">App\\Http\\Controllers\\AddressController::update<\/a>"],[100,2,"<a href=\"Http\/Controllers\/AddressController.php.html#63\">App\\Http\\Controllers\\AddressController::delete<\/a>"],[100,3,"<a href=\"Http\/Controllers\/AddressController.php.html#87\">App\\Http\\Controllers\\AddressController::findByPostalCode<\/a>"],[100,1,"<a href=\"Http\/Controllers\/ApiController.php.html#24\">App\\Http\\Controllers\\ApiController::response<\/a>"],[60,3,"<a href=\"Http\/Controllers\/ApiController.php.html#36\">App\\Http\\Controllers\\ApiController::errorResponseFromService<\/a>"],[100,1,"<a href=\"Http\/Controllers\/ContactController.php.html#25\">App\\Http\\Controllers\\ContactController::__construct<\/a>"],[85.71428571428571,2,"<a href=\"Http\/Controllers\/ContactController.php.html#38\">App\\Http\\Controllers\\ContactController::index<\/a>"],[100,3,"<a href=\"Http\/Controllers\/ContactController.php.html#63\">App\\Http\\Controllers\\ContactController::show<\/a>"],[91.66666666666666,3,"<a href=\"Http\/Controllers\/ContactController.php.html#88\">App\\Http\\Controllers\\ContactController::store<\/a>"],[85.71428571428571,3,"<a href=\"Http\/Controllers\/ContactController.php.html#120\">App\\Http\\Controllers\\ContactController::update<\/a>"],[100,2,"<a href=\"Http\/Controllers\/ContactController.php.html#146\">App\\Http\\Controllers\\ContactController::delete<\/a>"],[100,1,"<a href=\"Http\/Controllers\/TagController.php.html#28\">App\\Http\\Controllers\\TagController::__construct<\/a>"],[85.71428571428571,3,"<a href=\"Http\/Controllers\/TagController.php.html#40\">App\\Http\\Controllers\\TagController::index<\/a>"],[87.5,3,"<a href=\"Http\/Controllers\/TagController.php.html#65\">App\\Http\\Controllers\\TagController::store<\/a>"],[100,3,"<a href=\"Http\/Controllers\/TagController.php.html#92\">App\\Http\\Controllers\\TagController::update<\/a>"],[100,2,"<a href=\"Http\/Controllers\/TagController.php.html#118\">App\\Http\\Controllers\\TagController::delete<\/a>"],[100,3,"<a href=\"Http\/Controllers\/TagController.php.html#139\">App\\Http\\Controllers\\TagController::attach<\/a>"],[100,2,"<a href=\"Http\/Controllers\/TagController.php.html#165\">App\\Http\\Controllers\\TagController::detach<\/a>"],[100,1,"<a href=\"Http\/Controllers\/UserController.php.html#24\">App\\Http\\Controllers\\UserController::__construct<\/a>"],[87.5,3,"<a href=\"Http\/Controllers\/UserController.php.html#38\">App\\Http\\Controllers\\UserController::register<\/a>"],[100,3,"<a href=\"Http\/Controllers\/UserController.php.html#65\">App\\Http\\Controllers\\UserController::login<\/a>"],[75,2,"<a href=\"Http\/Controllers\/UserController.php.html#88\">App\\Http\\Controllers\\UserController::logout<\/a>"],[80,3,"<a href=\"Http\/Controllers\/UserController.php.html#105\">App\\Http\\Controllers\\UserController::show<\/a>"],[85.71428571428571,3,"<a href=\"Http\/Controllers\/UserController.php.html#124\">App\\Http\\Controllers\\UserController::update<\/a>"],[80,3,"<a href=\"Http\/Controllers\/UserController.php.html#147\">App\\Http\\Controllers\\UserController::tokenToChangePassword<\/a>"],[87.5,3,"<a href=\"Http\/Controllers\/UserController.php.html#169\">App\\Http\\Controllers\\UserController::changePassword<\/a>"],[100,1,"<a href=\"Http\/Controllers\/VexpensesController.php.html#21\">App\\Http\\Controllers\\VexpensesController::__construct<\/a>"],[85.71428571428571,3,"<a href=\"Http\/Controllers\/VexpensesController.php.html#33\">App\\Http\\Controllers\\VexpensesController::accessToken<\/a>"],[100,3,"<a href=\"Http\/Controllers\/VexpensesController.php.html#56\">App\\Http\\Controllers\\VexpensesController::teamMembers<\/a>"],[100,3,"<a href=\"Http\/Controllers\/VexpensesController.php.html#81\">App\\Http\\Controllers\\VexpensesController::storeContactWithMember<\/a>"],[100,1,"<a href=\"Http\/Middleware\/ApiAuthenticate.php.html#20\">App\\Http\\Middleware\\ApiAuthenticate::__construct<\/a>"],[71.42857142857143,4,"<a href=\"Http\/Middleware\/ApiAuthenticate.php.html#32\">App\\Http\\Middleware\\ApiAuthenticate::handle<\/a>"],[0,2,"<a href=\"Http\/Middleware\/Authenticate.php.html#15\">App\\Http\\Middleware\\Authenticate::redirectTo<\/a>"],[100,1,"<a href=\"Http\/Middleware\/AuthenticateUpdatePassword.php.html#20\">App\\Http\\Middleware\\AuthenticateUpdatePassword::__construct<\/a>"],[81.81818181818183,5,"<a href=\"Http\/Middleware\/AuthenticateUpdatePassword.php.html#32\">App\\Http\\Middleware\\AuthenticateUpdatePassword::handle<\/a>"],[0,2,"<a href=\"Http\/Middleware\/RedirectIfAuthenticated.php.html#19\">App\\Http\\Middleware\\RedirectIfAuthenticated::handle<\/a>"],[0,1,"<a href=\"Http\/Middleware\/TrustHosts.php.html#14\">App\\Http\\Middleware\\TrustHosts::hosts<\/a>"],[100,1,"<a href=\"Http\/Requests\/Address\/StoreVexpensesMemberRequest.php.html#17\">App\\Http\\Requests\\Address\\StoreVexpensesMemberRequest::authorize<\/a>"],[100,1,"<a href=\"Http\/Requests\/Address\/StoreVexpensesMemberRequest.php.html#27\">App\\Http\\Requests\\Address\\StoreVexpensesMemberRequest::filters<\/a>"],[100,1,"<a href=\"Http\/Requests\/Address\/StoreVexpensesMemberRequest.php.html#41\">App\\Http\\Requests\\Address\\StoreVexpensesMemberRequest::rules<\/a>"],[100,1,"<a href=\"Http\/Requests\/Address\/StoreVexpensesMemberRequest.php.html#61\">App\\Http\\Requests\\Address\\StoreVexpensesMemberRequest::messages<\/a>"],[100,1,"<a href=\"Http\/Requests\/Address\/UpdateRequest.php.html#17\">App\\Http\\Requests\\Address\\UpdateRequest::authorize<\/a>"],[100,1,"<a href=\"Http\/Requests\/Address\/UpdateRequest.php.html#27\">App\\Http\\Requests\\Address\\UpdateRequest::filters<\/a>"],[100,1,"<a href=\"Http\/Requests\/Address\/UpdateRequest.php.html#48\">App\\Http\\Requests\\Address\\UpdateRequest::rules<\/a>"],[100,1,"<a href=\"Http\/Requests\/Address\/UpdateRequest.php.html#67\">App\\Http\\Requests\\Address\\UpdateRequest::messages<\/a>"],[100,1,"<a href=\"Http\/Requests\/ChangePassword\/UpdatePasswordRequest.php.html#17\">App\\Http\\Requests\\ChangePassword\\UpdatePasswordRequest::authorize<\/a>"],[100,1,"<a href=\"Http\/Requests\/ChangePassword\/UpdatePasswordRequest.php.html#27\">App\\Http\\Requests\\ChangePassword\\UpdatePasswordRequest::filters<\/a>"],[100,1,"<a href=\"Http\/Requests\/ChangePassword\/UpdatePasswordRequest.php.html#43\">App\\Http\\Requests\\ChangePassword\\UpdatePasswordRequest::rules<\/a>"],[100,1,"<a href=\"Http\/Requests\/ChangePassword\/UpdatePasswordRequest.php.html#57\">App\\Http\\Requests\\ChangePassword\\UpdatePasswordRequest::messages<\/a>"],[100,1,"<a href=\"Http\/Requests\/Contact\/IndexRequest.php.html#14\">App\\Http\\Requests\\Contact\\IndexRequest::authorize<\/a>"],[0,1,"<a href=\"Http\/Requests\/Contact\/IndexRequest.php.html#24\">App\\Http\\Requests\\Contact\\IndexRequest::filters<\/a>"],[100,1,"<a href=\"Http\/Requests\/Contact\/IndexRequest.php.html#38\">App\\Http\\Requests\\Contact\\IndexRequest::rules<\/a>"],[100,1,"<a href=\"Http\/Requests\/Contact\/StoreRequest.php.html#18\">App\\Http\\Requests\\Contact\\StoreRequest::authorize<\/a>"],[100,1,"<a href=\"Http\/Requests\/Contact\/StoreRequest.php.html#28\">App\\Http\\Requests\\Contact\\StoreRequest::filters<\/a>"],[100,1,"<a href=\"Http\/Requests\/Contact\/StoreRequest.php.html#45\">App\\Http\\Requests\\Contact\\StoreRequest::rules<\/a>"],[100,1,"<a href=\"Http\/Requests\/Contact\/StoreRequest.php.html#73\">App\\Http\\Requests\\Contact\\StoreRequest::messages<\/a>"],[100,1,"<a href=\"Http\/Requests\/Contact\/UpdateRequest.php.html#18\">App\\Http\\Requests\\Contact\\UpdateRequest::authorize<\/a>"],[100,1,"<a href=\"Http\/Requests\/Contact\/UpdateRequest.php.html#28\">App\\Http\\Requests\\Contact\\UpdateRequest::filters<\/a>"],[100,1,"<a href=\"Http\/Requests\/Contact\/UpdateRequest.php.html#42\">App\\Http\\Requests\\Contact\\UpdateRequest::rules<\/a>"],[100,1,"<a href=\"Http\/Requests\/Contact\/UpdateRequest.php.html#57\">App\\Http\\Requests\\Contact\\UpdateRequest::messages<\/a>"],[100,1,"<a href=\"Http\/Requests\/Tag\/AttachOrDetachRequest.php.html#17\">App\\Http\\Requests\\Tag\\AttachOrDetachRequest::authorize<\/a>"],[0,1,"<a href=\"Http\/Requests\/Tag\/AttachOrDetachRequest.php.html#27\">App\\Http\\Requests\\Tag\\AttachOrDetachRequest::filters<\/a>"],[100,1,"<a href=\"Http\/Requests\/Tag\/AttachOrDetachRequest.php.html#41\">App\\Http\\Requests\\Tag\\AttachOrDetachRequest::rules<\/a>"],[100,1,"<a href=\"Http\/Requests\/Tag\/AttachOrDetachRequest.php.html#53\">App\\Http\\Requests\\Tag\\AttachOrDetachRequest::messages<\/a>"],[100,1,"<a href=\"Http\/Requests\/Tag\/IndexRequest.php.html#14\">App\\Http\\Requests\\Tag\\IndexRequest::authorize<\/a>"],[0,1,"<a href=\"Http\/Requests\/Tag\/IndexRequest.php.html#24\">App\\Http\\Requests\\Tag\\IndexRequest::filters<\/a>"],[100,1,"<a href=\"Http\/Requests\/Tag\/IndexRequest.php.html#38\">App\\Http\\Requests\\Tag\\IndexRequest::rules<\/a>"],[100,1,"<a href=\"Http\/Requests\/Tag\/StoreRequest.php.html#18\">App\\Http\\Requests\\Tag\\StoreRequest::authorize<\/a>"],[100,1,"<a href=\"Http\/Requests\/Tag\/StoreRequest.php.html#28\">App\\Http\\Requests\\Tag\\StoreRequest::filters<\/a>"],[100,1,"<a href=\"Http\/Requests\/Tag\/StoreRequest.php.html#42\">App\\Http\\Requests\\Tag\\StoreRequest::rules<\/a>"],[100,1,"<a href=\"Http\/Requests\/Tag\/StoreRequest.php.html#57\">App\\Http\\Requests\\Tag\\StoreRequest::messages<\/a>"],[100,1,"<a href=\"Http\/Requests\/Tag\/UpdateRequest.php.html#18\">App\\Http\\Requests\\Tag\\UpdateRequest::authorize<\/a>"],[100,1,"<a href=\"Http\/Requests\/Tag\/UpdateRequest.php.html#28\">App\\Http\\Requests\\Tag\\UpdateRequest::filters<\/a>"],[100,1,"<a href=\"Http\/Requests\/Tag\/UpdateRequest.php.html#42\">App\\Http\\Requests\\Tag\\UpdateRequest::rules<\/a>"],[100,1,"<a href=\"Http\/Requests\/User\/LoginRequest.php.html#14\">App\\Http\\Requests\\User\\LoginRequest::authorize<\/a>"],[0,1,"<a href=\"Http\/Requests\/User\/LoginRequest.php.html#24\">App\\Http\\Requests\\User\\LoginRequest::filters<\/a>"],[100,1,"<a href=\"Http\/Requests\/User\/LoginRequest.php.html#39\">App\\Http\\Requests\\User\\LoginRequest::rules<\/a>"],[100,1,"<a href=\"Http\/Requests\/User\/LoginRequest.php.html#52\">App\\Http\\Requests\\User\\LoginRequest::messages<\/a>"],[100,1,"<a href=\"Http\/Requests\/User\/RegisterRequest.php.html#14\">App\\Http\\Requests\\User\\RegisterRequest::authorize<\/a>"],[0,1,"<a href=\"Http\/Requests\/User\/RegisterRequest.php.html#24\">App\\Http\\Requests\\User\\RegisterRequest::filters<\/a>"],[100,1,"<a href=\"Http\/Requests\/User\/RegisterRequest.php.html#41\">App\\Http\\Requests\\User\\RegisterRequest::rules<\/a>"],[100,1,"<a href=\"Http\/Requests\/User\/RegisterRequest.php.html#56\">App\\Http\\Requests\\User\\RegisterRequest::messages<\/a>"],[100,1,"<a href=\"Http\/Requests\/User\/UpdateRequest.php.html#14\">App\\Http\\Requests\\User\\UpdateRequest::authorize<\/a>"],[0,1,"<a href=\"Http\/Requests\/User\/UpdateRequest.php.html#24\">App\\Http\\Requests\\User\\UpdateRequest::filters<\/a>"],[100,1,"<a href=\"Http\/Requests\/User\/UpdateRequest.php.html#39\">App\\Http\\Requests\\User\\UpdateRequest::rules<\/a>"],[100,1,"<a href=\"Http\/Requests\/User\/UpdateRequest.php.html#52\">App\\Http\\Requests\\User\\UpdateRequest::messages<\/a>"],[100,1,"<a href=\"Http\/Requests\/Vexpenses\/AccessTokenRequest.php.html#17\">App\\Http\\Requests\\Vexpenses\\AccessTokenRequest::authorize<\/a>"],[100,1,"<a href=\"Http\/Requests\/Vexpenses\/AccessTokenRequest.php.html#27\">App\\Http\\Requests\\Vexpenses\\AccessTokenRequest::filters<\/a>"],[100,1,"<a href=\"Http\/Requests\/Vexpenses\/AccessTokenRequest.php.html#41\">App\\Http\\Requests\\Vexpenses\\AccessTokenRequest::rules<\/a>"],[100,1,"<a href=\"Http\/Requests\/Vexpenses\/AccessTokenRequest.php.html#53\">App\\Http\\Requests\\Vexpenses\\AccessTokenRequest::messages<\/a>"],[100,1,"<a href=\"Http\/Resources\/Address\/AddressResource.php.html#15\">App\\Http\\Resources\\Address\\AddressResource::toArray<\/a>"],[100,1,"<a href=\"Http\/Resources\/Address\/AddressViaCepResource.php.html#15\">App\\Http\\Resources\\Address\\AddressViaCepResource::toArray<\/a>"],[100,1,"<a href=\"Http\/Resources\/AuthenticateToken\/AuthenticateTokenResource.php.html#15\">App\\Http\\Resources\\AuthenticateToken\\AuthenticateTokenResource::toArray<\/a>"],[100,1,"<a href=\"Http\/Resources\/BaseCollectionResource.php.html#15\">App\\Http\\Resources\\BaseCollectionResource::toArray<\/a>"],[100,4,"<a href=\"Http\/Resources\/Contact\/ContactDetailsResource.php.html#18\">App\\Http\\Resources\\Contact\\ContactDetailsResource::toArray<\/a>"],[100,1,"<a href=\"Http\/Resources\/Contact\/ContactIndexResource.php.html#15\">App\\Http\\Resources\\Contact\\ContactIndexResource::toArray<\/a>"],[100,1,"<a href=\"Http\/Resources\/Contact\/ContactIndexResource.php.html#29\">App\\Http\\Resources\\Contact\\ContactIndexResource::firstPhoneContact<\/a>"],[100,1,"<a href=\"Http\/Resources\/Phone\/PhoneResource.php.html#15\">App\\Http\\Resources\\Phone\\PhoneResource::toArray<\/a>"],[100,1,"<a href=\"Http\/Resources\/Tag\/TagResource.php.html#15\">App\\Http\\Resources\\Tag\\TagResource::toArray<\/a>"],[100,1,"<a href=\"Http\/Resources\/TagContact\/TagContactIndexResource.php.html#15\">App\\Http\\Resources\\TagContact\\TagContactIndexResource::toArray<\/a>"],[100,1,"<a href=\"Http\/Resources\/User\/ChangePasswordResource.php.html#15\">App\\Http\\Resources\\User\\ChangePasswordResource::toArray<\/a>"],[100,1,"<a href=\"Http\/Resources\/User\/UserResource.php.html#15\">App\\Http\\Resources\\User\\UserResource::toArray<\/a>"],[100,1,"<a href=\"Http\/Resources\/Vexpenses\/Phone\/PhoneResource.php.html#15\">App\\Http\\Resources\\Vexpenses\\Phone\\PhoneResource::toArray<\/a>"],[100,1,"<a href=\"Http\/Resources\/Vexpenses\/TeamMembersResource.php.html#16\">App\\Http\\Resources\\Vexpenses\\TeamMembersResource::toArray<\/a>"],[100,1,"<a href=\"Http\/Resources\/Vexpenses\/VexpensesResource.php.html#15\">App\\Http\\Resources\\Vexpenses\\VexpensesResource::toArray<\/a>"],[88.23529411764706,6,"<a href=\"Http\/Responses\/DefaultResponse.php.html#23\">App\\Http\\Responses\\DefaultResponse::__construct<\/a>"],[100,1,"<a href=\"Http\/Responses\/DefaultResponse.php.html#62\">App\\Http\\Responses\\DefaultResponse::toArray<\/a>"],[100,1,"<a href=\"Http\/Responses\/DefaultResponse.php.html#75\">App\\Http\\Responses\\DefaultResponse::__get<\/a>"],[0,3,"<a href=\"Http\/Responses\/DefaultResponse.php.html#87\">App\\Http\\Responses\\DefaultResponse::formatPaginatedData<\/a>"],[100,1,"<a href=\"Models\/Address.php.html#41\">App\\Models\\Address::contact<\/a>"],[100,1,"<a href=\"Models\/AuthenticateToken.php.html#28\">App\\Models\\AuthenticateToken::user<\/a>"],[100,1,"<a href=\"Models\/ChangePassword.php.html#35\">App\\Models\\ChangePassword::user<\/a>"],[100,1,"<a href=\"Models\/Contact.php.html#41\">App\\Models\\Contact::user<\/a>"],[100,1,"<a href=\"Models\/Contact.php.html#49\">App\\Models\\Contact::adresses<\/a>"],[100,1,"<a href=\"Models\/Contact.php.html#57\">App\\Models\\Contact::phones<\/a>"],[100,1,"<a href=\"Models\/Contact.php.html#65\">App\\Models\\Contact::tagContacts<\/a>"],[100,1,"<a href=\"Models\/Contact.php.html#73\">App\\Models\\Contact::tags<\/a>"],[100,1,"<a href=\"Models\/ExternalToken.php.html#30\">App\\Models\\ExternalToken::user<\/a>"],[100,2,"<a href=\"Models\/ExternalToken.php.html#38\">App\\Models\\ExternalToken::setTypeAttribute<\/a>"],[100,1,"<a href=\"Models\/Phone.php.html#27\">App\\Models\\Phone::contact<\/a>"],[100,1,"<a href=\"Models\/Tag.php.html#38\">App\\Models\\Tag::user<\/a>"],[100,1,"<a href=\"Models\/Tag.php.html#46\">App\\Models\\Tag::tagContacts<\/a>"],[100,1,"<a href=\"Models\/TagContact.php.html#34\">App\\Models\\TagContact::tag<\/a>"],[100,1,"<a href=\"Models\/TagContact.php.html#42\">App\\Models\\TagContact::contact<\/a>"],[100,1,"<a href=\"Models\/User.php.html#38\">App\\Models\\User::contacts<\/a>"],[100,1,"<a href=\"Models\/User.php.html#46\">App\\Models\\User::tags<\/a>"],[100,1,"<a href=\"Models\/User.php.html#54\">App\\Models\\User::authenticateTokens<\/a>"],[100,1,"<a href=\"Models\/User.php.html#62\">App\\Models\\User::changePasswords<\/a>"],[100,1,"<a href=\"Models\/User.php.html#70\">App\\Models\\User::externalTokens<\/a>"],[100,1,"<a href=\"Providers\/AppServiceProvider.php.html#14\">App\\Providers\\AppServiceProvider::register<\/a>"],[100,1,"<a href=\"Providers\/AppServiceProvider.php.html#24\">App\\Providers\\AppServiceProvider::boot<\/a>"],[100,1,"<a href=\"Providers\/AuthServiceProvider.php.html#24\">App\\Providers\\AuthServiceProvider::boot<\/a>"],[0,1,"<a href=\"Providers\/BroadcastServiceProvider.php.html#15\">App\\Providers\\BroadcastServiceProvider::boot<\/a>"],[100,1,"<a href=\"Providers\/EventServiceProvider.php.html#28\">App\\Providers\\EventServiceProvider::boot<\/a>"],[100,2,"<a href=\"Providers\/HelperServiceProvider.php.html#14\">App\\Providers\\HelperServiceProvider::register<\/a>"],[100,1,"<a href=\"Providers\/HelperServiceProvider.php.html#27\">App\\Providers\\HelperServiceProvider::boot<\/a>"],[93.33333333333333,2,"<a href=\"Providers\/RepositoryServiceProvider.php.html#19\">App\\Providers\\RepositoryServiceProvider::register<\/a>"],[100,1,"<a href=\"Providers\/RepositoryServiceProvider.php.html#51\">App\\Providers\\RepositoryServiceProvider::boot<\/a>"],[100,1,"<a href=\"Providers\/RouteServiceProvider.php.html#31\">App\\Providers\\RouteServiceProvider::boot<\/a>"],[100,1,"<a href=\"Providers\/RouteServiceProvider.php.html#43\">App\\Providers\\RouteServiceProvider::map<\/a>"],[100,1,"<a href=\"Providers\/RouteServiceProvider.php.html#59\">App\\Providers\\RouteServiceProvider::mapWebRoutes<\/a>"],[100,1,"<a href=\"Providers\/RouteServiceProvider.php.html#73\">App\\Providers\\RouteServiceProvider::mapApiRoutes<\/a>"],[94.73684210526315,2,"<a href=\"Providers\/ServiceServiceProvider.php.html#45\">App\\Providers\\ServiceServiceProvider::register<\/a>"],[100,1,"<a href=\"Providers\/ServiceServiceProvider.php.html#85\">App\\Providers\\ServiceServiceProvider::boot<\/a>"],[100,1,"<a href=\"Repositories\/AddressRepositoryEloquent.php.html#19\">App\\Repositories\\AddressRepositoryEloquent::model<\/a>"],[100,1,"<a href=\"Repositories\/AuthenticateTokenRepositoryEloquent.php.html#20\">App\\Repositories\\AuthenticateTokenRepositoryEloquent::model<\/a>"],[100,1,"<a href=\"Repositories\/AuthenticateTokenRepositoryEloquent.php.html#32\">App\\Repositories\\AuthenticateTokenRepositoryEloquent::returnAllUserTokens<\/a>"],[100,1,"<a href=\"Repositories\/AuthenticateTokenRepositoryEloquent.php.html#46\">App\\Repositories\\AuthenticateTokenRepositoryEloquent::findByToken<\/a>"],[100,1,"<a href=\"Repositories\/BaseRepositoryEloquent.php.html#31\">App\\Repositories\\BaseRepositoryEloquent::findOrNull<\/a>"],[100,1,"<a href=\"Repositories\/BaseRepositoryEloquent.php.html#50\">App\\Repositories\\BaseRepositoryEloquent::delete<\/a>"],[100,1,"<a href=\"Repositories\/ChangePasswordRepositoryEloquent.php.html#20\">App\\Repositories\\ChangePasswordRepositoryEloquent::model<\/a>"],[100,1,"<a href=\"Repositories\/ChangePasswordRepositoryEloquent.php.html#32\">App\\Repositories\\ChangePasswordRepositoryEloquent::returnAllTokensToChangePassword<\/a>"],[100,1,"<a href=\"Repositories\/ChangePasswordRepositoryEloquent.php.html#47\">App\\Repositories\\ChangePasswordRepositoryEloquent::findByToken<\/a>"],[100,1,"<a href=\"Repositories\/ContactRepositoryEloquent.php.html#20\">App\\Repositories\\ContactRepositoryEloquent::model<\/a>"],[100,2,"<a href=\"Repositories\/ContactRepositoryEloquent.php.html#34\">App\\Repositories\\ContactRepositoryEloquent::findAllWithFilter<\/a>"],[100,1,"<a href=\"Repositories\/ContactRepositoryEloquent.php.html#60\">App\\Repositories\\ContactRepositoryEloquent::findContactByUserId<\/a>"],[100,1,"<a href=\"Repositories\/ContactRepositoryEloquent.php.html#76\">App\\Repositories\\ContactRepositoryEloquent::findContactByExternalId<\/a>"],[100,1,"<a href=\"Repositories\/ExternalTokenRepositoryEloquent.php.html#20\">App\\Repositories\\ExternalTokenRepositoryEloquent::model<\/a>"],[100,1,"<a href=\"Repositories\/ExternalTokenRepositoryEloquent.php.html#33\">App\\Repositories\\ExternalTokenRepositoryEloquent::returnAllExternalTokens<\/a>"],[100,1,"<a href=\"Repositories\/ExternalTokenRepositoryEloquent.php.html#49\">App\\Repositories\\ExternalTokenRepositoryEloquent::findByExternalTokenOfUser<\/a>"],[100,1,"<a href=\"Repositories\/PhoneRepositoryEloquent.php.html#19\">App\\Repositories\\PhoneRepositoryEloquent::model<\/a>"],[100,1,"<a href=\"Repositories\/TagContactRepositoryEloquent.php.html#19\">App\\Repositories\\TagContactRepositoryEloquent::model<\/a>"],[100,2,"<a href=\"Repositories\/TagContactRepositoryEloquent.php.html#33\">App\\Repositories\\TagContactRepositoryEloquent::findTagContact<\/a>"],[100,1,"<a href=\"Repositories\/TagRepositoryEloquent.php.html#20\">App\\Repositories\\TagRepositoryEloquent::model<\/a>"],[100,2,"<a href=\"Repositories\/TagRepositoryEloquent.php.html#33\">App\\Repositories\\TagRepositoryEloquent::findAll<\/a>"],[100,1,"<a href=\"Repositories\/TagRepositoryEloquent.php.html#53\">App\\Repositories\\TagRepositoryEloquent::findTagByUserId<\/a>"],[100,1,"<a href=\"Repositories\/UserRepositoryEloquent.php.html#19\">App\\Repositories\\UserRepositoryEloquent::model<\/a>"],[100,1,"<a href=\"Repositories\/UserRepositoryEloquent.php.html#31\">App\\Repositories\\UserRepositoryEloquent::findUserByEmail<\/a>"],[100,1,"<a href=\"Rules\/UniqueContactName.php.html#18\">App\\Rules\\UniqueContactName::passes<\/a>"],[100,1,"<a href=\"Rules\/UniqueContactName.php.html#33\">App\\Rules\\UniqueContactName::message<\/a>"],[100,1,"<a href=\"Rules\/UniqueUserTag.php.html#18\">App\\Rules\\UniqueUserTag::passes<\/a>"],[0,1,"<a href=\"Rules\/UniqueUserTag.php.html#33\">App\\Rules\\UniqueUserTag::message<\/a>"],[100,1,"<a href=\"Services\/AddressService.php.html#24\">App\\Services\\AddressService::__construct<\/a>"],[85.71428571428571,3,"<a href=\"Services\/AddressService.php.html#36\">App\\Services\\AddressService::find<\/a>"],[66.66666666666666,2,"<a href=\"Services\/AddressService.php.html#72\">App\\Services\\AddressService::store<\/a>"],[92,5,"<a href=\"Services\/AddressService.php.html#95\">App\\Services\\AddressService::update<\/a>"],[92,5,"<a href=\"Services\/AddressService.php.html#149\">App\\Services\\AddressService::delete<\/a>"],[85.71428571428571,4,"<a href=\"Services\/AddressService.php.html#200\">App\\Services\\AddressService::findByPostalCode<\/a>"],[100,1,"<a href=\"Services\/AuthenticateTokenService.php.html#24\">App\\Services\\AuthenticateTokenService::__construct<\/a>"],[84.21052631578947,5,"<a href=\"Services\/AuthenticateTokenService.php.html#36\">App\\Services\\AuthenticateTokenService::storeToken<\/a>"],[88.88888888888889,6,"<a href=\"Services\/AuthenticateTokenService.php.html#79\">App\\Services\\AuthenticateTokenService::clearToken<\/a>"],[85.71428571428571,3,"<a href=\"Services\/AuthenticateTokenService.php.html#119\">App\\Services\\AuthenticateTokenService::findToken<\/a>"],[0,2,"<a href=\"Services\/BaseService.php.html#21\">App\\Services\\BaseService::defaultErrorReturn<\/a>"],[100,1,"<a href=\"Services\/ChangePasswordService.php.html#24\">App\\Services\\ChangePasswordService::__construct<\/a>"],[85,5,"<a href=\"Services\/ChangePasswordService.php.html#36\">App\\Services\\ChangePasswordService::newToken<\/a>"],[89.47368421052632,6,"<a href=\"Services\/ChangePasswordService.php.html#81\">App\\Services\\ChangePasswordService::clearToken<\/a>"],[91.30434782608695,5,"<a href=\"Services\/ChangePasswordService.php.html#124\">App\\Services\\ChangePasswordService::findByToken<\/a>"],[100,1,"<a href=\"Services\/ContactService.php.html#29\">App\\Services\\ContactService::__construct<\/a>"],[66.66666666666666,2,"<a href=\"Services\/ContactService.php.html#43\">App\\Services\\ContactService::findAllWithFilter<\/a>"],[90.9090909090909,5,"<a href=\"Services\/ContactService.php.html#66\">App\\Services\\ContactService::find<\/a>"],[85.71428571428571,8,"<a href=\"Services\/ContactService.php.html#115\">App\\Services\\ContactService::store<\/a>"],[85.71428571428571,4,"<a href=\"Services\/ContactService.php.html#196\">App\\Services\\ContactService::update<\/a>"],[85.71428571428571,4,"<a href=\"Services\/ContactService.php.html#232\">App\\Services\\ContactService::delete<\/a>"],[90.9090909090909,5,"<a href=\"Services\/ContactService.php.html#266\">App\\Services\\ContactService::findContactByExternalId<\/a>"],[100,1,"<a href=\"Services\/ExternalTokenService.php.html#23\">App\\Services\\ExternalTokenService::__construct<\/a>"],[78.26086956521739,6,"<a href=\"Services\/ExternalTokenService.php.html#39\">App\\Services\\ExternalTokenService::storeToken<\/a>"],[88.88888888888889,6,"<a href=\"Services\/ExternalTokenService.php.html#93\">App\\Services\\ExternalTokenService::clearToken<\/a>"],[90.9090909090909,5,"<a href=\"Services\/ExternalTokenService.php.html#134\">App\\Services\\ExternalTokenService::find<\/a>"],[100,1,"<a href=\"Services\/Params\/Address\/CreateAddressServiceParams.php.html#32\">App\\Services\\Params\\Address\\CreateAddressServiceParams::__construct<\/a>"],[100,4,"<a href=\"Services\/Params\/BaseServiceParams.php.html#12\">App\\Services\\Params\\BaseServiceParams::__construct<\/a>"],[100,1,"<a href=\"Services\/Params\/BaseServiceParams.php.html#39\">App\\Services\\Params\\BaseServiceParams::toArray<\/a>"],[100,1,"<a href=\"Services\/Params\/Contact\/CreateCompleteContactsServiceParams.php.html#26\">App\\Services\\Params\\Contact\\CreateCompleteContactsServiceParams::__construct<\/a>"],[100,1,"<a href=\"Services\/Params\/Phone\/CreatePhoneServiceParams.php.html#18\">App\\Services\\Params\\Phone\\CreatePhoneServiceParams::__construct<\/a>"],[100,1,"<a href=\"Services\/Params\/Tag\/CreateTagServiceParams.php.html#18\">App\\Services\\Params\\Tag\\CreateTagServiceParams::__construct<\/a>"],[100,1,"<a href=\"Services\/Params\/User\/RegisterUserServiceParams.php.html#20\">App\\Services\\Params\\User\\RegisterUserServiceParams::__construct<\/a>"],[100,1,"<a href=\"Services\/PhoneService.php.html#22\">App\\Services\\PhoneService::__construct<\/a>"],[85.71428571428571,3,"<a href=\"Services\/PhoneService.php.html#34\">App\\Services\\PhoneService::find<\/a>"],[66.66666666666666,2,"<a href=\"Services\/PhoneService.php.html#69\">App\\Services\\PhoneService::store<\/a>"],[85.71428571428571,4,"<a href=\"Services\/PhoneService.php.html#92\">App\\Services\\PhoneService::update<\/a>"],[85.71428571428571,4,"<a href=\"Services\/PhoneService.php.html#127\">App\\Services\\PhoneService::delete<\/a>"],[100,1,"<a href=\"Services\/Responses\/InternalError.php.html#23\">App\\Services\\Responses\\InternalError::__construct<\/a>"],[100,1,"<a href=\"Services\/Responses\/InternalError.php.html#36\">App\\Services\\Responses\\InternalError::toArray<\/a>"],[85.71428571428571,3,"<a href=\"Services\/Responses\/ServiceResponse.php.html#37\">App\\Services\\Responses\\ServiceResponse::__construct<\/a>"],[0,1,"<a href=\"Services\/Responses\/ServiceResponse.php.html#58\">App\\Services\\Responses\\ServiceResponse::toArray<\/a>"],[100,1,"<a href=\"Services\/TagContactService.php.html#23\">App\\Services\\TagContactService::__construct<\/a>"],[80.43478260869566,10,"<a href=\"Services\/TagContactService.php.html#37\">App\\Services\\TagContactService::attach<\/a>"],[94.11764705882352,9,"<a href=\"Services\/TagContactService.php.html#133\">App\\Services\\TagContactService::detach<\/a>"],[100,1,"<a href=\"Services\/TagService.php.html#23\">App\\Services\\TagService::__construct<\/a>"],[85.71428571428571,3,"<a href=\"Services\/TagService.php.html#36\">App\\Services\\TagService::find<\/a>"],[66.66666666666666,2,"<a href=\"Services\/TagService.php.html#71\">App\\Services\\TagService::store<\/a>"],[85.71428571428571,4,"<a href=\"Services\/TagService.php.html#94\">App\\Services\\TagService::update<\/a>"],[85.71428571428571,4,"<a href=\"Services\/TagService.php.html#130\">App\\Services\\TagService::delete<\/a>"],[84.61538461538461,4,"<a href=\"Services\/TagService.php.html#162\">App\\Services\\TagService::findAll<\/a>"],[100,1,"<a href=\"Services\/UserService.php.html#25\">App\\Services\\UserService::__construct<\/a>"],[80,2,"<a href=\"Services\/UserService.php.html#37\">App\\Services\\UserService::register<\/a>"],[76.47058823529412,7,"<a href=\"Services\/UserService.php.html#67\">App\\Services\\UserService::login<\/a>"],[88.23529411764706,5,"<a href=\"Services\/UserService.php.html#136\">App\\Services\\UserService::logout<\/a>"],[85.71428571428571,3,"<a href=\"Services\/UserService.php.html#173\">App\\Services\\UserService::findByEmail<\/a>"],[88.23529411764706,4,"<a href=\"Services\/UserService.php.html#210\">App\\Services\\UserService::update<\/a>"],[85.71428571428571,3,"<a href=\"Services\/UserService.php.html#251\">App\\Services\\UserService::find<\/a>"],[80,3,"<a href=\"Services\/UserService.php.html#287\">App\\Services\\UserService::tokenToChangePassword<\/a>"],[91.30434782608695,5,"<a href=\"Services\/UserService.php.html#318\">App\\Services\\UserService::changePassword<\/a>"],[100,1,"<a href=\"Services\/VexpensesService.php.html#24\">App\\Services\\VexpensesService::__construct<\/a>"],[32.6530612244898,6,"<a href=\"Services\/VexpensesService.php.html#44\">App\\Services\\VexpensesService::sendRequest<\/a>"],[100,1,"<a href=\"Services\/VexpensesService.php.html#144\">App\\Services\\VexpensesService::setClient<\/a>"],[83.33333333333334,5,"<a href=\"Services\/VexpensesService.php.html#157\">App\\Services\\VexpensesService::tokenToAccess<\/a>"],[100,1,"<a href=\"Services\/VexpensesService.php.html#196\">App\\Services\\VexpensesService::getToken<\/a>"],[94.73684210526315,14,"<a href=\"Services\/VexpensesService.php.html#213\">App\\Services\\VexpensesService::findAllTeamMembers<\/a>"],[87.03703703703704,12,"<a href=\"Services\/VexpensesService.php.html#289\">App\\Services\\VexpensesService::store<\/a>"],[100,1,"<a href=\"Services\/ViaCepService.php.html#18\">App\\Services\\ViaCepService::__construct<\/a>"],[65.51724137931035,4,"<a href=\"Services\/ViaCepService.php.html#37\">App\\Services\\ViaCepService::sendRequestViaCep<\/a>"],[100,1,"<a href=\"Services\/ViaCepService.php.html#99\">App\\Services\\ViaCepService::setClient<\/a>"],[77.77777777777779,5,"<a href=\"Http\/Requests\/Traits\/SanitizesInput.php.html#15\">App\\Http\\Requests\\Traits\\SanitizesInput::validateResolved<\/a>"],[100,2,"<a href=\"Http\/Requests\/Traits\/SanitizesInput.php.html#40\">App\\Http\\Requests\\Traits\\SanitizesInput::hasBefore<\/a>"],[100,2,"<a href=\"Http\/Requests\/Traits\/SanitizesInput.php.html#53\">App\\Http\\Requests\\Traits\\SanitizesInput::hasAfter<\/a>"],[100,2,"<a href=\"Http\/Requests\/Traits\/SanitizesInput.php.html#66\">App\\Http\\Requests\\Traits\\SanitizesInput::sanitize<\/a>"],[0,1,"<a href=\"Http\/Requests\/Traits\/SanitizesInput.php.html#93\">App\\Http\\Requests\\Traits\\SanitizesInput::filters<\/a>"],[100,1,"<a href=\"Models\/Traits\/UuidAsPrimaryKey.php.html#9\">App\\Models\\Traits\\UuidAsPrimaryKey::getKeyType<\/a>"],[100,1,"<a href=\"Models\/Traits\/UuidAsPrimaryKey.php.html#20\">App\\Models\\Traits\\UuidAsPrimaryKey::getIncrementing<\/a>"],[85.71428571428571,2,"<a href=\"Models\/Traits\/UuidAsPrimaryKey.php.html#25\">App\\Models\\Traits\\UuidAsPrimaryKey::bootUuidAsPrimaryKey<\/a>"],[0,1,"<a href=\"Traits\/ResponseHelpers.php.html#18\">App\\Traits\\ResponseHelpers::sendResponse<\/a>"],[0,1,"<a href=\"Traits\/ResponseHelpers.php.html#40\">App\\Traits\\ResponseHelpers::sendError<\/a>"],[0,1,"<a href=\"Traits\/ResponseHelpers.php.html#62\">App\\Traits\\ResponseHelpers::sendData<\/a>"],[100,1,"<a href=\"Traits\/ResponseHelpers.php.html#73\">App\\Traits\\ResponseHelpers::unauthenticatedErrorResponse<\/a>"]], 'Method Complexity'))
+      .transition()
+      .duration(500)
+      .call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  function getComplexityData(data, label) {
+    var values = [];
+    $.each(data, function(key) {
+      var value = Math.round(data[key][0]*100) / 100;
+      values.push({
+        x: value,
+        y: data[key][1],
+        class: data[key][2],
+        size: 0.05,
+        shape: 'diamond'
+      });
+    });
+
+    return [
+      {
+        key: label,
+        values: values,
+        color: "#4572A7"
+      }
+    ];
+  }
+});
+  </script>
+ </body>
+</html>

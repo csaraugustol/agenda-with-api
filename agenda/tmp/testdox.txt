@@ -1,0 +1,279 @@
+Example (Tests\Unit\Example)
+ [x] Basic test
+
+Address Service (Tests\Unit\Services\AddressService)
+ [x] Return success when address exists
+ [x] Find address return error when address doesnt exists
+ [x] Store address with success
+ [x] Update success when address exists
+ [x] Update return error when address doesnt exists
+ [x] Update return error when address doesnt of user
+ [x] Return success to delete address contact
+ [x] Return error when address to delete doesnt exists
+ [x] Return error when delete address other user
+ [x] Return success when find by address of postal code
+ [x] Retur error when find by address of postal code
+ [x] Retur error when find by invalid format postal code
+
+Authenticate Token (Tests\Unit\Services\AuthenticateToken)
+ [x] Return success when store token
+ [x] Return error when user doesnt exists
+ [x] Return success when clear token user
+ [x] Return error when clear token to user doesnt exists
+ [x] Return success when find token
+ [x] Return error when token doesnt exists
+
+Change Password (Tests\Unit\Services\ChangePassword)
+ [x] Return success when create new token to change password
+ [x] Change password return error when user doesnt exists
+ [x] Return success when clear token
+ [x] Return error when clear token and user doesnt exists
+ [x] Return success when find token to change password
+ [x] Return error when find token and user doesnt exists
+ [x] Return error when find token and token doesnt exists
+
+Contact (Tests\Unit\Services\Contact)
+ [x] Return success when find all contacts of user
+ [x] Return success when find contact with filter contact name
+ [x] Return success when find contact with filter phone number
+ [x] Find all with filter return success when name contact doesnt exists
+ [x] Find all with filter return success when contact doesnt exists
+ [x] Return success when find contact of user
+ [x] Find contact return error when user doesnt exists
+ [x] Find contact return error when contact doesnt exists
+ [x] Find contact return error when contact is of other user
+ [x] Return success when create contact
+ [x] Store return error when create contact and tag doesnt exists
+ [x] Return success when update contact
+ [x] Update return error when user doesnt exists
+ [x] Update return error when contact doesnt exists
+ [x] Update return error when contac is of other user
+ [x] Return success when delete contact
+ [x] Delete return error when user doesnt exists
+ [x] Delete return error when contact doesnt exists
+ [x] Delete return error when contact is of other user
+ [x] E return success when find contact by external id
+ [x] E return error when find contact by external id and user doesnt exists
+ [x] E return error when find contact by external id and contact doesnt has external id
+
+External Token (Tests\Unit\Services\ExternalToken)
+ [x] Return success when store token to access
+ [x] Return error when user doesnt exists
+ [x] Return success when clear token user
+ [x] Return error when clear token to user doesnt exists
+ [x] Success when find token
+ [x] Return error when token doesnt exists
+ [x] Return error when find external token and user doesnt exists
+
+Phone (Tests\Unit\Services\Phone)
+ [x] Find return success when exists phone
+ [x] E find return error when phone doesnt exists
+ [x] Store return success when create new phone
+ [x] Update return success when exists phone
+ [x] Update return error when phone doesnt exists
+ [x] Delete return success when exists phone
+ [x] Delete return error when phone doesnt exists
+
+Tag Contact (Tests\Unit\Services\TagContact)
+ [x] Return success when attach tag contact
+ [x] Return error when tag doesnt exists
+ [x] Return error when contact doesnt exists
+ [x] Return error when user doesnt exists
+ [x] Return error when attach tag contact of other user
+ [x] Return success when detach tag contact
+ [x] Return error detach when tag does exists
+ [x] Return error detach when contact does exists
+ [x] Return error detach when user does exists
+
+Tag (Tests\Unit\Services\Tag)
+ [x] Find return success when tag exists
+ [x] Find return error when tag doesnt exists
+ [x] Return error when find tag other user
+ [x] Store return success when create new tag
+ [x] Update success when tag exists
+ [x] Update return error when tag doesnt exists
+ [x] Update return error when tag of other user
+ [x] Return success when delete tag
+ [x] Return error when delete tag of other user
+ [x] Return success when find all tags user
+ [x] Return success when find tag user with description
+ [x] Find all return error when user doesnt exists
+ [x] Return success when doesnt exists tag to user
+
+User (Tests\Unit\Services\User)
+ [x] Return success when register user
+ [x] Return success when try login
+ [x] Return error when try login and user doesnt exist
+ [x] Return error when try login where email is incorrect
+ [x] Return error when try login where password is incorrect
+ [x] Return success when try logout
+ [x] Return error when try logout and user doesnt exists
+ [x] Return error when try logout and id is incorrect
+ [x] Return success when find by email
+ [x] Return error when email doest exists
+ [x] Return success when update user
+ [x] Update return error when user doesnt exists
+ [x] Return success when find user
+ [x] Find return error when user doesnt exists
+ [x] Return success when create token to change password
+ [x] Token to change password return error when user doesnt exists
+ [x] Return success when change password
+ [x] Change password return error when user doesnt exist
+ [x] Change password return error when current password is incorrect
+
+Vexpenses (Tests\Unit\Services\Vexpenses)
+ [x] Return success when store access token to v expenses
+ [x] Return error when user doesnt exists and try store access token to v expenses
+ [x] Retur success when list members
+ [x] Retur error when user doesnt has external token
+ [x] Retur error when find all members and user doesnt exists
+ [x] Return error when try list members and external token doesnt is vexpenses
+ [x] Retur success when list members and filter just member with phone
+ [x] Retur success when list member without integration
+ [x] Retur success when list member with integration
+ [x] Return success when create a contact with member
+ [x] Error when try create a contact without phone
+ [x] Return error when try create a contact and user doesnt exists
+ [x] Return error when try create a contact with member that exists integration
+
+Address (Tests\Feature\Address)
+ [x] Return success when update address
+ [x] Return error when try update address and user is unauthorized
+ [x] Return error when try update address of other user
+ [x] Return error when try update address that doesnt exists
+ [x] Return success when delete address
+ [x] Return error when try delete address and user is unauthorized
+ [x] Return error when try delete address of other user
+ [x] Return error when try delete address that doesnt exists
+ [x] Return error when find by invalid postal code
+ [x] Return error when find invalid format postal code
+ [x] Return success when find by postal code with a p i
+
+Contact (Tests\Feature\Contact)
+ [x] Return success when list all contacts of user and is authenticated
+ [x] Return success when list all contacts with filter contact name
+ [x] Return success when list all contacts with filter phone number
+ [x] Return error when try list all contacts of user and user is unauthorized
+ [x] Return success when show details of contact
+ [x] Return error when show details of contact that doesnt exists
+ [x] Return error when show details of contact when user is unauthorized
+ [x] Return success when create new contact to user
+ [x] Return success when create new contact to user without tag
+ [x] Return error when try create new contact when user is unauthorized
+ [x] Return error when try create new contact that contact name exists
+ [x] Return error when create new contact and doesnt information phone
+ [x] Return error when create new contact and doesnt information name contact
+ [x] Return error when create new contact and doesnt information address
+ [x] Return success when update contact name
+ [x] Return error when update contact name that this contact name exists
+ [x] Return error when update contact name and user is unauthorized
+ [x] Return success when delete contact
+ [x] Return error when try delete contact and user is unauthorized
+ [x] Return error when delete contact and doesnt exists
+ [x] Return error when try delete contact other user
+
+Example (Tests\Feature\Example)
+ [x] Basic test
+
+Tag (Tests\Feature\Tag)
+ [x] Return success when list all tags
+ [x] Return error when try list all tags and user is unauthorized
+ [x] Return success when create new tag
+ [x] Return error when create new tag and user is unauthorized
+ [x] Return success when update tag
+ [x] Return error when update tag other user
+ [x] Return error when update tag and user is unauthorized
+ [x] Return success when delete tag
+ [x] Return error when try delete tag and doesnt exists
+ [x] Return error when delete tag other user
+ [x] Return error when delete tag and user is unauthorized
+ [x] Return success when attach tag and contact
+ [x] Return error when try attach tag and contact and tag doesnt exists
+ [x] Return error when try attach tag and contact and contact doesnt exists
+ [x] Return error when try attach tag and contact and tag is of other user
+ [x] Return error when try attach tag and contact and contact is of other user
+ [x] Return error when try attach tag and contact and user is unauthorized
+ [x] Return success when detach tag and contact
+ [x] Return error when try detach tag and contact and tag doesnt exists
+ [x] Return error when try detach tag and contact and contact doesnt exists
+ [x] Return error when try detach tag and contact and tag is of other user
+ [x] Return error when try detach tag and contact and contact is of other user
+ [x] Return error when try detach tag and contact and user is unauthorized
+
+User (Tests\Feature\User)
+ [x] Return success when register new user
+ [x] Return error when register new user with different passwords
+ [x] Return error when register new user with equals email
+ [x] Login return success
+ [x] Login return error when password is incorrect
+ [x] Login return error when email is incorrect
+ [x] Return success when updated user authenticated
+ [x] Return error when updated user authenticated and try change password
+ [x] Return success when user try logout
+ [x] Return error when user try logout
+ [x] Show return success when find user
+ [x] Show return error when find user
+ [x] Change password return success when create token
+ [x] Change password return success when change password
+ [x] Change password return error when regex doesnt has uppercase letter
+ [x] Change password return error when regex doesnt has lowercase letter
+ [x] Change password return error when regex doesnt has number
+ [x] Change password return error when regex has less eight caracteres
+ [x] Change password return error when regex has more twent caracteres
+ [x] Change password return error when change password without token
+ [x] Change password return error when token expired
+
+Vexpenses (Tests\Feature\Vexpenses)
+ [x] Return success generate newtoken to access
+ [x] Return error token to access doesnt is informed
+ [x] Return error when generate newtoken to access and user is unauthorized
+ [x] Return success when list all members
+ [x] Return error when user doesnt unauthorized
+ [x] Return error when try list all members and doesnt exists external token
+ [x] Return success when create contact with member
+ [x] Return error when try create contact with member and has contact with member
+ [x] Return error when try create contact and member is without phone
+ [x] Return error when try create contact with member without address
+ [x] Return error when try create contact with member and user is unauthorized
+ [x] Return error when member response of vexpenses is null
+ [x] Return error when try create contact without token integration
+
+Address (Tests\Integration\Models\Address)
+ [x] Relationship with contact
+
+Authenticate Token (Tests\Integration\Models\AuthenticateToken)
+ [x] Relationship authenticate token with user
+
+Change Password (Tests\Integration\Models\ChangePassword)
+ [x] Relationship change password with user
+
+Contact (Tests\Integration\Models\Contact)
+ [x] Relationship contact with user
+ [x] Relationship contact with address
+ [x] Relationship contact with phone
+ [x] Relationship contact with tag contact
+ [x] Relationship contact with tags
+
+External Token (Tests\Integration\Models\ExternalToken)
+ [x] Relationship external token with user
+ [x] Method set type attribute when type system is v expenses
+ [x] Method set type attribute when type system doesnt is v expenses
+
+Phone (Tests\Integration\Models\Phone)
+ [x] Relationship phone with contact
+
+Tag Contact (Tests\Integration\Models\TagContact)
+ [x] Relationship tag contact with tag
+ [x] Relationship tag contact with contact
+
+Tag (Tests\Integration\Models\Tag)
+ [x] Relationship tag with user
+ [x] Relationship tag with tag contact
+
+User (Tests\Integration\Models\User)
+ [x] Relationship user with contact
+ [x] Relationship user with tag
+ [x] Relationship user with authenticate token
+ [x] Relationship user with change passwords
+ [x] Relationship user with external token
+
