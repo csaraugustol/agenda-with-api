@@ -4,6 +4,7 @@
 /storage/*.key
 /vendor
 /cover
+/tmp
 .vscode
 .env
 .env.backup
