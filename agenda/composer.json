@@ -26,6 +26,7 @@
         "fzaninotto/faker": "1.9",
         "mockery/mockery": "1.3.*",
         "nunomaduro/collision": "4.*",
+        "phpspec/prophecy-phpunit": "2.0",
         "phpunit/phpunit": "9.5.*"
     },
     "config": {

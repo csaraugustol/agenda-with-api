@@ -136,6 +136,23 @@ class UserTest extends BaseTestCase
     }
 
     /**
+     * Testa o catch, quando ocorre um erro no parametro passado no método para
+     * registrar um usuário no sistema
+     */
+    public function testTryCatchWhenTryRegisterUser()
+    {
+        $registerUserServiceParams = $this->prophesize(RegisterUserServiceParams::class)->reveal();
+        $registerUserResponse = $this->userService->register(
+            $registerUserServiceParams
+        );
+
+        $this->assertInstanceOf(ServiceResponse::class, $registerUserResponse);
+        $this->assertFalse($registerUserResponse->success);
+        $this->assertIsArray($registerUserResponse->data);
+        $this->assertInstanceOf(RegisterUserServiceParams::class, $registerUserResponse->data['params']);
+    }
+
+    /**
      * Testa o método Logout na UserService retornando sucesso ao tentar realizar
      * o logout do usuário
      */
