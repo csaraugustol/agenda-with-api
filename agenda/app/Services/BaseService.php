@@ -37,7 +37,7 @@ class BaseService implements BaseServiceInterface
 
         return new ServiceResponse(
             false,
-            __('services/base.unknow_error_try_again'),
+            'Excessão',
             $data
         );
     }
